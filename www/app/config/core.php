@@ -54,7 +54,7 @@
  *
  * And uncomment the App.baseUrl below:
  */
-	Configure::write('App.baseUrl', env('SCRIPT_NAME'));
+	//Configure::write('App.baseUrl', env('SCRIPT_NAME'));
 /**
  * Uncomment the define below to use CakePHP admin routes.
  *
