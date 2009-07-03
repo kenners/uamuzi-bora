@@ -1,2 +1,5 @@
 # Installation-specific database configuration
 www/app/config/database.php
+
+# Ignore tmp
+www/app/tmp/**/*
