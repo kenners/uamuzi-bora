@@ -12,13 +12,18 @@ SET search_path = public, pg_catalog;
 
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_pkey;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_name_key;
+ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_pkey;
+ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_name_key;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.occupations_id_seq;
+DROP SEQUENCE public.marital_statuses_id_seq;
 DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.occupations;
+DROP TABLE public.marital_statuses;
 DROP TABLE public.educations;
 DROP SCHEMA public;
 --
@@ -46,6 +51,18 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE educations (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
+-- Name: marital_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE marital_statuses (
     id integer NOT NULL,
     name character varying NOT NULL,
     description character varying,
@@ -91,6 +108,31 @@ SELECT pg_catalog.setval('educations_id_seq', 3, true);
 
 
 --
+-- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE marital_statuses_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: marital_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
+
+
+--
+-- Name: marital_statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
+
+
+--
 -- Name: occupations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -126,6 +168,13 @@ ALTER TABLE educations ALTER COLUMN id SET DEFAULT nextval('educations_id_seq'::
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE marital_statuses ALTER COLUMN id SET DEFAULT nextval('marital_statuses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE occupations ALTER COLUMN id SET DEFAULT nextval('occupations_id_seq'::regclass);
 
 
@@ -138,6 +187,20 @@ COPY educations (id, name, description, comment) FROM stdin;
 1	Some primary	\N	\N
 2	Some secondary	\N	\N
 3	Some Post secondary	\N	\N
+\.
+
+
+--
+-- Data for Name: marital_statuses; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY marital_statuses (id, name, description, comment) FROM stdin;
+0	Single/Never married	\N	\N
+1	Married, monogamous	\N	\N
+2	Married, polygamous	\N	\N
+3	Cohabiting	\N	\N
+4	Divorced/Separated	\N	\N
+5	Widowed	\N	\N
 \.
 
 
@@ -168,6 +231,22 @@ ALTER TABLE ONLY educations
 
 ALTER TABLE ONLY educations
     ADD CONSTRAINT educations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: marital_statuses_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY marital_statuses
+    ADD CONSTRAINT marital_statuses_name_key UNIQUE (name);
+
+
+--
+-- Name: marital_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY marital_statuses
+    ADD CONSTRAINT marital_statuses_pkey PRIMARY KEY (id);
 
 
 --
