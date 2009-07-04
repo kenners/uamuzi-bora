@@ -53,7 +53,7 @@ class LookupTableModel extends AppModel {
 			),
 			'unique' => array(
 				'rule' => array('isUniqueCaseInsensitive', 'name'),
-				'message' => 'This occupation already exists'
+				'message' => 'This value already exists'
 			)
 		)
 	);
