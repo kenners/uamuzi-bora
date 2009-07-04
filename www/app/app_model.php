@@ -17,6 +17,28 @@ class AppModel extends Model {
 		
 		return $count == 0;
 	}
+	
+	/**
+	 * Custom validation function to determine that a year is not in the future.
+	 * Returns TRUE if it passes validation (i.e this year or the past).
+	 */
+	function isNotFutureYear($data) {
+		// Extract the year
+		$year = array_values($data);
+		$year = $year[0];
+		
+		// Check it is a year
+		if (!is_numeric($year)) {
+			return FALSE;
+		}
+		
+		// Check if it is in the future
+		if ($year > date('Y')) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 }
 
 /**

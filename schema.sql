@@ -10,6 +10,13 @@ SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_pkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_arvid_key;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_pkey;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_name_key;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_pkey;
@@ -22,6 +29,7 @@ ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.occupations_id_seq;
 DROP SEQUENCE public.marital_statuses_id_seq;
 DROP SEQUENCE public.educations_id_seq;
+DROP TABLE public.patients;
 DROP TABLE public.occupations;
 DROP TABLE public.marital_statuses;
 DROP TABLE public.educations;
@@ -79,6 +87,28 @@ CREATE TABLE occupations (
     name character varying NOT NULL,
     description character varying,
     comment character varying
+);
+
+
+--
+-- Name: patients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE patients (
+    pid integer NOT NULL,
+    upn integer,
+    arvid integer,
+    vfcc integer,
+    surname character varying NOT NULL,
+    forenames character varying NOT NULL,
+    date_of_birth date,
+    year_of_birth integer NOT NULL,
+    sex character varying,
+    mother text,
+    occupation_id integer,
+    education_id integer,
+    marital_status_id integer,
+    telephone_number character varying
 );
 
 
@@ -218,6 +248,14 @@ COPY occupations (id, name, description, comment) FROM stdin;
 
 
 --
+-- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number) FROM stdin;
+\.
+
+
+--
 -- Name: educations_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -263,6 +301,62 @@ ALTER TABLE ONLY occupations
 
 ALTER TABLE ONLY occupations
     ADD CONSTRAINT occupations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: patients_arvid_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_arvid_key UNIQUE (arvid);
+
+
+--
+-- Name: patients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_pkey PRIMARY KEY (pid);
+
+
+--
+-- Name: patients_upn_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_upn_key UNIQUE (upn);
+
+
+--
+-- Name: patients_vfcc_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_vfcc_key UNIQUE (vfcc);
+
+
+--
+-- Name: patients_education_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_education_id_fkey FOREIGN KEY (education_id) REFERENCES educations(id);
+
+
+--
+-- Name: patients_marital_status_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_marital_status_id_fkey FOREIGN KEY (marital_status_id) REFERENCES marital_statuses(id);
+
+
+--
+-- Name: patients_occupation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_occupation_id_fkey FOREIGN KEY (occupation_id) REFERENCES occupations(id);
 
 
 --
