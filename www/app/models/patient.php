@@ -21,10 +21,6 @@ class Patient extends AppModel {
 	 */
 	var $validate = array(
 		'pid' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
-				'message' => 'The Patient ID should be an integer'
-			),
 			'check_luhn' => array(
 				'rule' => 'validPIDRule',
 				'message' => 'That is not a valid Patient ID'
@@ -139,7 +135,7 @@ class Patient extends AppModel {
 	function isValidPID($pid) {
 		// Check to see that it is formatted correctly (at least two digits long
 		// and a positive integer, essentially)
-		if (!preg_match('/^\d{2,}$/', $pid)) {
+		if (!preg_match('/^\d{2,9}$/', $pid)) {
 			return FALSE;
 		}
 	
