@@ -22,7 +22,7 @@ class Patient extends AppModel {
 	var $validate = array(
 		'pid' => array(
 			'check_luhn' => array(
-				'rule' => 'validPIDRule',
+				'rule' => array('customValidationFunction', 'isValidPID'),
 				'message' => 'That is not a valid Patient ID'
 			),
 			'unique' => array(
@@ -110,7 +110,7 @@ class Patient extends AppModel {
 				'message' => 'This is not a well-formatted year'
 			),
 			'not in the future' => array(
-				'rule' => 'isNotFutureYear',
+				'rule' => array('customValidationFunction', 'isNotFutureYear'),
 				'message' => 'The year of birth is in the future'
 			),
 			'not null' => array(
@@ -159,19 +159,6 @@ class Patient extends AppModel {
 		} else {
 			return FALSE;
 		}
-	}
-	
-	/**
-	 * This function is a wrapper around isValidPID() which extracts the PID 
-	 * from $data.  It is needed for $validate.
-	 */
-	function validPIDRule($data) {
-		// Extract the PID from $data
-		$pid = array_values($data);
-		$pid = $pid[0];
-		
-		// Return the result of isValidPID()
-		return $this->isValidPID($pid[0]);
 	}
 }
 ?>
