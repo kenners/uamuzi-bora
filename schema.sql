@@ -108,7 +108,8 @@ CREATE TABLE patients (
     occupation_id integer,
     education_id integer,
     marital_status_id integer,
-    telephone_number character varying
+    telephone_number character varying,
+    treatment_supporter text
 );
 
 
@@ -251,7 +252,7 @@ COPY occupations (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number) FROM stdin;
+COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter) FROM stdin;
 \.
 
 
