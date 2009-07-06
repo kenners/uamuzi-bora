@@ -106,7 +106,7 @@ class Patient extends AppModel {
 		),
 		'year_of_birth' => array(
 			'int' => array(
-				'rule' => array('decmial', 0),
+				'rule' => array('decimal', 0),
 				'message' => 'This is not a well-formatted year'
 			),
 			'not in the future' => array(
