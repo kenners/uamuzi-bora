@@ -19,10 +19,14 @@ class AppModel extends Model {
 		// parameters because they rely on the current scope
 		$args = func_get_args();
 		
-		// Are there at least two arguments?
-		if (count($args) <= 1) {
+		// Are there at least three arguments?
+		if (count($args) <= 2) {
 			return FALSE;
 		}
+		
+		// Get rid of the last element, as it is an array of the validation
+		// rule information
+		array_pop($args);
 		
 		// Set $value, the value to be tested (and therefore the first argument
 		// to the called function)
