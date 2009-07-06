@@ -13,7 +13,8 @@ class Patient extends AppModel {
 	var $belongsTo = array(
 		'occupation' => array('className' => 'Occupation'),
 		'education' => array('className' => 'Education'),
-		'marital_status' => array('className' => 'MaritalStatus')
+		'marital_status' => array('className' => 'MaritalStatus'),
+		'location' => array('className' => 'Location')
 	);
 	
 	/**
@@ -123,6 +124,12 @@ class Patient extends AppModel {
 				'rule' => array('custom', '/^\d{10}$/'),
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a well-formatted telephone number'
+			)
+		),
+		'location_id' => array(
+			'int' => array(
+				'rule' => array('decimal', 0),
+				'message' => 'location_id must be an integer'
 			)
 		)
 	);

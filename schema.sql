@@ -12,6 +12,7 @@ SET search_path = public, pg_catalog;
 
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
@@ -21,17 +22,21 @@ ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_pkey;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_name_key;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_pkey;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_name_key;
+ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.occupations_id_seq;
 DROP SEQUENCE public.marital_statuses_id_seq;
+DROP SEQUENCE public.locations_id_seq;
 DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.patients;
 DROP TABLE public.occupations;
 DROP TABLE public.marital_statuses;
+DROP TABLE public.locations;
 DROP TABLE public.educations;
 DROP SCHEMA public;
 --
@@ -61,6 +66,24 @@ SET default_with_oids = false;
 CREATE TABLE educations (
     id integer NOT NULL,
     name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
+-- Name: locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE locations (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    parent_id integer,
+    tree_left integer,
+    tree_right integer,
+    vf_code integer,
+    longitude double precision,
+    latitude double precision,
     description character varying,
     comment character varying
 );
@@ -109,7 +132,14 @@ CREATE TABLE patients (
     education_id integer,
     marital_status_id integer,
     telephone_number character varying,
-    treatment_supporter text
+    treatment_supporter text,
+    location_id integer,
+    village character varying,
+    home character varying,
+    nearest_church character varying,
+    nearest_school character varying,
+    nearest_health_centre character varying,
+    nearest_major_landmark character varying
 );
 
 
@@ -136,6 +166,31 @@ ALTER SEQUENCE educations_id_seq OWNED BY educations.id;
 --
 
 SELECT pg_catalog.setval('educations_id_seq', 3, true);
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE locations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('locations_id_seq', 43, true);
 
 
 --
@@ -199,6 +254,13 @@ ALTER TABLE educations ALTER COLUMN id SET DEFAULT nextval('educations_id_seq'::
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE locations ALTER COLUMN id SET DEFAULT nextval('locations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE marital_statuses ALTER COLUMN id SET DEFAULT nextval('marital_statuses_id_seq'::regclass);
 
 
@@ -218,6 +280,57 @@ COPY educations (id, name, description, comment) FROM stdin;
 1	Some primary	\N	\N
 2	Some secondary	\N	\N
 3	Some Post secondary	\N	\N
+\.
+
+
+--
+-- Data for Name: locations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY locations (id, name, parent_id, tree_left, tree_right, vf_code, longitude, latitude, description, comment) FROM stdin;
+2	Central	1	2	3	1	\N	\N	\N	\N
+3	Coast	1	4	5	2	\N	\N	\N	\N
+4	Eastern	1	6	7	3	\N	\N	\N	\N
+33	Shibuli	27	46	47	4	\N	\N	\N	\N
+5	Nairobi Area	1	8	9	5	\N	\N	\N	\N
+6	North-Eastern	1	10	11	6	\N	\N	\N	\N
+7	Nyanza	1	12	13	7	\N	\N	\N	\N
+8	Rift Valley	1	14	15	8	\N	\N	\N	\N
+28	East Butsotso	25	53	60	3	\N	\N	\N	\N
+10	Bungoma	9	17	18	1	\N	\N	\N	\N
+13	Butere	9	75	76	4	\N	\N	\N	\N
+14	Lugari	9	77	78	5	\N	\N	\N	\N
+11	Busia	9	19	20	2	\N	\N	\N	\N
+22	Shinyalu	12	30	31	5	\N	\N	\N	\N
+15	Teso	9	79	80	6	\N	\N	\N	\N
+16	Vihiga	9	81	82	7	\N	\N	\N	\N
+38	Indangalasia	28	58	59	9	\N	\N	\N	\N
+17	Mount Elgon	9	83	84	8	\N	\N	\N	\N
+12	Kakamega	9	21	74	3	\N	\N	\N	\N
+1	Kenya	\N	1	86	\N	\N	\N	\N	\N
+9	Western	1	16	85	9	\N	\N	\N	\N
+25	Lurambi	12	36	73	8	\N	\N	\N	\N
+29	North Butsotso	25	61	72	4	\N	\N	\N	\N
+34	Eshisuru	27	48	49	5	\N	\N	\N	\N
+30	Matioli	26	38	39	1	\N	\N	\N	\N
+23	Malava	12	32	33	6	\N	\N	\N	\N
+43	Mathia	29	70	71	14	\N	\N	\N	\N
+26	South Butsotso	25	37	42	1	\N	\N	\N	\N
+24	Mumias	12	34	35	7	\N	\N	\N	\N
+18	Butere	12	22	23	1	\N	\N	\N	\N
+39	Esumeyia	29	62	63	10	\N	\N	\N	\N
+27	Central Butsotso	25	43	52	2	\N	\N	\N	\N
+35	Shiyunzu	27	50	51	6	\N	\N	\N	\N
+31	Emukaya	26	40	41	2	\N	\N	\N	\N
+19	Ikolomani	12	24	25	2	\N	\N	\N	\N
+40	Shikomari	29	64	65	11	\N	\N	\N	\N
+20	Khwisero	12	26	27	3	\N	\N	\N	\N
+36	Murumba	28	54	55	7	\N	\N	\N	\N
+21	Lugari	12	28	29	4	\N	\N	\N	\N
+32	Shiveye	27	44	45	3	\N	\N	\N	\N
+41	Shinoyi	29	66	67	12	\N	\N	\N	\N
+37	Shirakalu	28	56	57	8	\N	\N	\N	\N
+42	Ingotse	29	68	69	13	\N	\N	\N	\N
 \.
 
 
@@ -252,7 +365,7 @@ COPY occupations (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter) FROM stdin;
+COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark) FROM stdin;
 \.
 
 
@@ -270,6 +383,14 @@ ALTER TABLE ONLY educations
 
 ALTER TABLE ONLY educations
     ADD CONSTRAINT educations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY locations
+    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -342,6 +463,14 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_education_id_fkey FOREIGN KEY (education_id) REFERENCES educations(id);
+
+
+--
+-- Name: patients_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_location_id_fkey FOREIGN KEY (location_id) REFERENCES locations(id);
 
 
 --

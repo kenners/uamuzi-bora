@@ -78,6 +78,60 @@ class AppModel extends Model {
 			return TRUE;
 		}
 	}
+	
+	/**
+	 * Custom validation function that checks if a field is unique amongst its
+	 * peers (i.e. amongst those with the same direct parent) in a case 
+	 * insensitive manner.  The first argument is the value to be tested, the 
+	 * second is the name of the field to check, and the second is the 
+	 * parent_id.  If FALSE, then this will be looked up from $this->data.
+	 *
+	 * Note that this is for models using the Tree behaviour.
+	 */
+	function isUniqueFieldAmongstPeers($value, $field, $parent_id = FALSE) {
+		// What is the current model?
+		$model = array_keys($this->data);
+		$model = $model[0];
+		
+		// If parent_id has been passed as NULL, look this up from $this->data
+		if ($parent_id === FALSE) {
+			if (isset($this->data[$model]['parent_id'])) {
+				$parent_id = $this->data[$model]['parent_id'];
+			} else {
+				return FALSE;
+			}
+		}
+		
+		// Fetch the direct children of $parent_id into an array
+		$peers = $this->children($parent_id, TRUE);
+		
+		// Loop through $peers and return FALSE if any of them match
+		foreach ($peers as $peer) {
+			if (strcasecmp($peer[$model][$field], $value) == 0) {
+				return FALSE;
+			}
+		}
+		
+		// If we've come this far, then there's been no match
+		return TRUE;
+	}
+	
+	/**
+	 * Custom validation function that returns TRUE if $parent_id exists in
+	 * the column 'id'.
+	 */
+	function isValidParentId($id) {
+		// Check $id is of the correct type
+		if (!is_null($id) && !preg_match('/^\d+$/', $id)) {
+			return FALSE;
+		}
+		
+		// Set $count, the number of rows with this id
+		$conditions = array('id' => $id);
+		$count = $this->find('count', array('conditions' => $conditions));
+		
+		return $count == 1;
+	}
 }
 
 /**
