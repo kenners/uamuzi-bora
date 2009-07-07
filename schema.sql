@@ -160,8 +160,8 @@ CREATE TABLE vf_testing_sites (
     site_name character varying NOT NULL,
     type character varying NOT NULL,
     location_id integer NOT NULL,
-    latitude double precision NOT NULL,
-    longitude double precision NOT NULL
+    latitude double precision,
+    longitude double precision
 );
 
 
