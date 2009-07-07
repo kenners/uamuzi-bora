@@ -9,6 +9,12 @@ class VfTestingSite extends AppModel {
 	var $name = 'VfTestingSite';
 	
 	/**
+	 * The primary key is called 'site_code' not 'id' in this table as that 
+	 * better describes what the field represents.
+	 */
+	var $primaryKey = 'site_code';
+	
+	/**
 	 * Associate with Location model
 	 */
 	var $belongsTo = array(

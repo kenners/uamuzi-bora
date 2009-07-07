@@ -8,6 +8,11 @@ class Patient extends AppModel {
 	var $name = 'Patient';
 	
 	/**
+	 * pid is the primary key
+	 */
+	var $primaryKey = 'pid';
+	
+	/**
 	 * Define relationships with lookup tables
 	 */
 	var $belongsTo = array(
