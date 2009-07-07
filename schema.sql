@@ -288,7 +288,7 @@ ALTER SEQUENCE vf_testing_sites_site_code_seq OWNED BY vf_testing_sites.site_cod
 -- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 1, false);
+SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 
 
 --
@@ -429,6 +429,34 @@ COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of
 --
 
 COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longitude) FROM stdin;
+1	Ebukulima	Salvation Army	30	0.19305	34.61363
+2	Mwiyenga	Church	30	0.20582	34.63413
+3	Ekapwonje	Church	31	0.21640	34.61413
+4	Shianda	Church	31	0.23147	34.62008
+5	Sumba	Dispensary	32	0.24218	34.63955
+6	Shirembe	Dispensary	32	0.25447	34.62112
+7	Ematsayi	School	32	0.27548	34.62123
+8	Eshikuyu	Health Centre	33	0.26477	34.65590
+9	Ibinzo	School	33	0.25660	34.68793
+10	Eshisiru	District Office	34	0.28160	34.67340
+11	Emusanda	Dispensary	34	0.29325	34.64760
+12	Ikonyero	Church	35	0.28343	34.72247
+13	Eshiyunzu	Church	35	0.29087	34.70355
+14	Murumba	Dispensary	36	0.30315	34.72610
+15	Shikoti	Church	36	0.31788	34.73593
+16	Emukoyani	Church	37	0.32135	34.74947
+17	Elukho	Church	37	0.32290	34.75647
+18	Emusala	Church	38	0.32965	34.78048
+19	Emukaba	Church	38	0.34425	34.76343
+20	Bushibo	Church	39	0.30810	34.68608
+21	Emukaya	Health Centre	39	0.31850	34.70267
+22	Esumeyia	Church	39	0.31972	34.68102
+23	Shikomari	Church	40	0.32085	34.64448
+24	Gospel Spring	Church	40	0.33845	34.65478
+25	Shinoyi	Church	41	0.34402	34.66500
+26	Naluchira	Church	41	0.34895	34.69418
+27	Ingotse	Health Centre	42	0.35545	34.69788
+28	Bushiri	Church	42	0.36500	34.72917
 \.
 
 
