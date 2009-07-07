@@ -18,6 +18,9 @@ ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
+ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_pkey;
+ALTER TABLE ONLY public.results DROP CONSTRAINT results_pkey;
+ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_pkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_pkey;
@@ -30,21 +33,32 @@ ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
+ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
-DROP SEQUENCE public.occupations_id_seq;
-DROP SEQUENCE public.marital_statuses_id_seq;
-DROP SEQUENCE public.locations_id_seq;
-DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.vf_testing_sites;
+DROP SEQUENCE public.tests_tid_seq;
+DROP SEQUENCE public.tests_id_seq;
+DROP TABLE public.tests;
+DROP SEQUENCE public.results_id_seq;
+DROP TABLE public.results;
+DROP SEQUENCE public.result_lookups_id_seq;
+DROP TABLE public.result_lookups;
 DROP TABLE public.patients;
+DROP SEQUENCE public.occupations_id_seq;
 DROP TABLE public.occupations;
+DROP SEQUENCE public.marital_statuses_id_seq;
 DROP TABLE public.marital_statuses;
+DROP SEQUENCE public.locations_id_seq;
 DROP TABLE public.locations;
+DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.educations;
+DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
@@ -58,6 +72,13 @@ CREATE SCHEMA public;
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
 
 
 SET search_path = public, pg_catalog;
@@ -79,6 +100,24 @@ CREATE TABLE educations (
 
 
 --
+-- Name: educations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE educations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: educations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE educations_id_seq OWNED BY educations.id;
+
+
+--
 -- Name: locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -97,6 +136,24 @@ CREATE TABLE locations (
 
 
 --
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE locations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
+
+
+--
 -- Name: marital_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -109,6 +166,24 @@ CREATE TABLE marital_statuses (
 
 
 --
+-- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE marital_statuses_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: marital_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
+
+
+--
 -- Name: occupations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -118,6 +193,24 @@ CREATE TABLE occupations (
     description character varying,
     comment character varying
 );
+
+
+--
+-- Name: occupations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE occupations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: occupations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE occupations_id_seq OWNED BY occupations.id;
 
 
 --
@@ -152,6 +245,123 @@ CREATE TABLE patients (
 
 
 --
+-- Name: result_lookups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE result_lookups (
+    id integer NOT NULL,
+    test_id integer NOT NULL,
+    value character varying NOT NULL,
+    description character varying,
+    comment character varying,
+    user_id integer NOT NULL,
+    modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: result_lookups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE result_lookups_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: result_lookups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
+
+
+--
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE results (
+    id integer NOT NULL,
+    pid integer NOT NULL,
+    test_id integer NOT NULL,
+    value_decimal double precision,
+    value_text character varying,
+    value_lookup character varying,
+    test_performed timestamp without time zone,
+    created timestamp without time zone,
+    requesting_clinician character varying,
+    user_id integer NOT NULL
+);
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE results_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE results_id_seq OWNED BY results.id;
+
+
+--
+-- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tests (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    abbreiviation character varying,
+    type character varying NOT NULL,
+    upper_limit double precision,
+    lower_limit double precision,
+    description character varying,
+    comment character varying,
+    active boolean DEFAULT true,
+    user_id integer NOT NULL,
+    modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tests_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
+
+
+--
+-- Name: tests_tid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tests_tid_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
 -- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -166,111 +376,10 @@ CREATE TABLE vf_testing_sites (
 
 
 --
--- Name: educations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE educations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: educations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE educations_id_seq OWNED BY educations.id;
-
-
---
--- Name: educations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('educations_id_seq', 3, true);
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE locations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('locations_id_seq', 43, true);
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE marital_statuses_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE occupations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE occupations_id_seq OWNED BY occupations.id;
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('occupations_id_seq', 4, true);
-
-
---
 -- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE vf_testing_sites_site_code_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -282,13 +391,6 @@ CREATE SEQUENCE vf_testing_sites_site_code_seq
 --
 
 ALTER SEQUENCE vf_testing_sites_site_code_seq OWNED BY vf_testing_sites.site_code;
-
-
---
--- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 
 
 --
@@ -320,144 +422,31 @@ ALTER TABLE occupations ALTER COLUMN id SET DEFAULT nextval('occupations_id_seq'
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE result_lookups ALTER COLUMN id SET DEFAULT nextval('result_lookups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE results ALTER COLUMN id SET DEFAULT nextval('results_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
+
+
+--
 -- Name: site_code; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_testing_sites_site_code_seq'::regclass);
-
-
---
--- Data for Name: educations; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY educations (id, name, description, comment) FROM stdin;
-0	None	\N	\N
-1	Some primary	\N	\N
-2	Some secondary	\N	\N
-3	Some Post secondary	\N	\N
-\.
-
-
---
--- Data for Name: locations; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY locations (id, name, parent_id, tree_left, tree_right, vf_code, longitude, latitude, description, comment) FROM stdin;
-2	Central	1	2	3	1	\N	\N	\N	\N
-3	Coast	1	4	5	2	\N	\N	\N	\N
-4	Eastern	1	6	7	3	\N	\N	\N	\N
-33	Shibuli	27	46	47	4	\N	\N	\N	\N
-5	Nairobi Area	1	8	9	5	\N	\N	\N	\N
-6	North-Eastern	1	10	11	6	\N	\N	\N	\N
-7	Nyanza	1	12	13	7	\N	\N	\N	\N
-8	Rift Valley	1	14	15	8	\N	\N	\N	\N
-28	East Butsotso	25	53	60	3	\N	\N	\N	\N
-10	Bungoma	9	17	18	1	\N	\N	\N	\N
-13	Butere	9	75	76	4	\N	\N	\N	\N
-14	Lugari	9	77	78	5	\N	\N	\N	\N
-11	Busia	9	19	20	2	\N	\N	\N	\N
-22	Shinyalu	12	30	31	5	\N	\N	\N	\N
-15	Teso	9	79	80	6	\N	\N	\N	\N
-16	Vihiga	9	81	82	7	\N	\N	\N	\N
-38	Indangalasia	28	58	59	9	\N	\N	\N	\N
-17	Mount Elgon	9	83	84	8	\N	\N	\N	\N
-12	Kakamega	9	21	74	3	\N	\N	\N	\N
-1	Kenya	\N	1	86	\N	\N	\N	\N	\N
-9	Western	1	16	85	9	\N	\N	\N	\N
-25	Lurambi	12	36	73	8	\N	\N	\N	\N
-29	North Butsotso	25	61	72	4	\N	\N	\N	\N
-34	Eshisuru	27	48	49	5	\N	\N	\N	\N
-30	Matioli	26	38	39	1	\N	\N	\N	\N
-23	Malava	12	32	33	6	\N	\N	\N	\N
-43	Mathia	29	70	71	14	\N	\N	\N	\N
-26	South Butsotso	25	37	42	1	\N	\N	\N	\N
-24	Mumias	12	34	35	7	\N	\N	\N	\N
-18	Butere	12	22	23	1	\N	\N	\N	\N
-39	Esumeyia	29	62	63	10	\N	\N	\N	\N
-27	Central Butsotso	25	43	52	2	\N	\N	\N	\N
-35	Shiyunzu	27	50	51	6	\N	\N	\N	\N
-31	Emukaya	26	40	41	2	\N	\N	\N	\N
-19	Ikolomani	12	24	25	2	\N	\N	\N	\N
-40	Shikomari	29	64	65	11	\N	\N	\N	\N
-20	Khwisero	12	26	27	3	\N	\N	\N	\N
-36	Murumba	28	54	55	7	\N	\N	\N	\N
-21	Lugari	12	28	29	4	\N	\N	\N	\N
-32	Shiveye	27	44	45	3	\N	\N	\N	\N
-41	Shinoyi	29	66	67	12	\N	\N	\N	\N
-37	Shirakalu	28	56	57	8	\N	\N	\N	\N
-42	Ingotse	29	68	69	13	\N	\N	\N	\N
-\.
-
-
---
--- Data for Name: marital_statuses; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY marital_statuses (id, name, description, comment) FROM stdin;
-0	Single/Never married	\N	\N
-1	Married, monogamous	\N	\N
-2	Married, polygamous	\N	\N
-3	Cohabiting	\N	\N
-4	Divorced/Separated	\N	\N
-5	Widowed	\N	\N
-\.
-
-
---
--- Data for Name: occupations; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY occupations (id, name, description, comment) FROM stdin;
-0	None	\N	\N
-1	Unskilled	\N	\N
-2	Skilled	\N	\N
-3	Professional	\N	\N
-4	Student	\N	\N
-\.
-
-
---
--- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site) FROM stdin;
-\.
-
-
---
--- Data for Name: vf_testing_sites; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longitude) FROM stdin;
-1	Ebukulima	Salvation Army	30	0.19305	34.61363
-2	Mwiyenga	Church	30	0.20582	34.63413
-3	Ekapwonje	Church	31	0.21640	34.61413
-4	Shianda	Church	31	0.23147	34.62008
-5	Sumba	Dispensary	32	0.24218	34.63955
-6	Shirembe	Dispensary	32	0.25447	34.62112
-7	Ematsayi	School	32	0.27548	34.62123
-8	Eshikuyu	Health Centre	33	0.26477	34.65590
-9	Ibinzo	School	33	0.25660	34.68793
-10	Eshisiru	District Office	34	0.28160	34.67340
-11	Emusanda	Dispensary	34	0.29325	34.64760
-12	Ikonyero	Church	35	0.28343	34.72247
-13	Eshiyunzu	Church	35	0.29087	34.70355
-14	Murumba	Dispensary	36	0.30315	34.72610
-15	Shikoti	Church	36	0.31788	34.73593
-16	Emukoyani	Church	37	0.32135	34.74947
-17	Elukho	Church	37	0.32290	34.75647
-18	Emusala	Church	38	0.32965	34.78048
-19	Emukaba	Church	38	0.34425	34.76343
-20	Bushibo	Church	39	0.30810	34.68608
-21	Emukaya	Health Centre	39	0.31850	34.70267
-22	Esumeyia	Church	39	0.31972	34.68102
-23	Shikomari	Church	40	0.32085	34.64448
-24	Gospel Spring	Church	40	0.33845	34.65478
-25	Shinoyi	Church	41	0.34402	34.66500
-26	Naluchira	Church	41	0.34895	34.69418
-27	Ingotse	Health Centre	42	0.35545	34.69788
-28	Bushiri	Church	42	0.36500	34.72917
-\.
 
 
 --
@@ -546,6 +535,30 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_vfcc_key UNIQUE (vfcc);
+
+
+--
+-- Name: result_lookups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY result_lookups
+    ADD CONSTRAINT result_lookups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY results
+    ADD CONSTRAINT results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
 
 
 --
