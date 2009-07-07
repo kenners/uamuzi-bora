@@ -14,7 +14,8 @@ class Patient extends AppModel {
 		'occupation' => array('className' => 'Occupation'),
 		'education' => array('className' => 'Education'),
 		'marital_status' => array('className' => 'MaritalStatus'),
-		'location' => array('className' => 'Location')
+		'location' => array('className' => 'Location'),
+		'vf_testing_site' => array('className' => 'VfTestingSite')
 	);
 	
 	/**
@@ -130,6 +131,12 @@ class Patient extends AppModel {
 			'int' => array(
 				'rule' => array('decimal', 0),
 				'message' => 'location_id must be an integer'
+			)
+		),
+		'vf_testing_site' => array(
+			'int' => array(
+				'rule' => array('decimal', 0),
+				'message' => 'vf_testing_site must be an integer'
 			)
 		)
 	);

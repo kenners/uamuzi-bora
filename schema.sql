@@ -10,10 +10,14 @@ SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
+ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_location_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vf_testing_site_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
+ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
+ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_pkey;
@@ -25,14 +29,17 @@ ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_name_k
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
+ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.vf_testing_sites_site_code_seq;
 DROP SEQUENCE public.occupations_id_seq;
 DROP SEQUENCE public.marital_statuses_id_seq;
 DROP SEQUENCE public.locations_id_seq;
 DROP SEQUENCE public.educations_id_seq;
+DROP TABLE public.vf_testing_sites;
 DROP TABLE public.patients;
 DROP TABLE public.occupations;
 DROP TABLE public.marital_statuses;
@@ -139,7 +146,22 @@ CREATE TABLE patients (
     nearest_church character varying,
     nearest_school character varying,
     nearest_health_centre character varying,
-    nearest_major_landmark character varying
+    nearest_major_landmark character varying,
+    vf_testing_site integer
+);
+
+
+--
+-- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vf_testing_sites (
+    site_code integer NOT NULL,
+    site_name character varying NOT NULL,
+    type character varying NOT NULL,
+    location_id integer NOT NULL,
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL
 );
 
 
@@ -244,6 +266,32 @@ SELECT pg_catalog.setval('occupations_id_seq', 4, true);
 
 
 --
+-- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE vf_testing_sites_site_code_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE vf_testing_sites_site_code_seq OWNED BY vf_testing_sites.site_code;
+
+
+--
+-- Name: vf_testing_sites_site_code_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 1, false);
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -269,6 +317,13 @@ ALTER TABLE marital_statuses ALTER COLUMN id SET DEFAULT nextval('marital_status
 --
 
 ALTER TABLE occupations ALTER COLUMN id SET DEFAULT nextval('occupations_id_seq'::regclass);
+
+
+--
+-- Name: site_code; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_testing_sites_site_code_seq'::regclass);
 
 
 --
@@ -365,7 +420,15 @@ COPY occupations (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark) FROM stdin;
+COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site) FROM stdin;
+\.
+
+
+--
+-- Data for Name: vf_testing_sites; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longitude) FROM stdin;
 \.
 
 
@@ -458,6 +521,22 @@ ALTER TABLE ONLY patients
 
 
 --
+-- Name: vf_testing_sites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vf_testing_sites
+    ADD CONSTRAINT vf_testing_sites_pkey PRIMARY KEY (site_code);
+
+
+--
+-- Name: vf_testing_sites_site_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY vf_testing_sites
+    ADD CONSTRAINT vf_testing_sites_site_name_key UNIQUE (site_name);
+
+
+--
 -- Name: patients_education_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -487,6 +566,22 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_occupation_id_fkey FOREIGN KEY (occupation_id) REFERENCES occupations(id);
+
+
+--
+-- Name: patients_vf_testing_site_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_vf_testing_site_fkey FOREIGN KEY (vf_testing_site) REFERENCES vf_testing_sites(site_code);
+
+
+--
+-- Name: vf_testing_sites_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vf_testing_sites
+    ADD CONSTRAINT vf_testing_sites_location_id_fkey FOREIGN KEY (location_id) REFERENCES locations(id);
 
 
 --
