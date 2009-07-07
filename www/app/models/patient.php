@@ -126,6 +126,10 @@ class Patient extends AppModel {
 				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
 				'message' => 'The location_id should be a positive integer'
+			),
+			'valid location_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'Location', 'id'),
+				'message' => 'This is not a valid location_id'
 			)
 		),
 		'vf_testing_site' => array(

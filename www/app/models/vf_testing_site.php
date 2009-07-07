@@ -63,6 +63,10 @@ class VfTestingSite extends AppModel {
 			'not null' => array(
 				'rule' => 'notEmpty',
 				'message' => 'This field must not be left empty'
+			),
+			'valid location_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'Location', 'id'),
+				'message' => 'This is not a valid location_id'
 			)
 		),
 		'latitude' => array(
