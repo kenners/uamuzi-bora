@@ -20,7 +20,11 @@ class Patient extends AppModel {
 		'education' => array('className' => 'Education'),
 		'marital_status' => array('className' => 'MaritalStatus'),
 		'location' => array('className' => 'Location'),
-		'vf_testing_site' => array('className' => 'VfTestingSite')
+		'vf_testing_site' => array(
+			'className' => 'VfTestingSite',
+			'foreignKey' => FALSE,
+			'conditions' => array('Patient.vf_testing_site' => 'Location.id')
+		)
 	);
 	
 	/**
