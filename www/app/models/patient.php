@@ -130,12 +130,14 @@ class Patient extends AppModel {
 		'location_id' => array(
 			'int' => array(
 				'rule' => array('decimal', 0),
+				'allowEmpty' => TRUE,
 				'message' => 'location_id must be an integer'
 			)
 		),
 		'vf_testing_site' => array(
 			'int' => array(
 				'rule' => array('decimal', 0),
+				'allowEmpty' => TRUE,
 				'message' => 'vf_testing_site must be an integer'
 			)
 		)
