@@ -46,15 +46,10 @@ class Patient extends AppModel {
 			)
 		),
 		'upn' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The Unique Patient Number should be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'allowEmpty' => TRUE,
-				'message' => 'The Unique Patient Number should be positive'
+				'message' => 'The Unique Patient Number should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
@@ -63,15 +58,10 @@ class Patient extends AppModel {
 			)
 		),
 		'arvid' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The ARV Patient ID should be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'allowEmpty' => TRUE,
-				'message' => 'The ARV Patient ID should be positive'
+				'message' => 'The ARV Patient ID should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
@@ -80,15 +70,10 @@ class Patient extends AppModel {
 			)
 		),
 		'vfcc' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The VF Client Code should be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'allowEmpty' => TRUE,
-				'message' => 'The VF Client Code should be positive'
+				'message' => 'The VF Client Code should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
@@ -116,9 +101,9 @@ class Patient extends AppModel {
 			)
 		),
 		'year_of_birth' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
-				'message' => 'This is not a well-formatted year'
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'message' => 'The year of birth should be a positive integer'
 			),
 			'not in the future' => array(
 				'rule' => array('customValidationFunction', 'isNotFutureYear'),
@@ -137,17 +122,17 @@ class Patient extends AppModel {
 			)
 		),
 		'location_id' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'location_id must be an integer'
+				'message' => 'The location_id should be a positive integer'
 			)
 		),
 		'vf_testing_site' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'vf_testing_site must be an integer'
+				'message' => 'The vf_testing_site should be a positive integer'
 			)
 		)
 	);

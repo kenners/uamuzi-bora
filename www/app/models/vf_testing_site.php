@@ -26,13 +26,9 @@ class VfTestingSite extends AppModel {
 	 */
 	var $validate = array(
 		'site_code' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
-				'message' => 'The VF site code must be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'message' => 'The VF site code must be positive'
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'message' => 'The VF site code should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
@@ -60,9 +56,9 @@ class VfTestingSite extends AppModel {
 			)
 		),
 		'location_id' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
-				'message' => 'The location_id must be an integer'
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'message' => 'The location_id should be a positive integer'
 			),
 			'not null' => array(
 				'rule' => 'notEmpty',

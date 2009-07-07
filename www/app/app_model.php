@@ -88,7 +88,7 @@ class AppModel extends Model {
 	 *
 	 * Note that this is for models using the Tree behaviour.
 	 */
-	function isUniqueFieldAmongstPeers($value, $field, $parent_id = FALSE) {
+	function isUniqueNodeAmongstPeers($value, $field, $parent_id = FALSE) {
 		// What is the current model?
 		$model = array_keys($this->data);
 		$model = $model[0];
@@ -117,20 +117,36 @@ class AppModel extends Model {
 	}
 	
 	/**
-	 * Custom validation function that returns TRUE if $parent_id exists in
-	 * the column 'id'.
+	 * Custom validation function that returns TRUE if $value exists in the 
+	 * column $column ('id' by default).  If $model is set, then it uses
+	 * $this->$model->find(), otherwise it uses $this->find().
 	 */
-	function isValidParentId($id) {
-		// Check $id is of the correct type
-		if (!is_null($id) && !preg_match('/^\d+$/', $id)) {
-			return FALSE;
+	function valueExists($value, $model = NULL, $column = 'id') {
+		// Set the conditions
+		$conditions = array($column => $value);
+
+		// Set $count, the number of rows with $value in $column, calling
+		// ClassRegistry to access the model if necessary
+		if (!is_null($model)) {
+			$this->$model =& ClassRegistry::init($model);
+			$count = $this->$model->find('count', array('conditions' => $conditions));
+		} else {
+			$count = $this->find('count', array('conditions' => $conditions));
 		}
 		
-		// Set $count, the number of rows with this id
-		$conditions = array('id' => $id);
-		$count = $this->find('count', array('conditions' => $conditions));
-		
-		return $count == 1;
+		// If $count is at least 1, then return TRUE
+		return $count >= 1;
+	}
+	
+	/**
+	 * Custom validation function that returns TRUE if $value is composed of
+	 * only digits (i.e it is a positive integer or 0).
+	 *
+	 * This is actually the equivalent of preg_match('/^\d+$/', $value) but is
+	 * processed significantly faster
+	 */
+	function isPositiveInteger($value) {
+		return (ctype_digit($value) || (is_int($value) && $value >= 0));
 	}
 }
 
@@ -145,15 +161,10 @@ class LookupTableModel extends AppModel {
 	 */
 	var $validate = array(
 		'id' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The ID should be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'allowEmpty' => TRUE,
-				'message' => 'The ID should be positive'
+				'message' => 'The ID should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
