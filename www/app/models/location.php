@@ -29,15 +29,10 @@ class Location extends AppModel {
 	 */
 	var $validate = array(
 		'id' => array(
-			'int' => array(
-				'rule' => array('decimal', 0),
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The ID must be an integer'
-			),
-			'positive' => array(
-				'rule' => array('comparison', 'greater or equal', 0),
-				'allowEmpty' => TRUE,
-				'message' => 'The ID should be positive'
+				'message' => 'The ID should be a positive integer'
 			),
 			'unique' => array(
 				'rule' => 'isUnique',
@@ -51,20 +46,25 @@ class Location extends AppModel {
 				'message' => 'This field must not be left empty',
 			),
 			'unique node' => array(
-				'rule' => array('customValidationFunction', 'isUniqueFieldAmongstPeers', 'name'),
+				'rule' => array('customValidationFunction', 'isUniqueNodeAmongstPeers', 'name'),
 				'message' => 'This location already exists'
 			)
 		),
 		'parent_id' => array(
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
+				'message' => 'The parent_id should be a positive integer'
+			),
 			'valid parent_id' => array(
-				'rule' => array('customValidationFunction', 'isValidParentId'),
+				'rule' => array('customValidationFunction', 'valueExists', 'Location', 'id'),
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a valid parent'
 			)
 		),
 		'vf_code' => array(
 			'valid vf_code' => array(
-				'rule' => array('customValidationFunction', 'isUniqueFieldAmongstPeers', 'vf_code'),
+				'rule' => array('customValidationFunction', 'isUniqueNodeAmongstPeers', 'vf_code'),
 				'allowEmpty' => TRUE,
 				'message' => 'This VF code already exists at this level'
 			)
