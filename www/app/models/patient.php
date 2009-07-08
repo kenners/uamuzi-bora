@@ -28,6 +28,19 @@ class Patient extends AppModel {
 	);
 	
 	/**
+	 * Each row here has a one-to-one mapping with a row in the 
+	 * MedicalInformation model
+	 */
+	var $hasOne = array(
+		'medical_information' => array(
+			'className' => 'MedicalInformation',
+			'foreignKey' => FALSE,
+			'conditions' => array('Patient.pid' => 'MedicalInformation.pid'),
+			'dependent' => TRUE
+			)
+		);
+	
+	/**
 	 * Validate save()
 	 */
 	var $validate = array(
