@@ -23,7 +23,7 @@ class Patient extends AppModel {
 		'vf_testing_site' => array(
 			'className' => 'VfTestingSite',
 			'foreignKey' => FALSE,
-			'conditions' => array('Patient.vf_testing_site' => 'Location.id')
+			'conditions' => array('Patient.vf_testing_site = vf_testing_site.site_code')
 		)
 	);
 	
@@ -35,7 +35,7 @@ class Patient extends AppModel {
 		'medical_information' => array(
 			'className' => 'MedicalInformation',
 			'foreignKey' => FALSE,
-			'conditions' => array('Patient.pid' => 'MedicalInformation.pid'),
+			'conditions' => array('Patient.pid = medical_information.pid'),
 			'dependent' => TRUE
 			)
 		);
