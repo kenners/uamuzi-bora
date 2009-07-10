@@ -2,6 +2,7 @@
 <h2><?php __('Results');?></h2>
 <p>
 <?php
+      
 echo $paginator->counter(array(
 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
@@ -21,6 +22,7 @@ echo $paginator->counter(array(
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
+
 $i = 0;
 foreach ($results as $result):
 	$class = null;

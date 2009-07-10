@@ -7,8 +7,8 @@ class ResultLookup extends appModel{
   
 
   var $belongsTo=array(
-		       //'user'=>array('className'=>'User'),
-		       'test'=>array('className'=>'Test')
+		       'User'=>array('className'=>'User'),
+		       'Test'=>array('className'=>'Test')
 		       );
 
 

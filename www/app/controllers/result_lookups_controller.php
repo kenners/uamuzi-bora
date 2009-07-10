@@ -37,6 +37,7 @@ class ResultLookupsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
+		  
 			if ($this->ResultLookup->save($this->data)) {
 				$this->Session->setFlash(__('The ResultLookup has been saved', true));
 				$this->redirect(array('action'=>'index'));

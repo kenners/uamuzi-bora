@@ -16,89 +16,64 @@ ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_transfer_in_district_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_pid_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_patient_source_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_inactive_reason_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_hiv_positive_test_location_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_funding_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_starting_regimen_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_service_type_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_indication_id_fkey;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_pkey;
 ALTER TABLE ONLY public.results DROP CONSTRAINT results_pkey;
 ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_pkey;
-ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_pkey;
-ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_name_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_pkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_arvid_key;
-ALTER TABLE ONLY public.patient_sources DROP CONSTRAINT patient_sources_pkey;
-ALTER TABLE ONLY public.patient_sources DROP CONSTRAINT patient_sources_name_key;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_pkey;
 ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_name_key;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_pkey;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_pkey;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_name_key;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
-ALTER TABLE ONLY public.inactive_reasons DROP CONSTRAINT inactive_reasons_pkey;
-ALTER TABLE ONLY public.inactive_reasons DROP CONSTRAINT inactive_reasons_name_key;
-ALTER TABLE ONLY public.fundings DROP CONSTRAINT fundings_pkey;
-ALTER TABLE ONLY public.fundings DROP CONSTRAINT fundings_name_key;
+ALTER TABLE ONLY public.groups DROP CONSTRAINT groups_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
-ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_pkey;
-ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_name_key;
-ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_pkey;
-ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_name_key;
+ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
+ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.results ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.result_lookups ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.regimens ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.patient_sources ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.inactive_reasons ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.fundings ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.groups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.art_service_types ALTER COLUMN id DROP DEFAULT;
-ALTER TABLE public.art_indications ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros_acos ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.acos ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
+DROP TABLE public.vf_testing_sites;
+DROP SEQUENCE public.users_id_seq;
+DROP TABLE public.users;
 DROP SEQUENCE public.tests_tid_seq;
 DROP SEQUENCE public.tests_id_seq;
-DROP SEQUENCE public.results_id_seq;
-DROP SEQUENCE public.result_lookups_id_seq;
-DROP SEQUENCE public.regimens_id_seq;
-DROP SEQUENCE public.patient_sources_id_seq;
-DROP SEQUENCE public.occupations_id_seq;
-DROP SEQUENCE public.marital_statuses_id_seq;
-DROP SEQUENCE public.locations_id_seq;
-DROP SEQUENCE public.inactive_reasons_id_seq;
-DROP SEQUENCE public.fundings_id_seq;
-DROP SEQUENCE public.educations_id_seq;
-DROP SEQUENCE public.art_service_types_id_seq;
-DROP SEQUENCE public.art_indications_id_seq;
-DROP TABLE public.vf_testing_sites;
 DROP TABLE public.tests;
+DROP SEQUENCE public.results_id_seq;
 DROP TABLE public.results;
+DROP SEQUENCE public.result_lookups_id_seq;
 DROP TABLE public.result_lookups;
-DROP TABLE public.regimens;
 DROP TABLE public.patients;
-DROP TABLE public.patient_sources;
+DROP SEQUENCE public.occupations_id_seq;
 DROP TABLE public.occupations;
-DROP TABLE public.medical_informations;
+DROP SEQUENCE public.marital_statuses_id_seq;
 DROP TABLE public.marital_statuses;
+DROP SEQUENCE public.locations_id_seq;
 DROP TABLE public.locations;
-DROP TABLE public.inactive_reasons;
-DROP TABLE public.fundings;
+DROP SEQUENCE public.groups_id_seq;
+DROP TABLE public.groups;
+DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.educations;
-DROP TABLE public.art_service_types;
-DROP TABLE public.art_indications;
+DROP SEQUENCE public.archive_results_id_seq;
+DROP TABLE public.archive_results;
+DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
@@ -114,35 +89,65 @@ CREATE SCHEMA public;
 COMMENT ON SCHEMA public IS 'standard public schema';
 
 
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+
 --
--- Name: art_indications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-CREATE TABLE art_indications (
+SELECT pg_catalog.setval('acos_id_seq', 42, true);
+
+
+--
+-- Name: archive_results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_results (
     id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_id integer NOT NULL,
+    archive_pid integer NOT NULL,
+    archive_test_id integer NOT NULL,
+    archive_value_decimal double precision,
+    archive_value_text character varying,
+    archive_value_lookup character varying,
+    archive_test_performed timestamp without time zone,
+    archive_created timestamp without time zone,
+    archive_requesting_clinician character varying,
+    archive_user_id integer NOT NULL
 );
 
 
 --
--- Name: art_service_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: archive_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE TABLE art_service_types (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
+CREATE SEQUENCE archive_results_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
 
+
+--
+-- Name: archive_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_results_id_seq OWNED BY archive_results.id;
 
 --
 -- Name: educations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -154,272 +159,6 @@ CREATE TABLE educations (
     description character varying,
     comment character varying
 );
-
-
---
--- Name: fundings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE fundings (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: inactive_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE inactive_reasons (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE locations (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    parent_id integer,
-    tree_left integer,
-    tree_right integer,
-    vf_code integer,
-    longitude double precision,
-    latitude double precision,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: marital_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE marital_statuses (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: medical_informations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE medical_informations (
-    pid integer NOT NULL,
-    status boolean DEFAULT true NOT NULL,
-    inactive_reason_id integer,
-    status_timestamp timestamp without time zone DEFAULT now() NOT NULL,
-    patient_source_id integer,
-    funding_id integer,
-    hiv_positive_date date,
-    hiv_positive_test_location_id integer,
-    hiv_positive_clinic_start_date date,
-    hiv_positive_who_stage integer,
-    art_naive boolean,
-    art_service_type_id integer,
-    art_starting_regimen_id integer,
-    art_start_date date,
-    art_eligibility_date date,
-    art_indication_id integer,
-    transfer_in_date date,
-    transfer_in_district_id integer,
-    trasnfer_in_facility text,
-    transfer_out_date date,
-    transfer_out_event text
-);
-
-
---
--- Name: occupations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE occupations (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: patient_sources; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE patient_sources (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: patients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE patients (
-    pid integer NOT NULL,
-    upn integer,
-    arvid integer,
-    vfcc integer,
-    surname character varying NOT NULL,
-    forenames character varying NOT NULL,
-    date_of_birth date,
-    year_of_birth integer NOT NULL,
-    sex character varying,
-    mother character varying,
-    occupation_id integer,
-    education_id integer,
-    marital_status_id integer,
-    telephone_number character varying,
-    treatment_supporter text,
-    location_id integer,
-    village character varying,
-    home character varying,
-    nearest_church character varying,
-    nearest_school character varying,
-    nearest_health_centre character varying,
-    nearest_major_landmark character varying,
-    vf_testing_site integer
-);
-
-
---
--- Name: regimens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE regimens (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
-    comment character varying
-);
-
-
---
--- Name: result_lookups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE result_lookups (
-    id integer NOT NULL,
-    test_id integer NOT NULL,
-    value character varying NOT NULL,
-    description character varying,
-    comment character varying,
-    user_id integer NOT NULL,
-    modified timestamp without time zone NOT NULL
-);
-
-
---
--- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE results (
-    id integer NOT NULL,
-    pid integer NOT NULL,
-    test_id integer NOT NULL,
-    value_decimal double precision,
-    value_text character varying,
-    value_lookup character varying,
-    test_performed timestamp without time zone,
-    created timestamp without time zone,
-    requesting_clinician character varying,
-    user_id integer NOT NULL
-);
-
-
---
--- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE tests (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    abbreiviation character varying,
-    type character varying NOT NULL,
-    upper_limit double precision,
-    lower_limit double precision,
-    description character varying,
-    comment character varying,
-    active boolean DEFAULT true,
-    user_id integer NOT NULL,
-    modified timestamp without time zone NOT NULL
-);
-
-
---
--- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE vf_testing_sites (
-    site_code integer NOT NULL,
-    site_name character varying NOT NULL,
-    type character varying NOT NULL,
-    location_id integer NOT NULL,
-    latitude double precision,
-    longitude double precision
-);
-
-
---
--- Name: art_indications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE art_indications_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: art_indications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE art_indications_id_seq OWNED BY art_indications.id;
-
-
---
--- Name: art_indications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('art_indications_id_seq', 3, true);
-
-
---
--- Name: art_service_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE art_service_types_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: art_service_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE art_service_types_id_seq OWNED BY art_service_types.id;
-
-
---
--- Name: art_service_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('art_service_types_id_seq', 5, true);
 
 
 --
@@ -448,10 +187,23 @@ SELECT pg_catalog.setval('educations_id_seq', 3, true);
 
 
 --
--- Name: fundings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE SEQUENCE fundings_id_seq
+CREATE TABLE groups (
+    id integer NOT NULL,
+    name character varying,
+    description character varying,
+    created timestamp without time zone,
+    modified timestamp without time zone
+);
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE groups_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -459,42 +211,35 @@ CREATE SEQUENCE fundings_id_seq
 
 
 --
--- Name: fundings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE fundings_id_seq OWNED BY fundings.id;
-
-
---
--- Name: fundings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('fundings_id_seq', 2, true);
+ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 
 
 --
--- Name: inactive_reasons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE inactive_reasons_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+SELECT pg_catalog.setval('groups_id_seq', 2, true);
 
 
 --
--- Name: inactive_reasons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER SEQUENCE inactive_reasons_id_seq OWNED BY inactive_reasons.id;
-
-
---
--- Name: inactive_reasons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('inactive_reasons_id_seq', 7, true);
+CREATE TABLE locations (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    parent_id integer,
+    tree_left integer,
+    tree_right integer,
+    vf_code integer,
+    longitude double precision,
+    latitude double precision,
+    description character varying,
+    comment character varying
+);
 
 
 --
@@ -523,6 +268,18 @@ SELECT pg_catalog.setval('locations_id_seq', 43, true);
 
 
 --
+-- Name: marital_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE marital_statuses (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
 -- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -545,6 +302,18 @@ ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
 --
 
 SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
+
+
+--
+-- Name: occupations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE occupations (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
 
 
 --
@@ -573,54 +342,49 @@ SELECT pg_catalog.setval('occupations_id_seq', 4, true);
 
 
 --
--- Name: patient_sources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: patients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE SEQUENCE patient_sources_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: patient_sources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE patient_sources_id_seq OWNED BY patient_sources.id;
-
-
---
--- Name: patient_sources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('patient_sources_id_seq', 7, true);
-
-
---
--- Name: regimens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE regimens_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+CREATE TABLE patients (
+    pid integer NOT NULL,
+    upn integer,
+    arvid integer,
+    vfcc integer,
+    surname character varying NOT NULL,
+    forenames character varying NOT NULL,
+    date_of_birth date,
+    year_of_birth integer NOT NULL,
+    sex character varying,
+    mother text,
+    occupation_id integer,
+    education_id integer,
+    marital_status_id integer,
+    telephone_number character varying,
+    treatment_supporter text,
+    location_id integer,
+    village character varying,
+    home character varying,
+    nearest_church character varying,
+    nearest_school character varying,
+    nearest_health_centre character varying,
+    nearest_major_landmark character varying,
+    vf_testing_site integer
+);
 
 
 --
--- Name: regimens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: result_lookups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER SEQUENCE regimens_id_seq OWNED BY regimens.id;
-
-
---
--- Name: regimens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('regimens_id_seq', 1, false);
+CREATE TABLE result_lookups (
+    id integer NOT NULL,
+    test_id integer NOT NULL,
+    value character varying NOT NULL,
+    description character varying,
+    comment character varying,
+    user_id integer NOT NULL,
+    modified timestamp without time zone NOT NULL
+);
 
 
 --
@@ -628,7 +392,6 @@ SELECT pg_catalog.setval('regimens_id_seq', 1, false);
 --
 
 CREATE SEQUENCE result_lookups_id_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -646,7 +409,25 @@ ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
 -- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('result_lookups_id_seq', 1, false);
+SELECT pg_catalog.setval('result_lookups_id_seq', 0, true);
+
+
+--
+-- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE results (
+    id integer NOT NULL,
+    pid integer NOT NULL,
+    test_id integer NOT NULL,
+    value_decimal double precision,
+    value_text character varying,
+    value_lookup character varying,
+    test_performed timestamp without time zone,
+    created timestamp without time zone,
+    requesting_clinician character varying,
+    user_id integer NOT NULL
+);
 
 
 --
@@ -654,7 +435,6 @@ SELECT pg_catalog.setval('result_lookups_id_seq', 1, false);
 --
 
 CREATE SEQUENCE results_id_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -672,7 +452,26 @@ ALTER SEQUENCE results_id_seq OWNED BY results.id;
 -- Name: results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('results_id_seq', 1, false);
+SELECT pg_catalog.setval('results_id_seq', 0, true);
+
+
+--
+-- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tests (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    abbreiviation character varying,
+    type character varying NOT NULL,
+    upper_limit double precision,
+    lower_limit double precision,
+    description character varying,
+    comment character varying,
+    active boolean DEFAULT true,
+    user_id integer NOT NULL,
+    modified timestamp without time zone NOT NULL
+);
 
 
 --
@@ -680,7 +479,6 @@ SELECT pg_catalog.setval('results_id_seq', 1, false);
 --
 
 CREATE SEQUENCE tests_id_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -698,7 +496,7 @@ ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
 -- Name: tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tests_id_seq', 1, false);
+SELECT pg_catalog.setval('tests_id_seq', 0, true);
 
 
 --
@@ -706,7 +504,6 @@ SELECT pg_catalog.setval('tests_id_seq', 1, false);
 --
 
 CREATE SEQUENCE tests_tid_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -717,7 +514,61 @@ CREATE SEQUENCE tests_tid_seq
 -- Name: tests_tid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tests_tid_seq', 1, false);
+SELECT pg_catalog.setval('tests_tid_seq', 1, true);
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    username character varying NOT NULL,
+    password character varying NOT NULL,
+    group_id integer NOT NULL,
+    name character varying,
+    created timestamp without time zone,
+    modified timestamp without time zone
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('users_id_seq', 2, true);
+
+
+--
+-- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vf_testing_sites (
+    site_code integer NOT NULL,
+    site_name character varying NOT NULL,
+    type character varying NOT NULL,
+    location_id integer NOT NULL,
+    latitude double precision,
+    longitude double precision
+);
 
 
 --
@@ -745,18 +596,13 @@ ALTER SEQUENCE vf_testing_sites_site_code_seq OWNED BY vf_testing_sites.site_cod
 SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE art_indications ALTER COLUMN id SET DEFAULT nextval('art_indications_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE art_service_types ALTER COLUMN id SET DEFAULT nextval('art_service_types_id_seq'::regclass);
+ALTER TABLE archive_results ALTER COLUMN id SET DEFAULT nextval('archive_results_id_seq'::regclass);
 
 
 --
@@ -770,14 +616,7 @@ ALTER TABLE educations ALTER COLUMN id SET DEFAULT nextval('educations_id_seq'::
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE fundings ALTER COLUMN id SET DEFAULT nextval('fundings_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE inactive_reasons ALTER COLUMN id SET DEFAULT nextval('inactive_reasons_id_seq'::regclass);
+ALTER TABLE groups ALTER COLUMN id SET DEFAULT nextval('groups_id_seq'::regclass);
 
 
 --
@@ -805,20 +644,6 @@ ALTER TABLE occupations ALTER COLUMN id SET DEFAULT nextval('occupations_id_seq'
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE patient_sources ALTER COLUMN id SET DEFAULT nextval('patient_sources_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE regimens ALTER COLUMN id SET DEFAULT nextval('regimens_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE result_lookups ALTER COLUMN id SET DEFAULT nextval('result_lookups_id_seq'::regclass);
 
 
@@ -837,35 +662,18 @@ ALTER TABLE tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
 -- Name: site_code; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_testing_sites_site_code_seq'::regclass);
 
-
---
--- Data for Name: art_indications; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY art_indications (id, name, description, comment) FROM stdin;
-1	WHO Stage/Clinical	\N	\N
-2	TLC	\N	\N
-3	CD4 Count	\N	\N
-\.
-
-
---
--- Data for Name: art_service_types; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY art_service_types (id, name, description, comment) FROM stdin;
-0	Not on ART	\N	\N
-1	ART	\N	\N
-2	PMTCT	\N	\N
-3	PEP (Assualt)	\N	\N
-4	PEP (Occupational)	\N	\N
-5	OI Only	\N	\N
-\.
 
 
 --
@@ -879,31 +687,6 @@ COPY educations (id, name, description, comment) FROM stdin;
 3	Some Post secondary	\N	\N
 \.
 
-
---
--- Data for Name: fundings; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY fundings (id, name, description, comment) FROM stdin;
-1	GOK/NASCOP	\N	\N
-2	USA/PEPFAR	\N	\N
-\.
-
-
---
--- Data for Name: inactive_reasons; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY inactive_reasons (id, name, description, comment) FROM stdin;
-0	None	\N	\N
-1	Deceased	\N	\N
-2	PEP End	\N	\N
-3	PMTCT End	\N	\N
-4	Lost to Follow-up	\N	\N
-5	Transfer Out	\N	\N
-6	Stopped by Physician	\N	\N
-7	Stopped as Duplicate Record	\N	\N
-\.
 
 
 --
@@ -972,14 +755,6 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 
 
 --
--- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY medical_informations (pid, status, inactive_reason_id, status_timestamp, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, trasnfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
-\.
-
-
---
 -- Data for Name: occupations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -993,33 +768,10 @@ COPY occupations (id, name, description, comment) FROM stdin;
 
 
 --
--- Data for Name: patient_sources; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY patient_sources (id, name, description, comment) FROM stdin;
-1	PMTCT	\N	\N
-2	Inpatient	\N	\N
-3	VCT	\N	\N
-4	Child Welfare Clinic	\N	\N
-5	TB OPD	\N	\N
-6	VF	\N	\N
-7	Other	\N	\N
-\.
-
-
---
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site) FROM stdin;
-\.
-
-
---
--- Data for Name: regimens; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY regimens (id, name, description, comment) FROM stdin;
 \.
 
 
@@ -1083,36 +835,14 @@ COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longit
 \.
 
 
---
--- Name: art_indications_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY art_indications
-    ADD CONSTRAINT art_indications_name_key UNIQUE (name);
-
 
 --
--- Name: art_indications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: archive_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY art_indications
-    ADD CONSTRAINT art_indications_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY archive_results
+    ADD CONSTRAINT archive_results_pkey PRIMARY KEY (id);
 
-
---
--- Name: art_service_types_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY art_service_types
-    ADD CONSTRAINT art_service_types_name_key UNIQUE (name);
-
-
---
--- Name: art_service_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY art_service_types
-    ADD CONSTRAINT art_service_types_pkey PRIMARY KEY (id);
 
 
 --
@@ -1132,35 +862,11 @@ ALTER TABLE ONLY educations
 
 
 --
--- Name: fundings_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY fundings
-    ADD CONSTRAINT fundings_name_key UNIQUE (name);
-
-
---
--- Name: fundings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY fundings
-    ADD CONSTRAINT fundings_pkey PRIMARY KEY (id);
-
-
---
--- Name: inactive_reasons_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY inactive_reasons
-    ADD CONSTRAINT inactive_reasons_name_key UNIQUE (name);
-
-
---
--- Name: inactive_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY inactive_reasons
-    ADD CONSTRAINT inactive_reasons_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -1188,14 +894,6 @@ ALTER TABLE ONLY marital_statuses
 
 
 --
--- Name: medical_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_pkey PRIMARY KEY (pid);
-
-
---
 -- Name: occupations_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1209,22 +907,6 @@ ALTER TABLE ONLY occupations
 
 ALTER TABLE ONLY occupations
     ADD CONSTRAINT occupations_pkey PRIMARY KEY (id);
-
-
---
--- Name: patient_sources_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY patient_sources
-    ADD CONSTRAINT patient_sources_name_key UNIQUE (name);
-
-
---
--- Name: patient_sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY patient_sources
-    ADD CONSTRAINT patient_sources_pkey PRIMARY KEY (id);
 
 
 --
@@ -1260,22 +942,6 @@ ALTER TABLE ONLY patients
 
 
 --
--- Name: regimens_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY regimens
-    ADD CONSTRAINT regimens_name_key UNIQUE (name);
-
-
---
--- Name: regimens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY regimens
-    ADD CONSTRAINT regimens_pkey PRIMARY KEY (id);
-
-
---
 -- Name: result_lookups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1300,6 +966,14 @@ ALTER TABLE ONLY tests
 
 
 --
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: vf_testing_sites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1313,78 +987,6 @@ ALTER TABLE ONLY vf_testing_sites
 
 ALTER TABLE ONLY vf_testing_sites
     ADD CONSTRAINT vf_testing_sites_site_name_key UNIQUE (site_name);
-
-
---
--- Name: medical_informations_art_indication_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_art_indication_id_fkey FOREIGN KEY (art_indication_id) REFERENCES art_indications(id);
-
-
---
--- Name: medical_informations_art_service_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_art_service_type_id_fkey FOREIGN KEY (art_service_type_id) REFERENCES art_service_types(id);
-
-
---
--- Name: medical_informations_art_starting_regimen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_art_starting_regimen_id_fkey FOREIGN KEY (art_starting_regimen_id) REFERENCES regimens(id);
-
-
---
--- Name: medical_informations_funding_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_funding_id_fkey FOREIGN KEY (funding_id) REFERENCES fundings(id);
-
-
---
--- Name: medical_informations_hiv_positive_test_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_hiv_positive_test_location_id_fkey FOREIGN KEY (hiv_positive_test_location_id) REFERENCES locations(id);
-
-
---
--- Name: medical_informations_inactive_reason_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_inactive_reason_id_fkey FOREIGN KEY (inactive_reason_id) REFERENCES inactive_reasons(id);
-
-
---
--- Name: medical_informations_patient_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_patient_source_id_fkey FOREIGN KEY (patient_source_id) REFERENCES patient_sources(id);
-
-
---
--- Name: medical_informations_pid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_pid_fkey FOREIGN KEY (pid) REFERENCES patients(pid);
-
-
---
--- Name: medical_informations_transfer_in_district_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_transfer_in_district_id_fkey FOREIGN KEY (transfer_in_district_id) REFERENCES locations(id);
 
 
 --

@@ -10,8 +10,8 @@ class Test extends appModel{
    *Validation
    */
   var $hasMany=array(
-		 'result'=>array('classname'=>'Result'),
-		 'result_lookup'=>array('className'=>'ResultLookup')
+		 'Result'=>array('classname'=>'Result'),
+		 'ResultLookup'=>array('className'=>'ResultLookup')
 		 );
    
 
