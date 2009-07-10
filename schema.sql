@@ -16,8 +16,10 @@ ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
+DROP INDEX public.aro_aco_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_pkey;
 ALTER TABLE ONLY public.results DROP CONSTRAINT results_pkey;
 ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_pkey;
@@ -30,34 +32,58 @@ ALTER TABLE ONLY public.occupations DROP CONSTRAINT occupations_name_key;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_pkey;
 ALTER TABLE ONLY public.marital_statuses DROP CONSTRAINT marital_statuses_name_key;
 ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
+ALTER TABLE ONLY public.groups DROP CONSTRAINT groups_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
+ALTER TABLE ONLY public.aros DROP CONSTRAINT aros_pkey;
+ALTER TABLE ONLY public.aros_acos DROP CONSTRAINT aros_acos_pkey;
+ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
+ALTER TABLE ONLY public.acos DROP CONSTRAINT acos_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
+ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.results ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.occupations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.marital_statuses ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.locations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.groups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros_acos ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.acos ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
+DROP TABLE public.vf_testing_sites;
+DROP SEQUENCE public.users_id_seq;
+DROP TABLE public.users;
 DROP SEQUENCE public.tests_tid_seq;
 DROP SEQUENCE public.tests_id_seq;
-DROP SEQUENCE public.results_id_seq;
-DROP SEQUENCE public.result_lookups_id_seq;
-DROP SEQUENCE public.occupations_id_seq;
-DROP SEQUENCE public.marital_statuses_id_seq;
-DROP SEQUENCE public.locations_id_seq;
-DROP SEQUENCE public.educations_id_seq;
-DROP TABLE public.vf_testing_sites;
 DROP TABLE public.tests;
+DROP SEQUENCE public.results_id_seq;
 DROP TABLE public.results;
+DROP SEQUENCE public.result_lookups_id_seq;
 DROP TABLE public.result_lookups;
 DROP TABLE public.patients;
+DROP SEQUENCE public.occupations_id_seq;
 DROP TABLE public.occupations;
+DROP SEQUENCE public.marital_statuses_id_seq;
 DROP TABLE public.marital_statuses;
+DROP SEQUENCE public.locations_id_seq;
 DROP TABLE public.locations;
+DROP SEQUENCE public.groups_id_seq;
+DROP TABLE public.groups;
+DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.educations;
+DROP SEQUENCE public.aros_id_seq;
+DROP SEQUENCE public.aros_acos_id_seq;
+DROP TABLE public.aros_acos;
+DROP TABLE public.aros;
+DROP SEQUENCE public.archive_results_id_seq;
+DROP TABLE public.archive_results;
+DROP SEQUENCE public.acos_id_seq;
+DROP TABLE public.acos;
+DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
@@ -73,11 +99,58 @@ CREATE SCHEMA public;
 COMMENT ON SCHEMA public IS 'standard public schema';
 
 
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+
+--
+-- Name: archive_results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_results (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_id integer NOT NULL,
+    archive_pid integer NOT NULL,
+    archive_test_id integer NOT NULL,
+    archive_value_decimal double precision,
+    archive_value_text character varying,
+    archive_value_lookup character varying,
+    archive_test_performed timestamp without time zone,
+    archive_created timestamp without time zone,
+    archive_requesting_clinician character varying,
+    archive_user_id integer NOT NULL
+);
+
+
+--
+-- Name: archive_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_results_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_results_id_seq OWNED BY archive_results.id;
 
 --
 -- Name: educations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -89,6 +162,69 @@ CREATE TABLE educations (
     description character varying,
     comment character varying
 );
+
+
+--
+-- Name: educations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE educations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: educations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE educations_id_seq OWNED BY educations.id;
+
+
+--
+-- Name: educations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('educations_id_seq', 3, true);
+
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE groups (
+    id integer NOT NULL,
+    name character varying,
+    description character varying,
+    created timestamp without time zone,
+    modified timestamp without time zone
+);
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE groups_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('groups_id_seq', 2, true);
 
 
 --
@@ -110,6 +246,31 @@ CREATE TABLE locations (
 
 
 --
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE locations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('locations_id_seq', 43, true);
+
+
+--
 -- Name: marital_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -122,6 +283,31 @@ CREATE TABLE marital_statuses (
 
 
 --
+-- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE marital_statuses_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: marital_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
+
+
+--
+-- Name: marital_statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
+
+
+--
 -- Name: occupations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -131,6 +317,31 @@ CREATE TABLE occupations (
     description character varying,
     comment character varying
 );
+
+
+--
+-- Name: occupations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE occupations_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: occupations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE occupations_id_seq OWNED BY occupations.id;
+
+
+--
+-- Name: occupations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('occupations_id_seq', 4, true);
 
 
 --
@@ -180,6 +391,31 @@ CREATE TABLE result_lookups (
 
 
 --
+-- Name: result_lookups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE result_lookups_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: result_lookups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
+
+
+--
+-- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('result_lookups_id_seq', 1, true);
+
+
+--
 -- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -195,6 +431,25 @@ CREATE TABLE results (
     requesting_clinician character varying,
     user_id integer NOT NULL
 );
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE results_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE results_id_seq OWNED BY results.id;
+
 
 
 --
@@ -217,177 +472,10 @@ CREATE TABLE tests (
 
 
 --
--- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE vf_testing_sites (
-    site_code integer NOT NULL,
-    site_name character varying NOT NULL,
-    type character varying NOT NULL,
-    location_id integer NOT NULL,
-    latitude double precision,
-    longitude double precision
-);
-
-
---
--- Name: educations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE educations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: educations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE educations_id_seq OWNED BY educations.id;
-
-
---
--- Name: educations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('educations_id_seq', 3, true);
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE locations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE locations_id_seq OWNED BY locations.id;
-
-
---
--- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('locations_id_seq', 43, true);
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE marital_statuses_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE marital_statuses_id_seq OWNED BY marital_statuses.id;
-
-
---
--- Name: marital_statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE occupations_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE occupations_id_seq OWNED BY occupations.id;
-
-
---
--- Name: occupations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('occupations_id_seq', 4, true);
-
-
---
--- Name: result_lookups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE result_lookups_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: result_lookups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
-
-
---
--- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('result_lookups_id_seq', 1, false);
-
-
---
--- Name: results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE results_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE results_id_seq OWNED BY results.id;
-
-
---
--- Name: results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('results_id_seq', 1, false);
-
-
---
 -- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tests_id_seq
-    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -401,11 +489,6 @@ CREATE SEQUENCE tests_id_seq
 ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
 
 
---
--- Name: tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('tests_id_seq', 1, false);
 
 
 --
@@ -413,7 +496,33 @@ SELECT pg_catalog.setval('tests_id_seq', 1, false);
 --
 
 CREATE SEQUENCE tests_tid_seq
-    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    username character varying NOT NULL,
+    password character varying NOT NULL,
+    group_id integer NOT NULL,
+    name character varying,
+    created timestamp without time zone,
+    modified timestamp without time zone
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -421,10 +530,31 @@ CREATE SEQUENCE tests_tid_seq
 
 
 --
--- Name: tests_tid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tests_tid_seq', 1, false);
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('users_id_seq', 2, true);
+
+
+--
+-- Name: vf_testing_sites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE vf_testing_sites (
+    site_code integer NOT NULL,
+    site_name character varying NOT NULL,
+    type character varying NOT NULL,
+    location_id integer NOT NULL,
+    latitude double precision,
+    longitude double precision
+);
 
 
 --
@@ -452,11 +582,31 @@ ALTER SEQUENCE vf_testing_sites_site_code_seq OWNED BY vf_testing_sites.site_cod
 SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 
 
+
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_results ALTER COLUMN id SET DEFAULT nextval('archive_results_id_seq'::regclass);
+
+
+
+
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE educations ALTER COLUMN id SET DEFAULT nextval('educations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE groups ALTER COLUMN id SET DEFAULT nextval('groups_id_seq'::regclass);
 
 
 --
@@ -502,10 +652,18 @@ ALTER TABLE tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
 -- Name: site_code; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_testing_sites_site_code_seq'::regclass);
+
 
 
 --
@@ -518,6 +676,7 @@ COPY educations (id, name, description, comment) FROM stdin;
 2	Some secondary	\N	\N
 3	Some Post secondary	\N	\N
 \.
+
 
 
 --
@@ -631,6 +790,16 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 
 
 --
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY users (id, username, password, group_id, name, created, modified) FROM stdin;
+1	admin	aa50ebeb6ecacbc15ef22ca164b7342db76e725bfefcc1d01086d0dcc343e247	1		2009-07-10 21:35:38	2009-07-10 21:35:38
+2	user	fbcc1b48abce87fff7c6c18821157c00f80ce2707d7859daaf49efb4a2bbf218	2		2009-07-10 21:35:59	2009-07-10 21:35:59
+\.
+
+
+--
 -- Data for Name: vf_testing_sites; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -666,6 +835,16 @@ COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longit
 \.
 
 
+
+--
+-- Name: archive_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_results
+    ADD CONSTRAINT archive_results_pkey PRIMARY KEY (id);
+
+
+
 --
 -- Name: educations_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
@@ -680,6 +859,14 @@ ALTER TABLE ONLY educations
 
 ALTER TABLE ONLY educations
     ADD CONSTRAINT educations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -779,6 +966,14 @@ ALTER TABLE ONLY tests
 
 
 --
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: vf_testing_sites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -792,6 +987,13 @@ ALTER TABLE ONLY vf_testing_sites
 
 ALTER TABLE ONLY vf_testing_sites
     ADD CONSTRAINT vf_testing_sites_site_name_key UNIQUE (site_name);
+
+
+--
+-- Name: aro_aco_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX aro_aco_key ON aros_acos USING btree (aro_id, aco_id);
 
 
 --

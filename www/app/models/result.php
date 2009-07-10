@@ -9,7 +9,7 @@ class Result extends AppModel {
   
 
   var $belongsTo=array(
-		   'test'=>array('className'=>'Test'),
+		   'Test'=>array('className'=>'Test'),
 		   //'patient'=>array('className'=>'Patient'),
 		   //'user'=>array('className'=>'User')
 		   );
