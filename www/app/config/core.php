@@ -148,7 +148,7 @@
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qyJfIxfsdfjk3298bkjfkjasdiuweakasjbkdDHJSvs');
+	Configure::write('Security.salt', '4bff239b0571de350a3d28be80a7433ebaafe07b');
 /**
  * Compress CSS output by removing comments, whitespace, repeating tags, etc.
  * This requires a/var/cache directory to be writable by the web server for caching.
