@@ -85,5 +85,3 @@ class Test extends appModel{
        
 }
 ?>
-			
-							
