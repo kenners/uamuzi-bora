@@ -277,7 +277,7 @@ CREATE TABLE patients (
     date_of_birth date,
     year_of_birth integer NOT NULL,
     sex character varying,
-    mother text,
+    mother character varying,
     occupation_id integer,
     education_id integer,
     marital_status_id integer,
