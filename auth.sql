@@ -28,6 +28,6 @@ COPY groups (id, name, description, created, modified) FROM stdin;
 --
 
 COPY users (id, username, password, group_id, name, created, modified) FROM stdin;
-1	admin	aa50ebeb6ecacbc15ef22ca164b7342db76e725bfefcc1d01086d0dcc343e247	1		2009-07-10 21:35:38	2009-07-10 21:35:38
-2	user	fbcc1b48abce87fff7c6c18821157c00f80ce2707d7859daaf49efb4a2bbf218	2		2009-07-10 21:35:59	2009-07-10 21:35:59
+1	admin	82bf611c53901f13c54e59f032a4d4714168c505075f7010d05ff2d8062a8c9e	1		2009-07-10 21:35:38	2009-07-10 21:35:38
+2	user	89ef4f9d082dad635f13d9aab392a2ce41f47dbfd28d783e023ccfd5213a1a67	2		2009-07-10 21:35:59	2009-07-10 21:35:59
 \.
