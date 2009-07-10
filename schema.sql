@@ -16,7 +16,6 @@ ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
-DROP INDEX public.aro_aco_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
@@ -35,10 +34,7 @@ ALTER TABLE ONLY public.locations DROP CONSTRAINT locations_pkey;
 ALTER TABLE ONLY public.groups DROP CONSTRAINT groups_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
-ALTER TABLE ONLY public.aros DROP CONSTRAINT aros_pkey;
-ALTER TABLE ONLY public.aros_acos DROP CONSTRAINT aros_acos_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
-ALTER TABLE ONLY public.acos DROP CONSTRAINT acos_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
@@ -75,14 +71,8 @@ DROP SEQUENCE public.groups_id_seq;
 DROP TABLE public.groups;
 DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.educations;
-DROP SEQUENCE public.aros_id_seq;
-DROP SEQUENCE public.aros_acos_id_seq;
-DROP TABLE public.aros_acos;
-DROP TABLE public.aros;
 DROP SEQUENCE public.archive_results_id_seq;
 DROP TABLE public.archive_results;
-DROP SEQUENCE public.acos_id_seq;
-DROP TABLE public.acos;
 DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
@@ -111,6 +101,13 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+
+--
+-- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('acos_id_seq', 42, true);
 
 
 --
@@ -412,7 +409,7 @@ ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
 -- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('result_lookups_id_seq', 1, true);
+SELECT pg_catalog.setval('result_lookups_id_seq', 0, true);
 
 
 --
@@ -450,6 +447,12 @@ CREATE SEQUENCE results_id_seq
 
 ALTER SEQUENCE results_id_seq OWNED BY results.id;
 
+
+--
+-- Name: results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('results_id_seq', 0, true);
 
 
 --
@@ -489,6 +492,11 @@ CREATE SEQUENCE tests_id_seq
 ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
 
 
+--
+-- Name: tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('tests_id_seq', 0, true);
 
 
 --
@@ -501,6 +509,12 @@ CREATE SEQUENCE tests_tid_seq
     NO MINVALUE
     CACHE 1;
 
+
+--
+-- Name: tests_tid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('tests_tid_seq', 1, true);
 
 
 --
@@ -584,15 +598,11 @@ SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 
 
 
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE archive_results ALTER COLUMN id SET DEFAULT nextval('archive_results_id_seq'::regclass);
-
-
-
 
 
 --
@@ -790,16 +800,6 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY users (id, username, password, group_id, name, created, modified) FROM stdin;
-1	admin	aa50ebeb6ecacbc15ef22ca164b7342db76e725bfefcc1d01086d0dcc343e247	1		2009-07-10 21:35:38	2009-07-10 21:35:38
-2	user	fbcc1b48abce87fff7c6c18821157c00f80ce2707d7859daaf49efb4a2bbf218	2		2009-07-10 21:35:59	2009-07-10 21:35:59
-\.
-
-
---
 -- Data for Name: vf_testing_sites; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -987,13 +987,6 @@ ALTER TABLE ONLY vf_testing_sites
 
 ALTER TABLE ONLY vf_testing_sites
     ADD CONSTRAINT vf_testing_sites_site_name_key UNIQUE (site_name);
-
-
---
--- Name: aro_aco_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX aro_aco_key ON aros_acos USING btree (aro_id, aco_id);
 
 
 --

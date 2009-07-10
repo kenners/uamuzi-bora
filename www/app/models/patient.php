@@ -23,9 +23,22 @@ class Patient extends AppModel {
 		'vf_testing_site' => array(
 			'className' => 'VfTestingSite',
 			'foreignKey' => FALSE,
-			'conditions' => array('Patient.vf_testing_site' => 'Location.id')
+			'conditions' => array('Patient.vf_testing_site = vf_testing_site.site_code')
 		)
 	);
+	
+	/**
+	 * Each row here has a one-to-one mapping with a row in the 
+	 * MedicalInformation model
+	 */
+	var $hasOne = array(
+		'medical_information' => array(
+			'className' => 'MedicalInformation',
+			'foreignKey' => FALSE,
+			'conditions' => array('Patient.pid = medical_information.pid'),
+			'dependent' => TRUE
+			)
+		);
 	
 	/**
 	 * Validate save()
@@ -162,6 +175,7 @@ class Patient extends AppModel {
 		}
 	
 		// Add all of the digits up
+		$digits = '';
 		foreach ($pidArray as $value) {
 			$digits .= $value;
 		}
@@ -173,6 +187,46 @@ class Patient extends AppModel {
 		} else {
 			return FALSE;
 		}
+	}
+	
+	/**
+	 * Generate a new PID
+	 */
+	function newPID() {
+		// The PID is split into two parts.  $checksum is appended to $prefix
+		// to make the full number.
+		if ($this->find('count') > 0) {
+			// Get the last PID, work out its prefix and increment by one
+			$lastPid = $this->find('first', array(
+				'fields' => array('Patient.pid'),
+				'order' => array('Patient.pid DESC')
+				));
+			$lastPid = $lastPid['Patient']['pid'];
+			$prefix = substr($lastPid, 0, strlen($lastPid) - 1) + 1;
+		} else {
+			// This is the prefix to the first PID we will ever assign
+			$prefix = 1;
+		}
+		
+		// Split the prefix into an array in a right-to-left fashion
+		$prefixArray = array_reverse(str_split($prefix));
+		
+		// Starting from the first digit, double every other number
+		for ($i = 0; $i < count($prefixArray); $i += 2) {
+			$prefixArray[$i] = $prefixArray[$i] * 2;
+		}
+		
+		// Add all of the digits up
+		$digits = '';
+		foreach ($prefixArray as $value) {
+			$digits .= $value;
+		}
+		$sum = array_sum(str_split($digits));
+		
+		// When $checksum is added modulo ten, it should equal zero
+		$checksum = 10 - ($sum % 10);
+		
+		return $prefix . $checksum;
 	}
 }
 ?>

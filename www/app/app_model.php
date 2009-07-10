@@ -148,6 +148,21 @@ class AppModel extends Model {
 	function isPositiveInteger($value) {
 		return (ctype_digit($value) || (is_int($value) && $value >= 0));
 	}
+	
+	/**
+	 * Custom validation function that returns TRUE if node with id $id has
+	 * $depth levels above it in the model $model.  For example:
+	 *     isDepth('Kenya', 'Location', 0) returns TRUE
+	 *     isDepth('Kakamega', 'Location', 2) returns TRUE
+	 */
+	function isDepth($id, $model, $depth) {
+		$this->$model =& ClassRegistry::init($model);
+		if (count($this->$model->getpath($id)) - 1 == $depth) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 }
 
 /**
