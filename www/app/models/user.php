@@ -7,6 +7,26 @@ class User extends AppModel {
 
   var $name = 'User';
   var $actsAs = array('Acl' => array('requester'));
+  var $validate=array(
+			'username'=>array(
+					  'unique' => array(
+							    'rule' => 'isUnique',
+							    'message' => 'This username already exists'
+							    ),
+					  'not null' => array(
+							      'rule' => 'notEmpty',
+							      'message' => 'A username must be entered'
+							      )
+					  ),
+			'group_id'=>array(
+					  'not null' => array(
+							      'rule' => 'notEmpty',
+							      'message' => 'You must choose a group'
+							      )
+					  )
+			);
+			
+					 
   //A function that updates the aro-table after we cedit/create a user
   function afterSave($created) {
         if (!$created) {

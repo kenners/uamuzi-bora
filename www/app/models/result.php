@@ -10,8 +10,9 @@ class Result extends AppModel {
 
   var $belongsTo=array(
 		   'Test'=>array('className'=>'Test'),
-		   //'patient'=>array('className'=>'Patient'),
-		   //'user'=>array('className'=>'User')
+		   'patient'=>array('className'=>'Patient',
+				    'foreignKey'=>'pid'),
+		   'user'=>array('className'=>'User')
 		   );
 
   /**
@@ -56,7 +57,7 @@ class Result extends AppModel {
 						      'text'=>array(
 								    'rule'=>'alphaNumeric',
 								    'allowEmpty'=>TRUE,
-								    'message'=> 'The Requesting civilian must be a text'
+								    'message'=> 'The Requesting clinician must be a text'
 								    )
 						      ),
 			'user_id'=>array(
