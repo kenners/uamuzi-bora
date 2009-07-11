@@ -7,6 +7,20 @@ class Group extends AppModel {
 
 	var $name = 'Group';
   var $actsAs = array('Acl' => array('requester'));
+  var $validate=array(
+		      'name'=>array(
+				    
+				    'unique' => array(
+						      'rule' => 'isUnique',
+						      'message' => 'This group already exists'
+						      ),
+				    'not null' => array(
+							'rule' => 'notEmpty',
+							'message' => 'A name must be entered'
+							)
+				    )
+		      );
+		      '
   function parentNode() {
     return null;
   }
