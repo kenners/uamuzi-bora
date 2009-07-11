@@ -264,8 +264,9 @@ class AuthComponent extends Object {
 	function startup(&$controller) {
 		$methods = array_flip($controller->methods);
 		$isErrorOrTests = (
-			strtolower($controller->name) == 'cakeerror' ||
-			(strtolower($controller->name) == 'tests' && Configure::read() > 0)
+			strtolower($controller->name) == 'cakeerror'
+#			strtolower($controller->name) == 'cakeerror' ||
+#			(strtolower($controller->name) == 'tests' && Configure::read() > 0)
 		);
 		if ($isErrorOrTests) {
 			return true;
