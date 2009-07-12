@@ -3,6 +3,7 @@ class ResultLookupsController extends AppController {
 
 	var $name = 'ResultLookups';
 	var $helpers = array('Html', 'Form');
+  var $uses=array('ResultLookup','ArchiveResultLookup');
 
 	function index() {
 		$this->ResultLookup->recursive = 0;
@@ -37,7 +38,7 @@ class ResultLookupsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
-		  
+		  parent::archive($id);
 			if ($this->ResultLookup->save($this->data)) {
 				$this->Session->setFlash(__('The ResultLookup has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -57,6 +58,7 @@ class ResultLookupsController extends AppController {
 			$this->Session->setFlash(__('Invalid id for ResultLookup', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		parent::archive($id);
 		if ($this->ResultLookup->del($id)) {
 			$this->Session->setFlash(__('ResultLookup deleted', true));
 			$this->redirect(array('action'=>'index'));

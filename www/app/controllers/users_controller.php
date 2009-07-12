@@ -3,6 +3,7 @@ class UsersController extends AppController {
 
   var $name = 'Users';
   var $helpers = array('Html', 'Form');
+  var $uses = array('User','ArchiveUser');
   function login(){
     // Auth magic
   }
@@ -130,6 +131,7 @@ class UsersController extends AppController {
       $this->redirect(array('action'=>'index'));
     }
     if (!empty($this->data)) {
+      parent::archive($id);
       if ($this->User->save($this->data)) {
 	$this->Session->setFlash(__('The User has been saved', true));
 	$this->redirect(array('action'=>'index'));
@@ -149,6 +151,7 @@ class UsersController extends AppController {
       $this->Session->setFlash(__('Invalid id for User', true));
       $this->redirect(array('action'=>'index'));
     }
+    parent::archive($id);
     if ($this->User->del($id)) {
       $this->Session->setFlash(__('User deleted', true));
       $this->redirect(array('action'=>'index'));
