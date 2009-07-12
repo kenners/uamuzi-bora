@@ -2,4 +2,5 @@
 www/app/config/database.php
 
 # Ignore tmp
+www/app/tmp/*
 www/app/tmp/**/*
