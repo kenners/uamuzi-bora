@@ -26,11 +26,11 @@
 		<!-- Header -->
 		<div id="headerbar" class="prepend-top span-24 last">
 			<!-- Title -->
-			<div class="text-left prepend-1 span-7 append-8">
-				<h1 class="hide">Uamuzi Bora</h1>
+			<div class="text-left prepend-1 span-7 append-8 hide">
+				<h1>Uamuzi Bora</h1>
 			</div>
 			<!-- User box -->
-			<div  id="userbox" class="span-8 last">
+			<div  id="userbox" class="prepend-16 span-8 last">
 			
 			<?php if($session->check('Auth.User.id'))
 				{
