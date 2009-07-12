@@ -60,7 +60,7 @@ class PatientsController extends AppController {
 		}
 		//$this->set('patient', $this->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid))));
 		$this->set('patient',$this->Patient->read(null,$pid));
-		$this->set('result',$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'order'=>'Result.created DESC')));
+		$this->set('result',$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'order'=>'Result.created DESC','recursive'=>-1)));
 		  
 	}
 }
