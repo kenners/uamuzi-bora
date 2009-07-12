@@ -93,3 +93,10 @@
 .patientIdentiferLabel {
 	font-weight:bold;
 }
+
+#headerbar {
+	margin-top:5px;
+	padding-bottom: 45px;	
+	background-image: url(/img/ubbanner.gif);
+	background-repeat: no-repeat;
+}
