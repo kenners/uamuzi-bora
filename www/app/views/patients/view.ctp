@@ -7,6 +7,7 @@ $javascript->link('jquery.js', false);
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
 		<?php
+		$patient=$patients[0];
 		// Patient Name
 		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
 		$pid = str_pad($patient['Patient']['pid'], 9, '0', STR_PAD_LEFT);
@@ -68,7 +69,8 @@ $javascript->link('jquery.js', false);
 </tr>
 <?php
 $i = 0;
-foreach ($result as $resulti):
+$results=$patient['Result'];
+foreach ($results as $result):
 	$class = null;
 	if ($i++ % 2 == 0) {
 		$class = ' class="even"';
@@ -76,39 +78,40 @@ foreach ($result as $resulti):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $result['Result']['id']; ?>
+			<?php echo $result['id']; ?>
+			
 		</td>
 		<td>
-			<?php echo $result['Result']['pid']; ?>
+			<?php echo $result['pid']; ?>
 		</td>
 		<td>
 			<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['value_decimal']; ?>
+			<?php echo $result['value_decimal']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['value_text']; ?>
+			<?php echo $result['value_text']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['value_lookup']; ?>
+			<?php echo $result['value_lookup']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['test_performed']; ?>
+			<?php echo $result['test_performed']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['created']; ?>
+			<?php echo $result['created']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['requesting_clinician']; ?>
+			<?php echo $result['requesting_clinician']; ?>
 		</td>
 		<td>
-			<?php echo $result['Result']['user_id']; ?>
+			<?php echo $result['user_id']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $result['Result']['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['Result']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['Result']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['Result']['id'])); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $result['id'])); ?>
+			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['id'])); ?>
+			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
