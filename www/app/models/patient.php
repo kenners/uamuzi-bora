@@ -25,7 +25,12 @@ class Patient extends AppModel {
 			'foreignKey' => FALSE,
 			'conditions' => array('Patient.vf_testing_site = vf_testing_site.site_code')
 		)
+		
 	);
+	var $hasMany=array(
+			   'Result'=>array('className'=>'Result',
+					   'foreignKey'=>'pid')
+			   );
 	
 	/**
 	 * Each row here has a one-to-one mapping with a row in the 

@@ -11,7 +11,7 @@ class Result extends AppModel {
   var $belongsTo=array(
 		   'Test'=>array('className'=>'Test'),
 		   'Patient'=>array('className'=>'Patient',
-		   'foreignKey'=>'pid'),
+				    'foreignKey'=>'pid'),
 		   'User'=>array('className'=>'User')
 		   );
 
@@ -39,15 +39,10 @@ class Result extends AppModel {
 								 'message' => 'The value must be a floating point number'
 								 )
 					       ),
-			'value_text'=>array(
-					    'text'=> array(
-							   'allowEmpty'=> TRUE,
-							   'message' => 'The value must be a text'
-							   )
-					    ),
+					    
 			'value_lookup'=>array(
 					      'int'=> array(
-							    'rule'=>array('decimal',0),
+							    'rule'=>'numeric',
 							    'allowEmpty'=> TRUE,
 							    'message'=> 'The value must be an integer'
 							    )
