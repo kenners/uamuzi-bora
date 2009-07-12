@@ -46,7 +46,7 @@ class PatientsController extends AppController {
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),
-			'locations' => $this->Location->generatetreelist()
+			'locations' => $this->Location->generatetreelist(null, null, null, '-')
 			));
 	}
 	/**
