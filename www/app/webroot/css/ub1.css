@@ -11,11 +11,35 @@
 	padding-top:20px;
 }
 
+
 #userbox {
 	vertical-align:bottom;
 }
 
+#patientBox {
+	overflow:hidden;
+}
+
+.otherIdentifier {
+	padding:1.5em;
+
+	
+/*margin-bottom:1.5em;*/
+	background:#FFF6BF;
+	margin-bottom:-200px;
+	padding-bottom:200px;
+}
+
+.vitalInfo {
+	padding:1.5em;
+	margin-bottom:-180px;
+	padding-bottom:200px;
+	background:#E5ECF9;
+}
+
 .message {
+
+	
 /* Code pinched from .notice class of Blueprint */
 	padding:.8em;
 	margin-bottom:1em;
@@ -23,4 +47,49 @@
 	background:#FFF6BF;
 	color:#514721;
 	border-color:#FFD324;
+}
+
+.patientName {
+	text-transform: capitalize;
+	font-size:2.5em;
+	line-height:1;
+	margin-bottom:.5em;
+	color:#111;
+}
+
+.patientId {
+	color:#111;
+	font-size:1.6em;
+	margin-top:.5em;
+	margin-bottom:.75em;
+}
+
+.patientIdLabel {
+	font-weight:bold;
+}
+
+.patientIdValue {
+}
+
+.patientAge {
+	color:#111;
+	font-size:1.4em;
+	line-height:1;
+	margin-bottom:.5em;
+}
+
+.patientAgeLabel {
+	font-weight:bold;
+}
+
+.patientAgeValue
+.patientIdentifier {
+	color:#111;
+	font-size:1.2em;
+	line-height:1;
+	margin-bottom:.5em;
+}
+
+.patientIdentiferLabel {
+	font-weight:bold;
 }
