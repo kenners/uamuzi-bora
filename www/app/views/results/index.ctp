@@ -38,7 +38,7 @@ foreach ($results as $result):
 			<?php echo $result['Result']['pid']; ?>
 		</td>
 		<td>
-			<?php echo $html->link($result['test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['test']['id'])); ?>
+			<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $result['Result']['value_decimal']; ?>

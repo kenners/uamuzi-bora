@@ -1,16 +1,16 @@
 <div class="results form">
-<?php echo $form->create('Result');?>
+<?php echo $form->create('Result', array('action'=>'add/'.$pid));?>
 	<fieldset>
  		<legend><?php __('Add Result');?></legend>
 	<?php
-		echo $form->input('pid');
+		//echo $form->input('pid');
 		echo $form->input('test_id');
 		echo $form->input('value_decimal');
 		echo $form->input('value_text');
 		echo $form->input('value_lookup');
 		echo $form->input('test_performed');
 		echo $form->input('requesting_clinician');
-		echo $form->input('user_id');
+		//echo $form->input('user_id');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>
