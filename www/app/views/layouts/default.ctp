@@ -11,14 +11,13 @@
 		echo $html->meta('icon');
 		// Set up which CSS files we're calling for our layout
 		// We're not including print.css from Blueprint in this array as we want it to override the others if media=print
-		$css = array('ub1', 'blueprint/screen', 'blueprint/ie', 'blueprint/plugins/buttons/screen', 'blueprint/plugins/tabs/screen');
+		$css = array('ub1', 'blueprint/screen', 'blueprint/plugins/tabs/screen', 'blueprint/plugins/buttons/screen');
 		// Echo our print.css first so it takes precedence if media=print
 		echo $html->css('blueprint/print', 'stylesheet', 'media="print"');
 		// Echo our array of CSS sheets we set up above
 		echo $html->css($css, 'stylesheet', 'media="screen, projection"');
 		//echo $html->css('cake.generic');
-
-
+		
 		echo $scripts_for_layout;
 	?>
 </head>
@@ -51,6 +50,7 @@
 		</div>
 		<!-- Footer -->
 		<div id="footer" class="prepend-top prepend-1 span-22 append-1 last">
+		<hr/>
 			<p>&copy; 2009 The Uamuzi Bora Project. Some Rights Reserved. Email: hello@uamuzibora.com</p>
 		</div>
 	</div>

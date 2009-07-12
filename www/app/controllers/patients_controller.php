@@ -1,7 +1,8 @@
 <?php
 class PatientsController extends AppController {
 	var $name = 'Patients';
-	
+	// Stuff to make javascript work
+	var $helpers = array('Html','Javascript','Ajax');
 	/**
 	 * Tell the controller about the lookup table models
 	 */
@@ -47,6 +48,17 @@ class PatientsController extends AppController {
 			'marital_statuses' => $this->MaritalStatus->find('list'),
 			'locations' => $this->Location->generatetreelist()
 			));
+	}
+	/**
+	 * Skeleton view method
+	 * PLEASE BUILD/REPLACE AS NEEDED
+	 */
+	function view($pid = null) {
+		if (!$pid) {
+			$this->Session->setFlash(__('Invalid Patient.', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		$this->set('patient', $this->Patient->read(null, $pid));
 	}
 }
 ?>
