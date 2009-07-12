@@ -7,6 +7,8 @@ class ResultsController extends AppController {
 	function index() {
 		$this->Result->recursive = 0;
 		$this->set('results', $this->paginate());
+		$tests = $this->Result->Test->find('list');
+		$this->set(compact('tests'));
 	}
 
 	function view($id = null) {

@@ -20,7 +20,7 @@ class Group extends AppModel {
 							)
 				    )
 		      );
-		      '
+		      
   function parentNode() {
     return null;
   }
