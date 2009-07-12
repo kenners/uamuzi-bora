@@ -7,8 +7,7 @@ class ResultsController extends AppController {
 	function index() {
 		$this->Result->recursive = 0;
 		$this->set('results', $this->paginate());
-		$tests = $this->Result->Test->find('list');
-		$this->set(compact('tests'));
+		
 	}
 
 	function view($id = null) {
@@ -19,9 +18,16 @@ class ResultsController extends AppController {
 		$this->set('result', $this->Result->read(null, $id));
 	}
 
-	function add() {
-		if (!empty($this->data)) {
+	function add($pid = null) {
+	  $this->Result->Patient->id=$pid;
+	  $this->set('pid',$pid);
+	  
+	  if (!empty($this->data) && $this->Result->Patient->exists()) {
 			$this->Result->create();
+			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+			$this->data=Set::insert($this->data,'Result.pid',$pid);
+			
+			
 			if ($this->Result->save($this->data)) {
 				$this->Session->setFlash(__('The Result has been saved', true));
 				$this->redirect(array('action'=>'index'));

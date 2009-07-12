@@ -58,10 +58,12 @@ class PatientsController extends AppController {
 			$this->Session->setFlash(__('Invalid Patient.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		//$this->set('patient', $this->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid))));
-		$this->set('patient',$this->Patient->read(null,$pid));
-		$this->set('results',$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'order'=>'Result.created DESC','recursive'=>-1)));
-		  
+
+		$this->Patient->recursive = 2;
+		
+		//$paginate=array('Result'=>array('order'=>'created DESC'));
+		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
+	
 	}
 }
 ?>
