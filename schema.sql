@@ -56,7 +56,11 @@ ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_pkey
 ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_name_key;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_pkey;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_name_key;
+ALTER TABLE ONLY public.archive_users DROP CONSTRAINT archive_users_pkey;
+ALTER TABLE ONLY public.archive_tests DROP CONSTRAINT archive_tests_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
+ALTER TABLE ONLY public.archive_result_lookups DROP CONSTRAINT archive_result_lookups_pkey;
+ALTER TABLE ONLY public.archive_groups DROP CONSTRAINT archive_groups_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
@@ -73,7 +77,11 @@ ALTER TABLE public.fundings ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_service_types ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_indications ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_users ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_result_lookups ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_groups ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
 DROP TABLE public.vf_testing_sites;
 DROP SEQUENCE public.users_id_seq;
@@ -109,8 +117,17 @@ DROP SEQUENCE public.art_service_types_id_seq;
 DROP TABLE public.art_service_types;
 DROP SEQUENCE public.art_indications_id_seq;
 DROP TABLE public.art_indications;
+DROP SEQUENCE public.archive_users_id_seq;
+DROP TABLE public.archive_users;
+DROP SEQUENCE public.archive_tests_id_seq;
+DROP TABLE public.archive_tests;
 DROP SEQUENCE public.archive_results_id_seq;
 DROP TABLE public.archive_results;
+DROP SEQUENCE public.archive_result_lookups_id_seq;
+DROP TABLE public.archive_result_lookups;
+DROP SEQUENCE public.archive_groups_id_seq;
+DROP TABLE public.archive_groups;
+DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
@@ -126,11 +143,106 @@ CREATE SCHEMA public;
 COMMENT ON SCHEMA public IS 'standard public schema';
 
 
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: archive_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_groups (
+    id integer NOT NULL,
+    archive_id integer,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_name character varying,
+    archive_description character varying,
+    archive_created timestamp without time zone,
+    archive_modified timestamp without time zone
+);
+
+
+--
+-- Name: archive_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_groups_id_seq OWNED BY archive_groups.id;
+
+
+--
+-- Name: archive_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_groups_id_seq', 1, false);
+
+
+--
+-- Name: archive_result_lookups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_result_lookups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_id integer,
+    archive_test_id integer NOT NULL,
+    archive_value character varying NOT NULL,
+    archive_description character varying,
+    archive_comment character varying,
+    archive_user_id integer NOT NULL,
+    archive_modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: archive_result_lookups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_result_lookups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_result_lookups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_result_lookups_id_seq OWNED BY archive_result_lookups.id;
+
+
+--
+-- Name: archive_result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_result_lookups_id_seq', 1, false);
+
 
 --
 -- Name: archive_results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -178,6 +290,100 @@ ALTER SEQUENCE archive_results_id_seq OWNED BY archive_results.id;
 --
 
 SELECT pg_catalog.setval('archive_results_id_seq', 1, false);
+
+
+--
+-- Name: archive_tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_tests (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_id integer,
+    archive_name character varying NOT NULL,
+    archive_abbreiviation character varying,
+    archive_type character varying NOT NULL,
+    archive_upper_limit double precision,
+    archive_lower_limit double precision,
+    archive_description character varying,
+    archive_comment character varying,
+    archive_active boolean DEFAULT true,
+    archive_user_id integer NOT NULL,
+    archive_modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: archive_tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_tests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_tests_id_seq OWNED BY archive_tests.id;
+
+
+--
+-- Name: archive_tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_tests_id_seq', 1, false);
+
+
+--
+-- Name: archive_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_users (
+    id integer NOT NULL,
+    archive_id integer,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_username character varying NOT NULL,
+    archive_password character varying NOT NULL,
+    archive_group_id integer NOT NULL,
+    archive_name character varying,
+    archive_created timestamp without time zone,
+    archive_modified timestamp without time zone
+);
+
+
+--
+-- Name: archive_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_users_id_seq OWNED BY archive_users.id;
+
+
+--
+-- Name: archive_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_users_id_seq', 1, false);
 
 
 --
@@ -889,7 +1095,35 @@ SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE archive_groups ALTER COLUMN id SET DEFAULT nextval('archive_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_result_lookups ALTER COLUMN id SET DEFAULT nextval('archive_result_lookups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE archive_results ALTER COLUMN id SET DEFAULT nextval('archive_results_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_tests ALTER COLUMN id SET DEFAULT nextval('archive_tests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_users ALTER COLUMN id SET DEFAULT nextval('archive_users_id_seq'::regclass);
 
 
 --
@@ -1005,10 +1239,42 @@ ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_test
 
 
 --
+-- Data for Name: archive_groups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_groups (id, archive_id, user_id, created, archive_reason, archive_name, archive_description, archive_created, archive_modified) FROM stdin;
+\.
+
+
+--
+-- Data for Name: archive_result_lookups; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_result_lookups (id, user_id, created, archive_reason, archive_id, archive_test_id, archive_value, archive_description, archive_comment, archive_user_id, archive_modified) FROM stdin;
+\.
+
+
+--
 -- Data for Name: archive_results; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY archive_results (id, user_id, created, archive_reason, archive_id, archive_pid, archive_test_id, archive_value_decimal, archive_value_text, archive_value_lookup, archive_test_performed, archive_created, archive_requesting_clinician, archive_user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: archive_tests; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_tests (id, user_id, created, archive_reason, archive_id, archive_name, archive_abbreiviation, archive_type, archive_upper_limit, archive_lower_limit, archive_description, archive_comment, archive_active, archive_user_id, archive_modified) FROM stdin;
+\.
+
+
+--
+-- Data for Name: archive_users; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_users (id, archive_id, user_id, created, archive_reason, archive_username, archive_password, archive_group_id, archive_name, archive_created, archive_modified) FROM stdin;
 \.
 
 
@@ -1269,11 +1535,43 @@ COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longit
 
 
 --
+-- Name: archive_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_groups
+    ADD CONSTRAINT archive_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: archive_result_lookups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_result_lookups
+    ADD CONSTRAINT archive_result_lookups_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: archive_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY archive_results
     ADD CONSTRAINT archive_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: archive_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_tests
+    ADD CONSTRAINT archive_tests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: archive_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_users
+    ADD CONSTRAINT archive_users_pkey PRIMARY KEY (id);
 
 
 --

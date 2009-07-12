@@ -3,6 +3,7 @@ class TestsController extends AppController {
 
 	var $name = 'Tests';
 	var $helpers = array('Html', 'Form');
+  var $uses= array('Test','ArchiveTest');
 
 	function index() {
 		$this->Test->recursive = 0;
@@ -35,6 +36,7 @@ class TestsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
+		  parent::archive($id);
 			if ($this->Test->save($this->data)) {
 				$this->Session->setFlash(__('The Test has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -52,6 +54,7 @@ class TestsController extends AppController {
 			$this->Session->setFlash(__('Invalid id for Test', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		parent::archive($id);
 		if ($this->Test->del($id)) {
 			$this->Session->setFlash(__('Test deleted', true));
 			$this->redirect(array('action'=>'index'));

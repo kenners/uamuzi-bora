@@ -3,6 +3,7 @@ class GroupsController extends AppController {
 
 	var $name = 'Groups';
 	var $helpers = array('Html', 'Form');
+  var $uses = array('Group','ArchiveGroup');
 
 	function index() {
 		$this->Group->recursive = 0;
@@ -35,6 +36,7 @@ class GroupsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
+		  parent::archive($id);
 			if ($this->Group->save($this->data)) {
 				$this->Session->setFlash(__('The Group has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -52,6 +54,7 @@ class GroupsController extends AppController {
 			$this->Session->setFlash(__('Invalid id for Group', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		parent::archvie($id);
 		if ($this->Group->del($id)) {
 			$this->Session->setFlash(__('Group deleted', true));
 			$this->redirect(array('action'=>'index'));
