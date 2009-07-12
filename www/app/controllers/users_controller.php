@@ -2,7 +2,7 @@
 class UsersController extends AppController {
 
   var $name = 'Users';
-  var $helpers = array('Html', 'Form');
+  var $helpers = array('Html', 'Form', 'Crumb');
   var $uses = array('User','ArchiveUser');
   function login(){
     // Auth magic

@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Results', 'reset'); ?>
+</div>
 <div class="results index">
 <h2><?php __('Results');?></h2>
 <p>

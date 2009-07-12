@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Test Result Options', 'reset'); ?>
+</div>
 <div class="resultLookups index">
 <h2><?php __('ResultLookups');?></h2>
 <p>

@@ -2,7 +2,7 @@
 class ResultsController extends AppController {
 
 	var $name = 'Results';
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form', 'Crumb');
   var $uses=array('Result','ArchiveResult');
 	function index() {
 		$this->Result->recursive = 0;

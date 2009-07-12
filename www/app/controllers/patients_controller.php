@@ -2,7 +2,7 @@
 class PatientsController extends AppController {
 	var $name = 'Patients';
 	// Stuff to make javascript work
-	var $helpers = array('Html','Javascript','Ajax');
+	var $helpers = array('Html','Javascript','Ajax', 'Crumb');
 	/**
 	 * Tell the controller about the lookup table models
 	 */
@@ -58,14 +58,12 @@ class PatientsController extends AppController {
 			$this->Session->setFlash(__('Invalid Patient.', true));
 			$this->redirect(array('action'=>'index'));
 		}
+
 		$this->Patient->recursive = 2;
 		
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
-		
-		
-		
-		  
+	
 	}
 }
 ?>

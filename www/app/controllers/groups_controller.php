@@ -2,7 +2,7 @@
 class GroupsController extends AppController {
 
 	var $name = 'Groups';
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form', 'Crumb');
   var $uses = array('Group','ArchiveGroup');
 
 	function index() {

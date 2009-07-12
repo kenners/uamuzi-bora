@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
+</div>
 <div class="resultLookups form">
 <?php echo $form->create('ResultLookup');?>
 	<fieldset>

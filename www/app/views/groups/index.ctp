@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Groups','reset'); ?>
+</div>
 <div class="groups index">
 <h2><?php __('Groups');?></h2>
 <p>

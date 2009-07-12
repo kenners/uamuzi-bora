@@ -2,7 +2,7 @@
 class ResultLookupsController extends AppController {
 
 	var $name = 'ResultLookups';
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form','Crumb');
   var $uses=array('ResultLookup','ArchiveResultLookup');
 
 	function index() {

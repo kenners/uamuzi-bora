@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Edit', null, 'auto'); ?>
+</div>
 <div class="users form">
 <?php echo $form->create('User');?>
 	<fieldset>
