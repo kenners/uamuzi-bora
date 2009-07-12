@@ -12,6 +12,14 @@ class PatientsController extends AppController {
 		'MaritalStatus',
 		'Location'
 		);
+	/**
+	 * Debugging list all patients function
+	 * PLEASE REPLACE WITH SOMETHING PRETTIER
+	 */
+	function index() {
+		$this->Patient->recursive = 0;
+		$this->set('patient', $this->paginate());
+	}
 	
 	/**
 	 * Populate the Patient model with data for a new patient
@@ -21,12 +29,9 @@ class PatientsController extends AppController {
 		// out)
 		if (!empty($this->data)) {
 			// Generate a new PID
-			$this->data['pid'] = $this->Patient->newPID();
-			
-			// Skeleton filling out of year_of_birth (temporary whilst we work
-			// out how this will work in the view)
-			$this->data['year_of_birth'] = date('Y', strtotime($this->data['date_of_birth']));
-			
+			$this->data['Patient']['pid'] = $this->Patient->newPID();
+			// Get year_of_birth from date_of_birth
+			$this->data['Patient']['year_of_birth'] = $this->data['Patient']['date_of_birth']['year'];
 			// Save the new row
 			if ($this->Patient->save($this->data)) {
 				// Send confirmation page (we'll want to create a row in the
