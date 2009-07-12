@@ -1,0 +1,26 @@
+/**
+ *
+ * Contains application specific styling for Uamuzi Bora
+ *
+ */
+.text-left {
+	text-align:left;
+}
+
+#headerbar {
+	padding-top:20px;
+}
+
+#userbox {
+	vertical-align:bottom;
+}
+
+.message {
+/* Code pinched from .notice class of Blueprint */
+	padding:.8em;
+	margin-bottom:1em;
+	border:2px solid #ddd;
+	background:#FFF6BF;
+	color:#514721;
+	border-color:#FFD324;
+}
