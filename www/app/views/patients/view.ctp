@@ -4,6 +4,9 @@
 <?php
 $javascript->link('jquery.js', false);
 ?>
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
+</div>
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
 		<?php
@@ -68,7 +71,7 @@ $javascript->link('jquery.js', false);
 </tr>
 <?php
 $i = 0;
-foreach ($result as $resulti):
+foreach ($results as $result):
 	$class = null;
 	if ($i++ % 2 == 0) {
 		$class = ' class="even"';

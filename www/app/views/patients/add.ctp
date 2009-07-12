@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
+</div>
 <div id="viewTitle" class="text-left">
 <h1>Add New Patient</h1>
 </div>

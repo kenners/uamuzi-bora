@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
+</div>
 <div class="resultLookups view">
 <h2><?php  __('ResultLookup');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>

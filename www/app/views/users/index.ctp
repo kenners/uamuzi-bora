@@ -1,3 +1,6 @@
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Users', 'reset'); ?>
+</div>
 <div class="users index">
 <h2><?php __('Users');?></h2>
 <p>
