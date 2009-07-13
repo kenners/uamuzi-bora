@@ -11,6 +11,9 @@ SET escape_string_warning = off;
 SET search_path = public, pg_catalog;
 
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_location_id_fkey;
+ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_user_id_fkey;
+ALTER TABLE ONLY public.results DROP CONSTRAINT results_user_id_fkey;
+ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_user_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vf_testing_site_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
@@ -2152,6 +2155,30 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_vf_testing_site_fkey FOREIGN KEY (vf_testing_site) REFERENCES vf_testing_sites(site_code);
+
+
+--
+-- Name: result_lookups_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY result_lookups
+    ADD CONSTRAINT result_lookups_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: results_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY results
+    ADD CONSTRAINT results_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: tests_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --

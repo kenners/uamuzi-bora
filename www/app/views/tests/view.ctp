@@ -1,4 +1,3 @@
-<?php var_dump($test); ?>
 <div class="breadcrumb">
 	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
 </div>
@@ -50,9 +49,9 @@
 			<?php echo $test['Test']['active']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Username'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $test['Test']['user_id']; ?>
+			<?php echo $test['Test']['username']; ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
@@ -88,7 +87,7 @@
 		<th><?php __('Value'); ?></th>
 		<th><?php __('Description'); ?></th>
 		<th><?php __('Comment'); ?></th>
-		<th><?php __('User Id'); ?></th>
+		<th><?php __('Username'); ?></th>
 		<th><?php __('Modified'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
 	</tr>
@@ -105,7 +104,7 @@
 			<td><?php echo $resultLookup['value'];?></td>
 			<td><?php echo $resultLookup['description'];?></td>
 			<td><?php echo $resultLookup['comment'];?></td>
-			<td><?php echo $resultLookup['user_id'];?></td>
+			<td><?php echo $resultLookup['username'];?></td>
 			<td><?php echo $resultLookup['modified'];?></td>
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller'=> 'result_lookups', 'action'=>'view', $resultLookup['id'])); ?>

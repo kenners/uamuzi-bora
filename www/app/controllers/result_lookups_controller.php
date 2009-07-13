@@ -3,8 +3,8 @@ class ResultLookupsController extends AppController {
 
 	var $name = 'ResultLookups';
 	var $helpers = array('Html', 'Form','Crumb');
-  var $uses=array('ResultLookup','ArchiveResultLookup');
-
+	var $uses=array('ResultLookup','ArchiveResultLookup', 'User');
+	
 	function index() {
 		$this->ResultLookup->recursive = 0;
 		$this->set('resultLookups', $this->paginate());
