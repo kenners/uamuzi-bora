@@ -28,8 +28,7 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('Forenames','forenames');?></th>
 	<th><?php echo $paginator->sort('DoB','date_of_birth');?></th>
 	<th><?php echo $paginator->sort('Sex','sex');?></th>
-	<th><?php echo $paginator->sort('Mother','mother');?></th>
-	<th><?php echo $paginator->sort('Telephone Number','telephone_number');?></th>
+	<th><?php echo $paginator->sort('Telephone','telephone_number');?></th>
 	<th><?php echo $paginator->sort('Location','location_id');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
@@ -65,9 +64,6 @@ foreach ($patients as $patient):
 		</td>
 		<td>
 			<?php echo $patient['Patient']['sex']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['mother']; ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['telephone_number']; ?>
