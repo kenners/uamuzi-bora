@@ -88,6 +88,19 @@ class PatientsController extends AppController {
 				}
 			}
 			
+			// Set $this->data['Patient']['treatment_supporter'], which is either
+			// a serialised array or NULL
+			foreach (array('name', 'address', 'relationship', 'telephone number') as $TSField) {
+				if (!empty($this->data['Patient']['treatment_supporter_' . $TSField])) {
+					$TSArray[$TSField] = $this->data['Patient']['treatment_supporter_' . $TSField];
+				}
+				if (!empty($TSArray)) {
+					$this->data['Patient']['treatment_supporter'] = serialize($TSArray);
+				} else {
+					$this->data['Patient']['treatment_supporter'] = NULL;
+				}
+			}
+			
 			// Save the new row
 			if ($this->Patient->save($this->data)) {
 				// Send confirmation page (we'll want to create a row in the
