@@ -49,7 +49,7 @@
 			<?php echo $result['Result']['requesting_clinician']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Last Edited By'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $result['Result']['user_id']; ?>
 			&nbsp;

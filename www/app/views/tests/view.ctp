@@ -49,7 +49,7 @@
 			<?php echo $test['Test']['active']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Username'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Last Edited By'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $test['Test']['username']; ?>
 			&nbsp;

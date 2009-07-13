@@ -30,7 +30,7 @@ $i = 0;
 foreach ($tests as $test):
 	$class = null;
 	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
+		$class = ' class="even"';
 	}
 ?>
 	<tr<?php echo $class;?>>

@@ -111,3 +111,21 @@ div.actions{
 background:#FFF6BF;color:#514721;border-color:#FFD324;
 padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
 div.actions a {color:#514721;}
+
+div.paging {
+	background:#fff;
+	color: #ccc;
+	margin-bottom: 2em;
+}
+div.paging div.disabled {
+	color: #ddd;
+	display: inline;
+}
+div.paging span {
+}
+div.paging span.current {
+	color: #000;
+}
+div.paging span a {
+}
+.breadcrumb{padding-bottom: 0.5em; margin-bottom: 0.5em; border-bottom-width: 1px; border-bottom-color: #8d8d8d; border-bottom-style: groove;}

@@ -11,7 +11,7 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($resultLookup['test']['name'], array('controller'=> 'tests', 'action'=>'view', $resultLookup['test']['id'])); ?>
+			<?php echo $html->link($resultLookup['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $resultLookup['Test']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Value'); ?></dt>
@@ -29,7 +29,7 @@
 			<?php echo $resultLookup['ResultLookup']['comment']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Last Edited By'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $resultLookup['ResultLookup']['user_id']; ?>
 			&nbsp;

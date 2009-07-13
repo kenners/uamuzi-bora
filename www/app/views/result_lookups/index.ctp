@@ -25,7 +25,7 @@ $i = 0;
 foreach ($resultLookups as $resultLookup):
 	$class = null;
 	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
+		$class = ' class="even"';
 	}
 ?>
 	<tr<?php echo $class;?>>
@@ -64,7 +64,8 @@ foreach ($resultLookups as $resultLookup):
  | 	<?php echo $paginator->numbers();?>
 	<?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
 </div>
-<div class="actions">
+<div class="actions span-5">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('New ResultLookup', true), array('action'=>'add')); ?></li>
 		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
