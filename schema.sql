@@ -1101,7 +1101,8 @@ CREATE TABLE tests (
     comment character varying,
     active boolean DEFAULT true,
     user_id integer NOT NULL,
-    modified timestamp without time zone NOT NULL
+    modified timestamp without time zone NOT NULL,
+    units character varying
 );
 
 
@@ -1676,7 +1677,7 @@ COPY results (id, pid, test_id, value_decimal, value_text, value_lookup, test_pe
 -- Data for Name: tests; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description, comment, active, user_id, modified) FROM stdin;
+COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description, comment, active, user_id, modified, units) FROM stdin;
 \.
 
 

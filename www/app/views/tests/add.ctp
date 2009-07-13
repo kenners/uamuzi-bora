@@ -3,7 +3,7 @@
 </div>
 <div class="tests form span-16">
 <?php
-echo $form->create('Patient');
+echo $form->create('Test');
 echo $form->inputs(array('legend' => 'Add Test',
 						'name'=>array('label' => 'Test Name',
 									'after'=>'<br/><em>What is the name of the test? (e.g. Haemaglobin)</em>'),
@@ -14,6 +14,7 @@ echo $form->inputs(array('legend' => 'Add Test',
 									'options'=>array('decimal'=>'Decimal', 'text'=>'Text', 'lookup'=>'Options'),
 									'empty' => '(choose one)',
 									'after' => '<br/><em>What type of data will the test results be? (e.g. Blood tests will usually be <strong>Decimal</strong>, whilst disease stages (e.g. WHO Stage) will have have discrete <strong>Options</strong>)</em>'),
+						'units'=>array('label'=>'Units','after'=>'<br/><em>Optional. What is the units of this test?</em>'),
 						'upper_limit'=>array('label' => 'Upper Normal Limit',
 											'after'=> '<br/><em>Optional. What is the upper normal limit of the test value?</em>'),
 						'lower_limit'=>array('label' => 'Lower Normal Limit',
@@ -34,7 +35,6 @@ echo $form->inputs(array('legend' => 'Add Test',
 		</button>
 	</div>
 
->>>>>>> origin/HEAD:www/app/views/tests/add.ctp
 </div>
 <div class="actions span-5 last">
 	<h3>Actions</h3>

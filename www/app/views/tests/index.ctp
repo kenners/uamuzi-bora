@@ -16,6 +16,7 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('name');?></th>
 	<th><?php echo $paginator->sort('abbreiviation');?></th>
 	<th><?php echo $paginator->sort('type');?></th>
+	<th><?php echo $paginator->sort('units');?></th>
 	<th><?php echo $paginator->sort('upper_limit');?></th>
 	<th><?php echo $paginator->sort('lower_limit');?></th>
 	<th><?php echo $paginator->sort('description');?></th>
@@ -47,6 +48,9 @@ foreach ($tests as $test):
 			<?php echo $test['Test']['type']; ?>
 		</td>
 		<td>
+			<?php echo $test['Test']['units']; ?>
+		</td>
+		<td>
 			<?php echo $test['Test']['upper_limit']; ?>
 		</td>
 		<td>
@@ -62,7 +66,7 @@ foreach ($tests as $test):
 			<?php echo $test['Test']['active']; ?>
 		</td>
 		<td>
-			<?php echo $test['Test']['user_id']; ?>
+			<?php echo $test['User']['username']; ?>
 		</td>
 		<td>
 			<?php echo $test['Test']['modified']; ?>
@@ -70,7 +74,7 @@ foreach ($tests as $test):
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $test['Test']['id'])); ?>
 			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $test['Test']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $test['Test']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $test['Test']['id'])); ?>
+			
 		</td>
 	</tr>
 <?php endforeach; ?>

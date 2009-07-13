@@ -16,14 +16,17 @@ class ResultsController extends AppController {
 			$this->Session->setFlash(__('Invalid Result.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->set('result', $this->Result->read(null, $id));
+		$result=$this->Result->find('first',array('conditions'=>array('Result.id'=>$id),'recursive'=>1));
+		$this->set('result', $result);
 	}
 
 	function add($pid = null) {
 	  $this->Result->Patient->id=$pid;
 	  $this->set('pid',$pid);
-	  
-	  if (!empty($this->data) && $this->Result->Patient->exists()) {
+	  if(!$this->Result->Patient->exists()){
+	    $this->Session->setFlash('You tried to add a result to a Patient that does not exist');
+	    $this->redirect('/');
+	  if (!empty($this->data)) {
 			$this->Result->create();
 			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 			$this->data=Set::insert($this->data,'Result.pid',$pid);

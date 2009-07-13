@@ -2,11 +2,11 @@
 	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
 </div>
 <div class="resultLookups form span-16">
-<?php echo $form->create('ResultLookup');?>
+<?php echo $form->create('ResultLookup', array('action'=>'add/'.$test_id));?>
 	<fieldset>
  		<legend><?php __('Add ResultLookup');?></legend>
 	<?php
-		echo $form->input('test_id');
+		
 		echo $form->input('value');
 		echo $form->input('description');
 		echo $form->input('comment');

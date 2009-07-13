@@ -16,7 +16,7 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($result['test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['test']['id'])); ?>
+			<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Value Decimal'); ?></dt>
@@ -51,7 +51,7 @@
 		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Last Edited By'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['user_id']; ?>
+			<?php echo $result['User']['username']; ?>
 			&nbsp;
 		</dd>
 	</dl>

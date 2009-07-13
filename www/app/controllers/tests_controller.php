@@ -15,31 +15,35 @@ class TestsController extends AppController {
 			$this->Session->setFlash(__('Invalid Test.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		
-		// Fetch the data
-		$test = $this->Test->read(NULL, $id);
-		
-		// Fetch a list of id to username mappings, and insert it into the
-		// relevant places in $test
-		$usernames = $this->User->find('list', array('fields' => array('User.username')));
-		$test['Test']['username'] = $usernames[$test['Test']['user_id']];
-		if (!empty($test['ResultLookup'])) {
-			foreach ($test['ResultLookup'] as $resultLookupKey => $resultLookupArray) {
-				$test['ResultLookup'][$resultLookupKey]['username'] = $usernames[$resultLookupArray['user_id']];
-			}
-		}
-		
-		// Send it to the view
+		$test=$this->Test->find('first',array('conditions'=>array('Test.id'=>$id),'recursive'=>1));
 		$this->set('test', $test);
+
 	}
 
 	function add() {
 		if (!empty($this->data)) {
 			$this->Test->create();
+			//Insert the user_id from session
+			$this->data=Set::insert($this->data,'Test.user_id',$this->Auth->user('id'));
+			
 			if ($this->Test->save($this->data)) {
-			  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
-				$this->Session->setFlash(__('The Test has been saved', true));
-				$this->redirect(array('action'=>'index'));
+			        $this->Session->setFlash(__('The Test has been saved', true));
+				$type=Set::extract('/Test/type',$this->data);//get the test type
+				$name=Set::extract('/Test/name',$this->data);//get the name
+				//pull the id from the database
+				$test_id=Set::extract('/Test/id',$this->Test->find('first',array('conditions'=>array('Test.name'=>$name),'recursive'=>-1)));
+				//Fix arrays
+				$type=$type[0];
+				$test_id=$test_id[0];
+				//If type=lookup redirect to add resultLookups
+				if(strcmp($type,'lookup')==0)
+				  {
+				    $this->redirect(array('controller'=>'ResultLookups','action'=>'add/'.$test_id));
+				  }
+				else
+				  {
+				    $this->redirect(array('action'=>'index'));
+				  }
 			} else {
 				$this->Session->setFlash(__('The Test could not be saved. Please, try again.', true));
 			}
@@ -53,7 +57,7 @@ class TestsController extends AppController {
 		}
 		if (!empty($this->data)) {
 		  parent::archive($id);
-		  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+		  $this->data=Set::insert($this->data,'Test.user_id',$this->Auth->user('id'));
 			if ($this->Test->save($this->data)) {
 				$this->Session->setFlash(__('The Test has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -66,17 +70,7 @@ class TestsController extends AppController {
 		}
 	}
 
-	function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for Test', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		parent::archive($id);
-		if ($this->Test->del($id)) {
-			$this->Session->setFlash(__('Test deleted', true));
-			$this->redirect(array('action'=>'index'));
-		}
-	}
+
 
 }
 ?>

@@ -6,8 +6,7 @@ class ResultLookupsController extends AppController {
 	var $uses=array('ResultLookup','ArchiveResultLookup', 'User');
 	
 	function index() {
-		$this->ResultLookup->recursive = 0;
-		$this->set('resultLookups', $this->paginate());
+	  $this->redirect(array('controller'=>'tests','action'=>'index'));
 	}
 
 	function view($id = null) {
@@ -15,23 +14,46 @@ class ResultLookupsController extends AppController {
 			$this->Session->setFlash(__('Invalid ResultLookup.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->set('resultLookup', $this->ResultLookup->read(null, $id));
+		$resultLookup=$this->ResultLookup->find('first',array('conditions'=>array('ResultLookup.id'=>$id),'recursive'=>1));
+		$this->set('resultLookup', $resultLookup);
+		
 	}
 
-	function add() {
-		if (!empty($this->data)) {
-			$this->ResultLookup->create();
-			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
-			if ($this->ResultLookup->save($this->data)) {
-				$this->Session->setFlash(__('The ResultLookup has been saved', true));
-				$this->redirect(array('action'=>'index'));
-			} else {
-				$this->Session->setFlash(__('The ResultLookup could not be saved. Please, try again.', true));
-			}
-		}
-		$tests = $this->ResultLookup->Test->find('list');
-		$this->set(compact('tests'));
+  function add($test_id=null) {
+    $this->ResultLookup->Test->id=$test_id;
+    $this->set('test_id',$test_id);
+    $test=$this->ResultLookup->Test->read(null,$test_id);
+    $type=Set::extract('\Test\type',$test);
+    if (!empty($this->data))
+    {
+      if($this->ResultLookup->Test->exists())
+	{
+	  if(strcmp($type,'lookup')==0) {
+		
+	    $this->ResultLookup->create();
+	    //Insert the user-id from session and test_id from the url
+	    $this->data=Set::insert($this->data,'ResultLookup.user_id',$this->Auth->user('id'));
+	    $this->data=Set::insert($this->data,'ResultLookup.test_id',$test_id);
+	    if ($this->ResultLookup->save($this->data)) {
+	      $this->Session->setFlash(__('The ResultLookup has been saved', true));
+	      $this->redirect(array('controller'=>'tests','action'=>'index'));//redirec to tests/index
+	    } else {
+	      $this->Session->setFlash(__('The ResultLookup could not be saved. Please, try again.', true));
+	    }
+	  }else {
+	    $this->Session->setFlash('You have tried to add an option to a test that shall not have options');
+	  }
+	}else{
+	  $this->Session->setFlash("The test you try to add options too don't exist");
 	}
+    }
+
+    $tests = $this->ResultLookup->Test->find('list');
+    $this->set(compact('tests'));
+		
+
+  }
+
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
@@ -40,7 +62,7 @@ class ResultLookupsController extends AppController {
 		}
 		if (!empty($this->data)) {
 		  parent::archive($id);
-		  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+		  $this->data=Set::insert($this->data,'ResultLookup.user_id',$this->Auth->user('id'));
 			if ($this->ResultLookup->save($this->data)) {
 				$this->Session->setFlash(__('The ResultLookup has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -68,4 +90,5 @@ class ResultLookupsController extends AppController {
 	}
 
 }
+
 ?>
