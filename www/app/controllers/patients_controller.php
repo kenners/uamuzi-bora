@@ -101,7 +101,7 @@ class PatientsController extends AppController {
 		}
 
 		$this->Patient->recursive = 2;
-		
+		$this->set('tests',$this->Patient->Result->Test->find('all',array('recursive'=>-1,'conditions'=>array('active'=>true))));
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
 	

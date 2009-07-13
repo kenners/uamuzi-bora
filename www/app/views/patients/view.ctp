@@ -18,7 +18,7 @@ $javascript->link('jquery.js', false);
 		echo $html->div('patientId span-22 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $pid, array('class'=>'patientIdValue')));
 	
 		// Date of Birth
-		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $patient['Patient']['date_of_birth'], array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', date('d/m/Y', strtotime($patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
 		// Age (really really messy)
 		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
 			$age = date('Y') - $patient['Patient']['year_of_birth'];
@@ -50,11 +50,9 @@ $javascript->link('jquery.js', false);
 		<h2>Demographic Information</h2>
 		<div class="tasks">
 			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
-			<?php if($patient['Patient']['status'] == 1){?>
-			<a class="button negative" href="/patients/active/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
-			<?php } else { ?>
-			<a class="button positive" href="/patients/active/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
-			<?php }?>
+						<a class="button negative" href="/patients/active/">Change Status to Inactive</a>
+						<a class="button positive" href="/patients/active/">Change Status to Active</a>
+			
 		</div>
 	</div
 		</div>
@@ -69,14 +67,34 @@ $javascript->link('jquery.js', false);
 		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 		?>
 		<h2>Results</h2></h2>
+		
+		<!-- Miniform for adding results -->
+		<div class="addresult">
+		<form id="testadder" method="post" action="/results/add/<?php echo $patient['Patient']['pid'];?>">
+		<?php
+		$testoptions=array();
+		foreach ($tests as $test){
+						$testoptions[$test['Test']['id']] = $test['Test']['name'];
+					
+		}
+		
+		$options=array('M'=>'Male','F'=>'Female');
+		//$form->create(FALSE, array('url' => array('url' => '/results/add/'.$patient['Patient']['pid'])));
+		echo $form->inputs(array('legend' => 'Add New Result',
+									'id' =>array('type'=>'select',
+												'options' => $testoptions)));
+		//echo $form->end('Add New Result');
+		?>
+		<input value="Submit" type="submit">
+		</form>
+		</div>
+		<!-- End of Miniform -->
 		<div id="results">
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<th><?php echo $paginator->sort('Result ID','id');?></th>
 					<th><?php echo $paginator->sort('Test','test_id');?></th>
-					<th><?php echo $paginator->sort('Result Decimal','value_decimal');?></th>
-					<th><?php echo $paginator->sort('Result Text','value_text');?></th>
-					<th><?php echo $paginator->sort('Result Option','value_lookup');?></th>
+					<th>Result</th>
 					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
 					<th><?php echo $paginator->sort('Requested By','requesting_clinician');?></th>
 					<th><?php echo $paginator->sort('Added On','created');?></th>
@@ -101,13 +119,7 @@ $javascript->link('jquery.js', false);
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?>
-					</td>
-					<td>
-						<?php echo $result['value_text']; ?>
-					</td>
-					<td>
-						<?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
 					</td>
 					<td>
 						<?php echo $result['test_performed']; ?>
