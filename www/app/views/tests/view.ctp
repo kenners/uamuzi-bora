@@ -15,7 +15,7 @@
 			<?php echo $test['Test']['name']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Abbreiviation'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Abbreviation'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $test['Test']['abbreiviation']; ?>
 			&nbsp;

@@ -3,7 +3,7 @@ class TestsController extends AppController {
 
 	var $name = 'Tests';
 	var $helpers = array('Html', 'Form', 'Crumb');
-  var $uses= array('Test','ArchiveTest');
+  var $uses= array('Test','ArchiveTest','User');
 
 	function index() {
 		$this->Test->recursive = 0;
