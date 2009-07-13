@@ -33,7 +33,7 @@ foreach ($resultLookups as $resultLookup):
 			<?php echo $resultLookup['ResultLookup']['id']; ?>
 		</td>
 		<td>
-			<?php echo $html->link($resultLookup['test']['name'], array('controller'=> 'tests', 'action'=>'view', $resultLookup['test']['id'])); ?>
+			<?php echo $html->link($resultLookup['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $resultLookup['Test']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $resultLookup['ResultLookup']['value']; ?>
