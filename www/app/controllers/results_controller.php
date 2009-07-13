@@ -47,6 +47,8 @@ class ResultsController extends AppController {
 		if (!empty($this->data)) {
 		  parent::archive($id);
 			if ($this->Result->save($this->data)) {
+			  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+			  
 				$this->Session->setFlash(__('The Result has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {

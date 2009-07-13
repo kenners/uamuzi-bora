@@ -10,7 +10,7 @@
 		echo $form->input('value');
 		echo $form->input('description');
 		echo $form->input('comment');
-		echo $form->input('user_id');
+	
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

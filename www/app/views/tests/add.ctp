@@ -14,7 +14,6 @@
 		echo $form->input('description');
 		echo $form->input('comment');
 		echo $form->input('active');
-		echo $form->input('user_id');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

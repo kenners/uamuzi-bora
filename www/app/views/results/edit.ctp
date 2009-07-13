@@ -14,7 +14,6 @@
 		echo $form->input('value_lookup');
 		echo $form->input('test_performed');
 		echo $form->input('requesting_clinician');
-		echo $form->input('user_id');
 		echo $form->input('archive_reason');
 	?>
 	</fieldset>

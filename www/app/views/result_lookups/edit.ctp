@@ -11,7 +11,6 @@
 		echo $form->input('value');
 		echo $form->input('description');
 		echo $form->input('comment');
-		echo $form->input('user_id');
 		echo $form->input('archive_reason');
 	?>
 	</fieldset>

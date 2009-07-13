@@ -22,6 +22,7 @@ class TestsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Test->create();
 			if ($this->Test->save($this->data)) {
+			  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 				$this->Session->setFlash(__('The Test has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
@@ -37,6 +38,7 @@ class TestsController extends AppController {
 		}
 		if (!empty($this->data)) {
 		  parent::archive($id);
+		  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 			if ($this->Test->save($this->data)) {
 				$this->Session->setFlash(__('The Test has been saved', true));
 				$this->redirect(array('action'=>'index'));

@@ -21,6 +21,7 @@ class ResultLookupsController extends AppController {
 	function add() {
 		if (!empty($this->data)) {
 			$this->ResultLookup->create();
+			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 			if ($this->ResultLookup->save($this->data)) {
 				$this->Session->setFlash(__('The ResultLookup has been saved', true));
 				$this->redirect(array('action'=>'index'));
@@ -39,6 +40,7 @@ class ResultLookupsController extends AppController {
 		}
 		if (!empty($this->data)) {
 		  parent::archive($id);
+		  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 			if ($this->ResultLookup->save($this->data)) {
 				$this->Session->setFlash(__('The ResultLookup has been saved', true));
 				$this->redirect(array('action'=>'index'));
