@@ -77,8 +77,7 @@ $javascript->link('jquery.js', false);
 						$testoptions[$test['Test']['id']] = $test['Test']['name'];
 					
 		}
-		
-		$options=array('M'=>'Male','F'=>'Female');
+
 		//$form->create(FALSE, array('url' => array('url' => '/results/add/'.$patient['Patient']['pid'])));
 		echo $form->inputs(array('legend' => 'Add New Result',
 									'id' =>array('type'=>'select',

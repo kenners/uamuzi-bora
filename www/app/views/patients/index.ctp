@@ -59,7 +59,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['date_of_birth']; ?>
+			<?php echo date('d/m/Y', strtotime($patient['Patient']['date_of_birth'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['sex']; ?>

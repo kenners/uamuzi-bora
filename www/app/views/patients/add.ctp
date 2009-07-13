@@ -13,7 +13,7 @@ echo $form->create('Patient');
 echo $form->inputs(array('legend' => 'Basic Demographics',
 						'surname'=>array('label'=>'Surname*'),
 						'forenames'=>array('label'=>'Forenames*'),
-						'date_of_birth'=>array('label' => 'Date of Birth*',
+						'date_of_birth'=>array('label' => 'Date of Birth',
 												'dateFormat' => 'DMY',
 												'empty' => TRUE,
 												'minYear' => date('Y') - 100,
