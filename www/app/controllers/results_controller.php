@@ -31,8 +31,9 @@ class ResultsController extends AppController {
 	  }
 	  
 	  if (!empty($this->data)) {
-	  $test_id=Set::extract('\id',$this->data);
+	    $test_id=$this->data['id'];
 	  $this->Result->Test->id=$test_id;
+	  var_dump($this->data);
 	    if($test_id!=0)
 	      {
 		if($this->Result->Test->exists())

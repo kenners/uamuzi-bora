@@ -69,7 +69,7 @@ $javascript->link('jquery.js', false);
 		<h2>Results</h2></h2>
 		
 		<!-- Miniform for adding results -->
-		<div class="addresult">
+		<div class="addresult">	
 		<form id="testadder" method="post" action="/results/add/<?php echo $patient['Patient']['pid'];?>">
 		<?php
 		$testoptions=array();
