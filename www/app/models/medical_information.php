@@ -21,7 +21,6 @@ class MedicalInformation extends AppModel {
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.pid' => 'Patient.pid')
 			),
-		'inactive_reason' => array('className' => 'InactiveReason'),
 		'patient_source' => array('className' => 'PatientSource'),
 		'funding' => array('className' => 'Funding'),
 		'hiv_positive_test_location' => array(
@@ -63,25 +62,6 @@ class MedicalInformation extends AppModel {
 			'valid PID' => array(
 				'rule' => array('customValidationFunction', 'valueExists', 'Patient', 'pid'),
 				'message' => 'This Patient ID does not exist'
-				)
-			),
-		'status' => array(
-			'boolean' => array(
-				'rule' => 'boolean',
-				'allowEmpty' => TRUE,
-				'message' => 'This is not a valid value for status'
-				)
-			),
-		'inactive_reason_id' => array(
-			'positive integer' => array(
-				'rule' => array('customValidationFunction', 'isPositiveInteger'),
-				'allowEmpty' => TRUE,
-				'message' => 'inactive_reason_id should be a positive integer'
-				),
-			'valid inactive_reason_id' => array(
-				'rule' => array('customValidationFunction', 'valueExists', 'InactiveReason', 'id'),
-				'allowEmpty' => TRUE,
-				'message' => 'This is not a valid inactive_reason_id'
 				)
 			),
 		'patient_source_id' => array(
@@ -238,7 +218,7 @@ class MedicalInformation extends AppModel {
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a well-formatted date'
 				)
-			),
+			)
 		);
 }
 ?>
