@@ -24,8 +24,8 @@ class Patient extends AppModel {
 			'className' => 'VfTestingSite',
 			'foreignKey' => FALSE,
 			'conditions' => array('Patient.vf_testing_site = vf_testing_site.site_code')
-		)
-		
+		),
+		'inactive_reason' => array('className' => 'InactiveReason'),
 	);
 	var $hasMany=array(
 			   'Result'=>array('className'=>'Result',
@@ -172,7 +172,26 @@ class Patient extends AppModel {
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a valid VF Testing site code'
 			)
-		)
+		),
+		'status' => array(
+			'boolean' => array(
+				'rule' => 'boolean',
+				'allowEmpty' => TRUE,
+				'message' => 'This is not a valid value for status'
+				)
+			),
+		'inactive_reason_id' => array(
+			'positive integer' => array(
+				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
+				'message' => 'inactive_reason_id should be a positive integer'
+				),
+			'valid inactive_reason_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'InactiveReason', 'id'),
+				'allowEmpty' => TRUE,
+				'message' => 'This is not a valid inactive_reason_id'
+				)
+			),
 	);
 	
 	/**
