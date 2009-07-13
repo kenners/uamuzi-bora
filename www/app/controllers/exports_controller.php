@@ -1,14 +1,15 @@
 <?php
 class ExportsController extends AppController {
-	var $name = 'Exports';
+  var $name = 'Exports';
   var $uses = array();
   
   function dump(){
     
-    $dir="\ " ;
-    if($handle = opendir($dir)){
-      $name='schema'.date('c').'.sql';
-      passthru("pg_dump -cboOx -f \"".$dir."\\".$name.".sql\" -U postgre uamuzibora",$returnval);//dump database
+     $dir="/" ;
+     if($handle = opendir($dir)){
+    $name='schema'.date('c').'.sql';
+    var_dump($name);
+    passthru('pg_dump -cboOx -f \''.$dir.'/'.$name.'.sql\' -U www-data uamuzibora',$returnval);//dump database
       
       //Find last dump
       $latest=date(0);
@@ -36,10 +37,10 @@ class ExportsController extends AppController {
 	{
 	  $this->Session->setFlash("Can't find the schema file");
 	}
-      // if(!is_file($diff_file_name))
-// 	{
-// 	  $this->Session->setFlash("Can't find the diff file");
-// 	}
+      if(!is_file($diff_file_name))
+	{
+	  $this->Session->setFlash("Can't find the diff file");
+	}
       
       if(!empty($this->data))
 	{
@@ -55,8 +56,8 @@ class ExportsController extends AppController {
 	  set_time_limit(0);
 	  readfile($file);
 	}
-    }
-  }
+   }
+   }
 }
       
 	  
