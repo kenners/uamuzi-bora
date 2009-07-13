@@ -30,7 +30,7 @@ $i = 0;
 foreach ($results as $result):
 	$class = null;
 	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
+		$class = ' class="even"';
 	}
 ?>
 	<tr<?php echo $class;?>>
@@ -79,6 +79,7 @@ foreach ($results as $result):
 	<?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
 </div>
 <div class="actions">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('New Result', true), array('action'=>'add')); ?></li>
 		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>

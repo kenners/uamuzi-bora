@@ -11,6 +11,9 @@ SET escape_string_warning = off;
 SET search_path = public, pg_catalog;
 
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_location_id_fkey;
+ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_user_id_fkey;
+ALTER TABLE ONLY public.results DROP CONSTRAINT results_user_id_fkey;
+ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_user_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vf_testing_site_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
@@ -25,6 +28,7 @@ ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_information
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_starting_regimen_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_service_type_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_indication_id_fkey;
+DROP INDEX public.aro_aco_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
@@ -56,11 +60,14 @@ ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_pkey
 ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_name_key;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_pkey;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_name_key;
+ALTER TABLE ONLY public.aros DROP CONSTRAINT aros_pkey;
+ALTER TABLE ONLY public.aros_acos DROP CONSTRAINT aros_acos_pkey;
 ALTER TABLE ONLY public.archive_users DROP CONSTRAINT archive_users_pkey;
 ALTER TABLE ONLY public.archive_tests DROP CONSTRAINT archive_tests_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
 ALTER TABLE ONLY public.archive_result_lookups DROP CONSTRAINT archive_result_lookups_pkey;
 ALTER TABLE ONLY public.archive_groups DROP CONSTRAINT archive_groups_pkey;
+ALTER TABLE ONLY public.acos DROP CONSTRAINT acos_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
@@ -77,11 +84,14 @@ ALTER TABLE public.fundings ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_service_types ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_indications ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros_acos ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.aros ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_groups ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.acos ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
 DROP TABLE public.vf_testing_sites;
 DROP SEQUENCE public.users_id_seq;
@@ -117,6 +127,10 @@ DROP SEQUENCE public.art_service_types_id_seq;
 DROP TABLE public.art_service_types;
 DROP SEQUENCE public.art_indications_id_seq;
 DROP TABLE public.art_indications;
+DROP SEQUENCE public.aros_id_seq;
+DROP SEQUENCE public.aros_acos_id_seq;
+DROP TABLE public.aros_acos;
+DROP TABLE public.aros;
 DROP SEQUENCE public.archive_users_id_seq;
 DROP TABLE public.archive_users;
 DROP SEQUENCE public.archive_tests_id_seq;
@@ -127,6 +141,8 @@ DROP SEQUENCE public.archive_result_lookups_id_seq;
 DROP TABLE public.archive_result_lookups;
 DROP SEQUENCE public.archive_groups_id_seq;
 DROP TABLE public.archive_groups;
+DROP SEQUENCE public.acos_id_seq;
+DROP TABLE public.acos;
 DROP PROCEDURAL LANGUAGE plpgsql;
 DROP SCHEMA public;
 --
@@ -155,6 +171,47 @@ SET search_path = public, pg_catalog;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: acos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE acos (
+    id integer NOT NULL,
+    parent_id integer,
+    model character varying(255) DEFAULT NULL::character varying,
+    foreign_key integer,
+    alias character varying(255) DEFAULT NULL::character varying,
+    lft integer,
+    rght integer
+);
+
+
+--
+-- Name: acos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE acos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: acos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE acos_id_seq OWNED BY acos.id;
+
+
+--
+-- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('acos_id_seq', 1, false);
+
 
 --
 -- Name: archive_groups; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -384,6 +441,88 @@ ALTER SEQUENCE archive_users_id_seq OWNED BY archive_users.id;
 --
 
 SELECT pg_catalog.setval('archive_users_id_seq', 1, false);
+
+
+--
+-- Name: aros; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE aros (
+    id integer NOT NULL,
+    parent_id integer,
+    model character varying(255) DEFAULT NULL::character varying,
+    foreign_key integer,
+    alias character varying(255) DEFAULT NULL::character varying,
+    lft integer,
+    rght integer
+);
+
+
+--
+-- Name: aros_acos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE aros_acos (
+    id integer NOT NULL,
+    aro_id integer NOT NULL,
+    aco_id integer NOT NULL,
+    _create character varying(2) DEFAULT '0'::character varying NOT NULL,
+    _read character varying(2) DEFAULT '0'::character varying NOT NULL,
+    _update character varying(2) DEFAULT '0'::character varying NOT NULL,
+    _delete character varying(2) DEFAULT '0'::character varying NOT NULL
+);
+
+
+--
+-- Name: aros_acos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE aros_acos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: aros_acos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE aros_acos_id_seq OWNED BY aros_acos.id;
+
+
+--
+-- Name: aros_acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('aros_acos_id_seq', 1, false);
+
+
+--
+-- Name: aros_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE aros_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: aros_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE aros_id_seq OWNED BY aros.id;
+
+
+--
+-- Name: aros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('aros_id_seq', 1, false);
 
 
 --
@@ -1095,6 +1234,13 @@ SELECT pg_catalog.setval('vf_testing_sites_site_code_seq', 28, true);
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE acos ALTER COLUMN id SET DEFAULT nextval('acos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE archive_groups ALTER COLUMN id SET DEFAULT nextval('archive_groups_id_seq'::regclass);
 
 
@@ -1124,6 +1270,20 @@ ALTER TABLE archive_tests ALTER COLUMN id SET DEFAULT nextval('archive_tests_id_
 --
 
 ALTER TABLE archive_users ALTER COLUMN id SET DEFAULT nextval('archive_users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE aros ALTER COLUMN id SET DEFAULT nextval('aros_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE aros_acos ALTER COLUMN id SET DEFAULT nextval('aros_acos_id_seq'::regclass);
 
 
 --
@@ -1239,6 +1399,14 @@ ALTER TABLE vf_testing_sites ALTER COLUMN site_code SET DEFAULT nextval('vf_test
 
 
 --
+-- Data for Name: acos; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY acos (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
+\.
+
+
+--
 -- Data for Name: archive_groups; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1275,6 +1443,26 @@ COPY archive_tests (id, user_id, created, archive_reason, archive_id, archive_na
 --
 
 COPY archive_users (id, archive_id, user_id, created, archive_reason, archive_username, archive_password, archive_group_id, archive_name, archive_created, archive_modified) FROM stdin;
+\.
+
+
+--
+-- Data for Name: aros; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY aros (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
+1	\N	Group	1	\N	1	4
+3	1	User	1	\N	2	3
+2	\N	Group	2	\N	5	8
+4	2	User	2	\N	6	7
+\.
+
+
+--
+-- Data for Name: aros_acos; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY aros_acos (id, aro_id, aco_id, _create, _read, _update, _delete) FROM stdin;
 \.
 
 
@@ -1330,6 +1518,8 @@ COPY fundings (id, name, description, comment) FROM stdin;
 --
 
 COPY groups (id, name, description, created, modified) FROM stdin;
+1	admin		2009-07-10 21:35:23	2009-07-10 21:35:23
+2	user		2009-07-10 21:35:27	2009-07-10 21:35:27
 \.
 
 
@@ -1495,6 +1685,8 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 --
 
 COPY users (id, username, password, group_id, name, created, modified) FROM stdin;
+1	admin	82bf611c53901f13c54e59f032a4d4714168c505075f7010d05ff2d8062a8c9e	1		2009-07-10 21:35:38	2009-07-10 21:35:38
+2	user	89ef4f9d082dad635f13d9aab392a2ce41f47dbfd28d783e023ccfd5213a1a67	2		2009-07-10 21:35:59	2009-07-10 21:35:59
 \.
 
 
@@ -1535,6 +1727,14 @@ COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longit
 
 
 --
+-- Name: acos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY acos
+    ADD CONSTRAINT acos_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: archive_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1572,6 +1772,22 @@ ALTER TABLE ONLY archive_tests
 
 ALTER TABLE ONLY archive_users
     ADD CONSTRAINT archive_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: aros_acos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY aros_acos
+    ADD CONSTRAINT aros_acos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: aros_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY aros
+    ADD CONSTRAINT aros_pkey PRIMARY KEY (id);
 
 
 --
@@ -1823,6 +2039,13 @@ ALTER TABLE ONLY vf_testing_sites
 
 
 --
+-- Name: aro_aco_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX aro_aco_key ON aros_acos USING btree (aro_id, aco_id);
+
+
+--
 -- Name: medical_informations_art_indication_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1932,6 +2155,30 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_vf_testing_site_fkey FOREIGN KEY (vf_testing_site) REFERENCES vf_testing_sites(site_code);
+
+
+--
+-- Name: result_lookups_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY result_lookups
+    ADD CONSTRAINT result_lookups_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: results_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY results
+    ADD CONSTRAINT results_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: tests_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --

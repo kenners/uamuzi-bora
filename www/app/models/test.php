@@ -13,6 +13,7 @@ class Test extends appModel{
 		 'Result'=>array('classname'=>'Result'),
 		 'ResultLookup'=>array('className'=>'ResultLookup')
 		 );
+	var $belongsTo = array('User' => array('className' => 'User'));
    
 
   var $validate = array(

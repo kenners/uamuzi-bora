@@ -1,7 +1,7 @@
 <div class="breadcrumb">
 	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
 </div>
-<div class="results form">
+<div class="results form span-16">
 <?php echo $form->create('Result', array('action'=>'add/'.$pid));?>
 	<fieldset>
  		<legend><?php __('Add Result');?></legend>
@@ -18,7 +18,8 @@
 	</fieldset>
 <?php echo $form->end('Submit');?>
 </div>
-<div class="actions">
+<div class="actions span-5 last">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('List Results', true), array('action'=>'index'));?></li>
 		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>

@@ -3,7 +3,8 @@ class ResultsController extends AppController {
 
 	var $name = 'Results';
 	var $helpers = array('Html', 'Form', 'Crumb');
-  var $uses=array('Result','ArchiveResult');
+	var $uses=array('Result','ArchiveResult', 'User');
+	
 	function index() {
 		$this->Result->recursive = 0;
 		$this->set('results', $this->paginate());
