@@ -46,7 +46,7 @@
 		</div>
 		<!-- Content -->
 		<div id="content" class="prepend-1 span-22 append-1">
-
+			<?php $session->flash(); ?>
 			<?php $session->flash('auth'); ?>
 
 			<?php echo $content_for_layout; ?>
