@@ -18,11 +18,11 @@ ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vf_testing_site_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_marital_status_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_location_id_fkey;
+ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_inactive_reason_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_education_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_transfer_in_district_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_pid_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_patient_source_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_inactive_reason_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_hiv_positive_test_location_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_funding_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_starting_regimen_id_fkey;
@@ -835,9 +835,6 @@ SELECT pg_catalog.setval('marital_statuses_id_seq', 5, true);
 
 CREATE TABLE medical_informations (
     pid integer NOT NULL,
-    status boolean DEFAULT true NOT NULL,
-    inactive_reason_id integer,
-    status_timestamp timestamp without time zone DEFAULT now() NOT NULL,
     patient_source_id integer,
     funding_id integer,
     hiv_positive_date date,
@@ -959,7 +956,10 @@ CREATE TABLE patients (
     nearest_school character varying,
     nearest_health_centre character varying,
     nearest_major_landmark character varying,
-    vf_testing_site integer
+    vf_testing_site integer,
+    status boolean DEFAULT true NOT NULL,
+    inactive_reason_id integer,
+    status_timestamp timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -1609,7 +1609,7 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 -- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY medical_informations (pid, status, inactive_reason_id, status_timestamp, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, trasnfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
+COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, trasnfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
 \.
 
 
@@ -1645,7 +1645,7 @@ COPY patient_sources (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site) FROM stdin;
+COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp) FROM stdin;
 \.
 
 
@@ -2087,14 +2087,6 @@ ALTER TABLE ONLY medical_informations
 
 
 --
--- Name: medical_informations_inactive_reason_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_inactive_reason_id_fkey FOREIGN KEY (inactive_reason_id) REFERENCES inactive_reasons(id);
-
-
---
 -- Name: medical_informations_patient_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2124,6 +2116,14 @@ ALTER TABLE ONLY medical_informations
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_education_id_fkey FOREIGN KEY (education_id) REFERENCES educations(id);
+
+
+--
+-- Name: patients_inactive_reason_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY patients
+    ADD CONSTRAINT patients_inactive_reason_id_fkey FOREIGN KEY (inactive_reason_id) REFERENCES inactive_reasons(id);
 
 
 --
