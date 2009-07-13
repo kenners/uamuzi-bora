@@ -81,7 +81,8 @@ foreach ($tests as $test):
  | 	<?php echo $paginator->numbers();?>
 	<?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
 </div>
-<div class="actions">
+<div class="actions span-5">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('New Test', true), array('action'=>'add')); ?></li>
 		<li><?php echo $html->link(__('List Results', true), array('controller'=> 'results', 'action'=>'index')); ?> </li>

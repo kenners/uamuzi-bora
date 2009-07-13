@@ -1,7 +1,7 @@
 <div class="breadcrumb">
 	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
 </div>
-<div class="results view">
+<div class="results view span-16">
 <h2><?php  __('Result');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
@@ -56,7 +56,8 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
+<div class="actions span-5 last">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('Edit Result', true), array('action'=>'edit', $result['Result']['id'])); ?> </li>
 		<li><?php echo $html->link(__('Delete Result', true), array('action'=>'delete', $result['Result']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['Result']['id'])); ?> </li>

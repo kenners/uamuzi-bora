@@ -19,7 +19,7 @@ class PatientsController extends AppController {
 	 */
 	function index() {
 		$this->Patient->recursive = 0;
-		$this->set('patient', $this->paginate());
+		$this->set('patients', $this->paginate());
 	}
 	
 	/**

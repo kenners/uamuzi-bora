@@ -1,7 +1,7 @@
 <div class="breadcrumb">
 	<?php echo $crumb->getHtml('Edit', null, 'auto'); ?>
 </div>
-<div class="resultLookups form">
+<div class="resultLookups form span-16">
 <?php echo $form->create('ResultLookup');?>
 	<fieldset>
  		<legend><?php __('Edit ResultLookup');?></legend>
@@ -17,7 +17,8 @@
 	</fieldset>
 <?php echo $form->end('Submit');?>
 </div>
-<div class="actions">
+<div class="actions span-5 last">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('ResultLookup.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('ResultLookup.id'))); ?></li>
 		<li><?php echo $html->link(__('List ResultLookups', true), array('action'=>'index'));?></li>
