@@ -938,9 +938,9 @@ SELECT pg_catalog.setval('patient_sources_id_seq', 7, true);
 
 CREATE TABLE patients (
     pid integer NOT NULL,
-    upn integer,
-    arvid integer,
-    vfcc integer,
+    upn character varying,
+    arvid character varying,
+    vfcc character varying,
     surname character varying NOT NULL,
     forenames character varying NOT NULL,
     date_of_birth date,
