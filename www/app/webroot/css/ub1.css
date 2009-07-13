@@ -129,3 +129,7 @@ div.paging span.current {
 div.paging span a {
 }
 .breadcrumb{padding-bottom: 0.5em; margin-bottom: 0.5em; border-bottom-width: 1px; border-bottom-color: #8d8d8d; border-bottom-style: groove;}
+div.spinning{
+float: right;
+display: none;
+}
