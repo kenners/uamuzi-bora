@@ -7,7 +7,7 @@
  		<legend><?php __('Add Result');?></legend>
 	<?php
 		//echo $form->input('pid');
-		echo $form->input('test_id');
+		echo $form->input('test_id',array('type'=>'hidden','value'=>$test_id));
 		echo $form->input('value_decimal');
 		echo $form->input('value_text');
 		echo $form->input('value_lookup');

@@ -21,27 +21,44 @@ class ResultsController extends AppController {
 	}
 
 	function add($pid = null) {
+
+	 
 	  $this->Result->Patient->id=$pid;
 	  $this->set('pid',$pid);
 	  if(!$this->Result->Patient->exists()){
 	    $this->Session->setFlash('You tried to add a result to a Patient that does not exist');
 	    $this->redirect('/');
 	  }
+	  
 	  if (!empty($this->data)) {
-			$this->Result->create();
-			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
-			$this->data=Set::insert($this->data,'Result.pid',$pid);
+	  $test_id=Set::extract('\id',$this->data);
+	  $this->Result->Test->id=$test_id;
+	    if($test_id!=0)
+	      {
+		if($this->Result->Test->exists())
+		  {
+		    $this->set('test_id',$test_id);
+		    $this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
+		  }else{
+		    $this->Session->setFlash('Not a valid test');
+		  }
+	      }else{
+
+		$this->Result->create();
+		$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+		$this->data=Set::insert($this->data,'Result.pid',$pid);
 			
 			
-			if ($this->Result->save($this->data)) {
-				$this->Session->setFlash(__('The Result has been saved', true));
-				$this->redirect(array('action'=>'index'));
-			} else {
-				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
-			}
+		if ($this->Result->save($this->data)) {
+		  $this->Session->setFlash(__('The Result has been saved', true));
+		  $this->redirect(array('action'=>'index'));
+		} else {
+		  $this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 		}
-		$tests = $this->Result->Test->find('list');
-		$this->set(compact('tests'));
+	      }
+	  }
+	  $tests = $this->Result->Test->find('list');
+	  $this->set(compact('tests'));
 	}
 
 	function edit($id = null) {

@@ -26,6 +26,21 @@ class PatientsController extends AppController {
 		$this->Patient->recursive = 0;
 		$this->set('patients', $this->paginate());
 	}
+
+  function search(){
+    //if(!empty($this->data))
+    //  {
+
+	
+	$field_name='surname';//Set::extract('/Patient/field_name',$this->data);
+	$search='Ro';//Set::extract('/Patient/search',$this->data);
+	
+	//$this->set('patients',$this->paginate(array('conditions'=>array($field_name.' LIKE'=>$search))));
+	  var_dump($this->paginate('Patient',array($field_name.' LIKE'=>$search)));
+	
+	  //  }
+  }
+	
 	
 	/**
 	 * Populate the Patient model with data for a new patient
@@ -101,6 +116,7 @@ class PatientsController extends AppController {
 		}
 
 		$this->Patient->recursive = 2;
+		
 		
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
