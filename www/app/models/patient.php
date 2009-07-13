@@ -112,7 +112,7 @@ class Patient extends AppModel {
 			)
 		),
 		'date_of_birth' => array(
-			'ISO8601' => array(
+			'ISO 8601' => array(
 				'rule' => array('date', 'ymd'),
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a well-formatted date'
@@ -132,6 +132,27 @@ class Patient extends AppModel {
 				'message' => 'The year of birth must not be left empty'
 			)
 		),
+		'occupation_id' => array(
+			'valid occupation_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'Occupation', 'id'),
+				'allowEmpty' => TRUE,
+				'message' => 'This is not a valid occupation_id'
+			)
+		),
+		'education_id' => array(
+			'valid education_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'Education', 'id'),
+				'allowEmpty' => TRUE,
+				'message' => 'This is not a valid education_id'
+			)
+		),
+		'marital_status_id' => array(
+			'valid marital_status_id' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'MaritalStatus', 'id'),
+				'allowEmpty' => TRUE,
+				'message' => 'This is not a valid marital_status_id'
+			)
+		),
 		'telephone_number' => array(
 			'ten digits' => array(
 				'rule' => array('custom', '/^\d{10}$/'),
@@ -140,21 +161,16 @@ class Patient extends AppModel {
 			)
 		),
 		'location_id' => array(
-			'positive integer' => array(
-				'rule' => array('customValidationFunction', 'isPositiveInteger'),
-				'allowEmpty' => TRUE,
-				'message' => 'The location_id should be a positive integer'
-			),
 			'valid location_id' => array(
 				'rule' => array('customValidationFunction', 'valueExists', 'Location', 'id'),
 				'message' => 'This is not a valid location_id'
 			)
 		),
 		'vf_testing_site' => array(
-			'positive integer' => array(
-				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+			'valid vf_testing_site' => array(
+				'rule' => array('customValidationFunction', 'valueExists', 'VfTestingSite', 'site_code'),
 				'allowEmpty' => TRUE,
-				'message' => 'The vf_testing_site should be a positive integer'
+				'message' => 'This is not a valid VF Testing site code'
 			)
 		)
 	);
