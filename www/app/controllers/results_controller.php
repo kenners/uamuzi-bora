@@ -26,6 +26,7 @@ class ResultsController extends AppController {
 	  if(!$this->Result->Patient->exists()){
 	    $this->Session->setFlash('You tried to add a result to a Patient that does not exist');
 	    $this->redirect('/');
+	  }
 	  if (!empty($this->data)) {
 			$this->Result->create();
 			$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
