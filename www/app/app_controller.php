@@ -35,6 +35,9 @@
  * @subpackage    cake.app
  */
 class AppController extends Controller {
+	//Enabling Ajax for all controllers, as we're going to be using it for our Index views
+	var $helpers = array('Javascript','Ajax');
+	
   var $components =array('Acl','Auth');// Components for ACL
   function beforeFilter() {
         Security::setHash('sha256');

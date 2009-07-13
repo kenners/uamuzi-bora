@@ -54,78 +54,78 @@ $javascript->link('jquery.js', false);
 	</div>
 	
 	<div id="tab3">
+		<?php
+		//Sets the update and indicator elements by DOM ID for AJAX pagination
+		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
+		?>
 		<h2>Results</h2></h2>
 		<div id="results">
-		<table cellpadding="0" cellspacing="0">
-<tr>
-	<th><?php echo $paginator->sort('id');?></th>
-	<th><?php echo $paginator->sort('pid');?></th>
-	<th><?php echo $paginator->sort('test_id');?></th>
-	<th><?php echo $paginator->sort('value_decimal');?></th>
-	<th><?php echo $paginator->sort('value_text');?></th>
-	<th><?php echo $paginator->sort('value_lookup');?></th>
-	<th><?php echo $paginator->sort('test_performed');?></th>
-	<th><?php echo $paginator->sort('created');?></th>
-	<th><?php echo $paginator->sort('requesting_clinician');?></th>
-	<th><?php echo $paginator->sort('user_id');?></th>
-	<th class="actions"><?php __('Actions');?></th>
-</tr>
-<?php
-$i = 0;
-
-$results=$patient['Result'];
-
-foreach ($results as $result):
-	$class = null;
-	if ($i++ % 2 == 0) {
-		$class = ' class="even"';
-	}
-?>
-	<tr<?php echo $class;?>>
-		<td>
-			<?php echo $result['id']; ?>
-			
-		</td>
-		<td>
-			<?php echo $result['pid']; ?>
-		</td>
-		<td>
-			<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $result['value_decimal']; ?>
-		</td>
-		<td>
-			<?php echo $result['value_text']; ?>
-		</td>
-		<td>
-			<?php echo $result['value_lookup']; ?>
-		</td>
-		<td>
-			<?php echo $result['test_performed']; ?>
-		</td>
-		<td>
-			<?php echo $result['created']; ?>
-		</td>
-		<td>
-			<?php echo $result['requesting_clinician']; ?>
-		</td>
-		<td>
-			<?php echo $result['user_id']; ?>
-		</td>
-		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $result['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-</table>
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<th><?php echo $paginator->sort('Result ID','id');?></th>
+					<th><?php echo $paginator->sort('Test','test_id');?></th>
+					<th><?php echo $paginator->sort('Result Decimal','value_decimal');?></th>
+					<th><?php echo $paginator->sort('Result Text','value_text');?></th>
+					<th><?php echo $paginator->sort('Result Option','value_lookup');?></th>
+					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
+					<th><?php echo $paginator->sort('Requested By','requesting_clinician');?></th>
+					<th><?php echo $paginator->sort('Added On','created');?></th>
+					<th><?php echo $paginator->sort('Added By','user_id');?></th>
+					<th class="actions"><?php __('Actions');?></th>
+				</tr>
+				<?php
+					$i = 0;
+					$results=$patient['Result'];
+					foreach ($results as $result):
+						$class = null;
+						if ($i++ % 2 == 0) {
+							$class = ' class="even"';
+						}
+				?>
+				<tr<?php echo $class;?>>
+					<td>
+						<?php echo $result['id']; ?>
+				
+					</td>
+					<td>
+						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
+					</td>
+					<td>
+						<?php echo $result['value_decimal']; ?>
+					</td>
+					<td>
+						<?php echo $result['value_text']; ?>
+					</td>
+					<td>
+						<?php echo $result['value_lookup']; ?>
+					</td>
+					<td>
+						<?php echo $result['test_performed']; ?>
+					</td>
+					<td>
+						<?php echo $result['created']; ?>
+					</td>
+					<td>
+						<?php echo $result['requesting_clinician']; ?>
+					</td>
+					<td>
+						<?php echo $result['user_id']; ?>
+					</td>
+					<td class="actions">
+						<?php echo $html->link(__('View', true), array('action'=>'view', $result['id'])); ?>
+						<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['id'])); ?>
+						<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</table>
 		</div>
-
-
-
-
+		<!-- Paginator links -->
+		<div class="paging">
+			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
+			 | 	<?php echo $paginator->numbers(); ?>
+			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
+		</div>
 	</div>
 </div>
 <script type="text/javascript">

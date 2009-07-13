@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<?php echo $html->charset(); ?>
@@ -17,7 +17,7 @@
 		// Echo our array of CSS sheets we set up above
 		echo $html->css($css, 'stylesheet', 'media="screen, projection"');
 		//echo $html->css('cake.generic');
-		
+		echo $javascript->link('prototype');
 		echo $scripts_for_layout;
 	?>
 </head>
@@ -40,9 +40,13 @@
 			?>
 			</div>
 		</div>
+		<!-- Spinner is used for AJAX index views -->
+		<div id="spinner" class="spinning">
+			<?php echo $html->image('spinner.gif'); ?>
+		</div>
 		<!-- Content -->
 		<div id="content" class="prepend-1 span-22 append-1">
-
+			<?php $session->flash(); ?>
 			<?php $session->flash('auth'); ?>
 
 			<?php echo $content_for_layout; ?>

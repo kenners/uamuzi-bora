@@ -1,36 +1,35 @@
-<div class="patients index">
-<h2><?php __('Patients');?></h2>
+<div class="breadcrumb">
+	<?php echo $crumb->getHtml('Patients', 'reset'); ?>
+</div>
+<div id="viewTitle" class="text-left">
+<h1>Add New Patient</h1>
+</div>
+<p>All the patients currently in the database are listed below.</p>
+
+<?php
+//Sets the update and indicator elements by DOM ID for AJAX pagination
+$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
+?>
+ 
+<div id="patientIndex" class="patients index">
 <p>
 <?php
 echo $paginator->counter(array(
-'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+'format' => __('Page %page% of %pages%, showing %current% patients out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th><?php echo $paginator->sort('pid');?></th>
-	<th><?php echo $paginator->sort('upn');?></th>
-	<th><?php echo $paginator->sort('arvid');?></th>
-	<th><?php echo $paginator->sort('vfcc');?></th>
-	<th><?php echo $paginator->sort('surname');?></th>
-	<th><?php echo $paginator->sort('forenames');?></th>
-	<th><?php echo $paginator->sort('date_of_birth');?></th>
-	<th><?php echo $paginator->sort('year_of_birth');?></th>
-	<th><?php echo $paginator->sort('sex');?></th>
-	<th><?php echo $paginator->sort('mother');?></th>
-	<th><?php echo $paginator->sort('occupation_id');?></th>
-	<th><?php echo $paginator->sort('education_id');?></th>
-	<th><?php echo $paginator->sort('marital_status_id');?></th>
-	<th><?php echo $paginator->sort('telephone_number');?></th>
-	<th><?php echo $paginator->sort('treatment_supporter');?></th>
-	<th><?php echo $paginator->sort('location_id');?></th>
-	<th><?php echo $paginator->sort('village');?></th>
-	<th><?php echo $paginator->sort('home');?></th>
-	<th><?php echo $paginator->sort('nearest_church');?></th>
-	<th><?php echo $paginator->sort('nearest_school');?></th>
-	<th><?php echo $paginator->sort('nearest_health_centre');?></th>
-	<th><?php echo $paginator->sort('nearest_major_landmark');?></th>
-	<th><?php echo $paginator->sort('vf_testing_site');?></th>
+	<th><?php echo $paginator->sort('Patient ID','pid');?></th>
+	<th><?php echo $paginator->sort('CCCP UPN','upn');?></th>
+	<th><?php echo $paginator->sort('ARV ID','arvid');?></th>
+	<th><?php echo $paginator->sort('VF Client Code','vfcc');?></th>
+	<th><?php echo $paginator->sort('Surname','surname');?></th>
+	<th><?php echo $paginator->sort('Forenames','forenames');?></th>
+	<th><?php echo $paginator->sort('DoB','date_of_birth');?></th>
+	<th><?php echo $paginator->sort('Sex','sex');?></th>
+	<th><?php echo $paginator->sort('Telephone','telephone_number');?></th>
+	<th><?php echo $paginator->sort('Location','location_id');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
@@ -64,71 +63,36 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['date_of_birth']; ?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['year_of_birth']; ?>
-		</td>
-		<td>
 			<?php echo $patient['Patient']['sex']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['mother']; ?>
-		</td>
-		<td>
-			<?php echo $html->link($patient['occupation']['name'], array('controller'=> 'occupations', 'action'=>'view', $patient['occupation']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $html->link($patient['education']['name'], array('controller'=> 'educations', 'action'=>'view', $patient['education']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $html->link($patient['marital_status']['name'], array('controller'=> 'marital_statuses', 'action'=>'view', $patient['marital_status']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['telephone_number']; ?>
 		</td>
+
 		<td>
-			<?php echo $patient['Patient']['treatment_supporter']; ?>
-		</td>
-		<td>
-			<?php echo $html->link($patient['location']['name'], array('controller'=> 'locations', 'action'=>'view', $patient['location']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['village']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['home']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['nearest_church']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['nearest_school']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['nearest_health_centre']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['nearest_major_landmark']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['vf_testing_site']; ?>
+			<?php echo $patient['location']['name']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $patient['Patient']['pid'])); ?>
 			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $patient['Patient']['pid']), null, sprintf(__('Are you sure you want to delete # %s?', true), $patient['Patient']['pid'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
 </table>
 </div>
+<!-- Paginator links -->
 <div class="paging">
-	<?php echo $paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
- | 	<?php echo $paginator->numbers();?>
-	<?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
+<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
+ | 	<?php echo $paginator->numbers(); ?>
+ |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
+
 </div>
-<div class="actions">
+<!-- Actions Box -->
+<div class="actions span-5">
+	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('New Patient', true), array('action'=>'add')); ?></li>
-		<li><?php echo $html->link(__('List Occupations', true), array('controller'=> 'occupations', 'action'=>'index')); ?> </li>
+<!--		<li><?php echo $html->link(__('List Occupations', true), array('controller'=> 'occupations', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Occupation', true), array('controller'=> 'occupations', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Educations', true), array('controller'=> 'educations', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Education', true), array('controller'=> 'educations', 'action'=>'add')); ?> </li>
@@ -141,6 +105,6 @@ foreach ($patients as $patient):
 		<li><?php echo $html->link(__('List Medical Informations', true), array('controller'=> 'medical_informations', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Medical Information', true), array('controller'=> 'medical_informations', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Results', true), array('controller'=> 'results', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Result', true), array('controller'=> 'results', 'action'=>'add')); ?> </li>
+		<li><?php echo $html->link(__('New Result', true), array('controller'=> 'results', 'action'=>'add')); ?> </li>-->
 	</ul>
 </div>

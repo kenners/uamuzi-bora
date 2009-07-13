@@ -4,15 +4,18 @@
 <div id="viewTitle" class="text-left">
 <h1>Add New Patient</h1>
 </div>
+<p>To add a new patient to the database, please complete the details below.</p>
+<p>Required information is marked by an asterisk (*).</p>
 
 <div class="span-11 text-left">
 <?php
 echo $form->create('Patient');
 echo $form->inputs(array('legend' => 'Basic Demographics',
-						'surname',
-						'forenames',
+						'surname'=>array('label'=>'Surname*'),
+						'forenames'=>array('label'=>'Forenames*'),
 						'date_of_birth'=>array('label' => 'Date of Birth',
 												'dateFormat' => 'DMY',
+												'empty' => TRUE,
 												'minYear' => date('Y') - 100,
 												'maxYear' => date('Y')),
 						'sex'=>array('type'=>'select',

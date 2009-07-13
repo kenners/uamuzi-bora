@@ -3,6 +3,11 @@ class PatientsController extends AppController {
 	var $name = 'Patients';
 	// Stuff to make javascript work
 	var $helpers = array('Html','Javascript','Ajax', 'Crumb');
+	
+	// Setting the limit for paginator
+	var $paginate = array('limit' => 25);
+	
+	
 	/**
 	 * Tell the controller about the lookup table models
 	 */
