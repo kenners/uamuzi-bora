@@ -13,7 +13,7 @@ echo $form->create('Patient');
 echo $form->inputs(array('legend' => 'Basic Demographics',
 						'surname'=>array('label'=>'Surname*'),
 						'forenames'=>array('label'=>'Forenames*'),
-						'date_of_birth'=>array('label' => 'Date of Birth',
+						'date_of_birth'=>array('label' => 'Date of Birth*',
 												'dateFormat' => 'DMY',
 												'empty' => TRUE,
 												'minYear' => date('Y') - 100,
@@ -22,9 +22,9 @@ echo $form->inputs(array('legend' => 'Basic Demographics',
 									'options'=>array('Unknown'=>'Unknown', 'Male'=>'Male', 'Female'=>'Female'),
 									'selected'=>'Unknown'),
 						'mother',
-						'occupation_id',
-						'education_id',
-						'marital_status_id',
+						'occupation_id'=>array('empty' => '(Choose an Option)'),
+						'education_id'=>array('empty' => '(Choose an Option)'),
+						'marital_status_id'=>array('empty'=> '(Choose an Option)'),
 						'telephone_number'=>array('maxLength'=>10)
 						));
 // New fieldset for other patient identifiers

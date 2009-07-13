@@ -48,6 +48,16 @@ $javascript->link('jquery.js', false);
 
 	<div id="tab1">
 		<h2>Demographic Information</h2>
+		<div class="tasks">
+			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
+			<?php if($patient['Patient']['status'] == 1){?>
+			<a class="button negative" href="/patients/active/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
+			<?php } else { ?>
+			<a class="button positive" href="/patients/active/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
+			<?php }?>
+		</div>
+	</div
+		</div>
 	</div>
 	<div id="tab2">
 		<h2>Medical Information</h2>
