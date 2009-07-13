@@ -2,22 +2,21 @@
 	<?php echo $crumb->getHtml('Patients', 'reset'); ?>
 </div>
 <div id="viewTitle" class="text-left">
-<h1>Add New Patient</h1>
+<h1>Patient List</h1>
 </div>
-<p>All the patients currently in the database are listed below.</p>
+
+
 
 <?php
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 ?>
+<div class="span-22 last"><?php echo $html->link('Add New Patient', array('action'=>'add'), array('class'=>'button')); ?></div>
+<div class="span-12 append-10 last"><em>Before adding a new patient, please <?php echo $html->link(__('Search', true), array('action'=>'search')); ?> or browse the list of patients in the database below to check that they do not already have a record in this database.</em></div>
  
-<div id="patientIndex" class="patients index">
-<p>
-<?php
-echo $paginator->counter(array(
-'format' => __('Page %page% of %pages%, showing %current% patients out of %count% total, starting on record %start%, ending on %end%', true)
-));
-?></p>
+<div id="patientIndex" class="patients index span-22 prepend-top last">
+	
+
 <table cellpadding="0" cellspacing="0">
 <tr>
 	<th><?php echo $paginator->sort('Patient ID','pid');?></th>
@@ -87,24 +86,9 @@ foreach ($patients as $patient):
  |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
 
 </div>
-<!-- Actions Box -->
-<div class="actions span-5">
-	<h3>Actions</h3>
-	<ul>
-		<li><?php echo $html->link(__('New Patient', true), array('action'=>'add')); ?></li>
-<!--		<li><?php echo $html->link(__('List Occupations', true), array('controller'=> 'occupations', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Occupation', true), array('controller'=> 'occupations', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Educations', true), array('controller'=> 'educations', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Education', true), array('controller'=> 'educations', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Marital Statuses', true), array('controller'=> 'marital_statuses', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Marital Status', true), array('controller'=> 'marital_statuses', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Locations', true), array('controller'=> 'locations', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Location', true), array('controller'=> 'locations', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Vf Testing Sites', true), array('controller'=> 'vf_testing_sites', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Vf Testing Site', true), array('controller'=> 'vf_testing_sites', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Medical Informations', true), array('controller'=> 'medical_informations', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Medical Information', true), array('controller'=> 'medical_informations', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Results', true), array('controller'=> 'results', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Result', true), array('controller'=> 'results', 'action'=>'add')); ?> </li>-->
-	</ul>
-</div>
+<p>
+<?php
+echo $paginator->counter(array(
+'format' => __('Page %page% of %pages%, showing %current% patients out of %count% total, starting on record %start%, ending on %end%', true)
+));
+?></p>

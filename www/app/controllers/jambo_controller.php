@@ -6,6 +6,16 @@ class JamboController extends AppController {
  */
 	var $name = 'Jambo';
 	var $helpers = array('Html', 'Form', 'Crumb');
+	
+	// We need this to stop it complaining that it hasn't got an associated model.
+	var $uses = NULL;
+	
+	
+	/**
+	 * Displays the main home page with different options depending on the group of the
+	 * logged in user.
+	 */
+	function index(){}
 
 }
 ?>
