@@ -66,62 +66,61 @@ $crumb->addThisPage('View Patient', null); ?>
 				</div>
 				<div>
 					<strong>Mother: </strong>
-					<?php echo $patient['Patient']['mother']; ?>
+					<?php if(!empty($patient['Patient']['mother'])){echo $patient['Patient']['mother'];} ?>
 				</div>
 				<div>
 					<strong>Occupation: </strong>
-					<?php echo $patient['occupation']['name']; ?>
+					<?php if(!empty($patient['Patient']['occupation'])){echo $patient['occupation']['name'];} ?>
 				</div>
 				<div>
 					<strong>Education: </strong>
-					<?php echo $patient['education']['name']; ?>
+					<?php if(!empty($patient['Patient']['education'])){$patient['education']['name'];} ?>
 				</div>
 				<div>
 					<strong>Marital Status: </strong>
-					<?php echo $patient['marital_status']['name']; ?>
+					<?php if(!empty($patient['Patient']['marital_status'])){$patient['marital_status']['name'];} ?>
 				</div>
 				<div>
 					<strong>Telephone Number: </strong>
-					<?php echo $patient['Patient']['telephone_number']; ?>
+					<?php if(!empty($patient['Patient']['telephone_number'])){$patient['Patient']['telephone_number'];} ?>
 				</div>
 				<div>
-					<strong>Treatment Supporter: </strong>
-					<?php $support = unserialize($patient['Patient']['treatment_supporter']);
-					echo $support['name'].'<br/>';
-					echo '<em>'.$support['relationship'].'</em><br/>';
-					echo $support['address'].'<br/>';
-					echo $support['telephone']; ?>
+					<strong>Treatment Supporter: </strong><br/>
+					<?php if(!empty($patient['Patient']['treatment_supporter'])){$support = unserialize($patient['Patient']['treatment_supporter']);}
+					if(!empty($support['name'])){echo $support['name'].'<br/>';}
+					if(!empty($support['relationship'])){echo '<em>'.$support['relationship'].'</em><br/>';}
+					if(!empty($support['address'])){echo $support['address'].'<br/>';}
+					if(!empty($support['telephone'])){echo $support['telephone'];} ?>
 				</div>			
 			</div>
 			<div class="span-11 last">
-			<h3>Location Information</h3>
 				<div>
 					<strong>Location: </strong>
-					<?php echo $patient['location']['name']; ?>
+					<?php if(!empty($patient['Patient']['location'])){echo $patient['location']['name'];} ?>
 				</div>
 				<div>
 					<strong>Village: </strong>
-					<?php echo $patient['Patient']['village']; ?>
+					<?php if(!empty($patient['Patient']['village'])){echo $patient['Patient']['village'];} ?>
 				</div>
 				<div>
 					<strong>Home: </strong>
-					<?php echo $patient['Patient']['home']; ?>
+					<?php if(!empty($patient['Patient']['home'])){echo $patient['Patient']['home'];} ?>
 				</div>
 				<div>
 					<strong>Nearest Church: </strong>
-					<?php echo $patient['Patient']['nearest_church']; ?>
+					<?php if(!empty($patient['Patient']['nearest_church'])){echo $patient['Patient']['nearest_church'];} ?>
 				</div>
 				<div>
 					<strong>Nearest School: </strong>
-					<?php echo $patient['Patient']['nearest_school']; ?>
+					<?php if(!empty($patient['Patient']['nearest_school'])){echo $patient['Patient']['nearest_school'];} ?>
 				</div>
 				<div>
 					<strong>Nearest Health Centre: </strong>
-					<?php echo $patient['Patient']['nearest_health_centre']; ?>
+					<?php if(!empty($patient['Patient']['nearest_health_centre'])){echo $patient['Patient']['nearest_health_centre'];} ?>
 				</div>
 				<div>
 					<strong>Nearest Major Landmark: </strong>
-					<?php echo $patient['Patient']['nearest_major_landmark']; ?>
+					<?php if(!empty($patient['Patient']['nearest_major_landmark'])){echo $patient['Patient']['nearest_major_landmark'];} ?>
 				</div>
 			</div>
 		</div>
@@ -138,7 +137,7 @@ $crumb->addThisPage('View Patient', null); ?>
 		<h2>Results</h2></h2>
 		
 		<!-- Miniform for adding results -->
-		<div class="addresult box span-14 last">
+		<div class="addresult box span-14 rim last">
 			<div class="span-5"><p class="large"><strong>Add New Test Result:</strong></p></div>
 			<?php
 			// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
