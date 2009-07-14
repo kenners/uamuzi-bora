@@ -209,8 +209,8 @@ class Patient extends AppModel {
 		// Split the PID into an array in a right-to-left fashion
 		$pidArray = array_reverse(str_split($pid));
 	
-		// Starting from the last (check) digit, double every other number
-		for ($i = 1; $i <= count($pidArray); $i += 2) {
+		// Starting with the penultimate digit, double every other digit
+		for ($i = 1; $i < count($pidArray); $i += 2) {
 			$pidArray[$i] = $pidArray[$i] * 2;
 		}
 	
@@ -251,7 +251,7 @@ class Patient extends AppModel {
 		// Split the prefix into an array in a right-to-left fashion
 		$prefixArray = array_reverse(str_split($prefix));
 		
-		// Starting from the first digit, double every other number
+		// Starting with the first digit, double every other number
 		for ($i = 0; $i < count($prefixArray); $i += 2) {
 			$prefixArray[$i] = $prefixArray[$i] * 2;
 		}
