@@ -178,6 +178,7 @@ class PatientsController extends AppController {
 	  }
 	
       }
+    $this->paginate('Patient');
   }
   
 
