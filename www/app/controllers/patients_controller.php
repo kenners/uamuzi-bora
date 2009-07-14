@@ -107,7 +107,7 @@ class PatientsController extends AppController {
 			if ($this->Patient->save($this->data)) {
 				$this->Session->setFlash('<strong>' . $this->data['Patient']['forenames'] . ' ' . $this->data['Patient']['surname'] . '</strong>'
 					. ' has been added with Patient ID '
-					. '<strong>' . $this->Patient->prettyPID($this->data['Patient']['pid']) . '</strong>');
+					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>');
 				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
 			} else {
 				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
