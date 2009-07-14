@@ -69,7 +69,7 @@ foreach ($patients as $patient):
 		</td>
 
 		<td>
-			<?php echo $patient['location']['name']; ?>
+			<?php echo $patient['Location']['name']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
