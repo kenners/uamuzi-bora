@@ -82,6 +82,34 @@ class AppController extends Controller {
     eval('$this->'.$archive_model.'->save($save);');
     
   }
+
+    //combine arrays, in the way that multiple search results in different arrays, then we get one array with all search results
+    function __combine_array($arr1,$arr2)
+  {
+
+    $number=count($arr1);//find the first index for the next result
+    
+    foreach($arr2 as $element2)
+      {
+	$test=true;
+	foreach($arr1 as $element1)
+	  {
+	    if($element1==$element2){
+	      $test=false;
+	      break;
+	    }
+	  }
+	if($test)
+	  {
+	    
+	$arr1=Set::insert($arr1,'\\'.$number,$element2);
+	  }
+	$number+=1;
+      }
+    return $arr1;
+  }
+	
+	
       
 }
 ?>
