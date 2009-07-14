@@ -35,6 +35,12 @@ class ResultsController extends AppController {
 				// So this method has been called by the view, with the new result form data having been submitted.
 				// Let's save it.
 				$this->Result->create();
+				// IN case we nedd to reload the form, we set the test_id and type
+				$test_id=Set::extract('\Result\test_id',$this->data);
+				
+				$this->set('test_id',$test_id);
+					// Let's find out what Type (decimal,lookup,text etc) of test it is
+				$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
 				$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 				$this->data=Set::insert($this->data,'Result.pid',$pid);
 				if ($this->Result->save($this->data)) {
