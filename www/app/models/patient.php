@@ -16,16 +16,16 @@ class Patient extends AppModel {
 	 * Define relationships with lookup tables
 	 */
 	var $belongsTo = array(
-		'occupation' => array('className' => 'Occupation'),
-		'education' => array('className' => 'Education'),
-		'marital_status' => array('className' => 'MaritalStatus'),
-		'location' => array('className' => 'Location'),
-		'vf_testing_site' => array(
+		'Occupation' => array('className' => 'Occupation'),
+		'Education' => array('className' => 'Education'),
+		'MaritalStatus' => array('className' => 'MaritalStatus'),
+		'Location' => array('className' => 'Location'),
+		'VfTestingSite' => array(
 			'className' => 'VfTestingSite',
 			'foreignKey' => FALSE,
-			'conditions' => array('Patient.vf_testing_site = vf_testing_site.site_code')
+			'conditions' => array('Patient.vf_testing_site = VfTestingSite.site_code')
 		),
-		'inactive_reason' => array('className' => 'InactiveReason'),
+		'InactiveReason' => array('className' => 'InactiveReason'),
 	);
 	var $hasMany=array(
 			   'Result'=>array('className'=>'Result',
@@ -37,10 +37,10 @@ class Patient extends AppModel {
 	 * MedicalInformation model
 	 */
 	var $hasOne = array(
-		'medical_information' => array(
+		'MedicalInformation' => array(
 			'className' => 'MedicalInformation',
 			'foreignKey' => FALSE,
-			'conditions' => array('Patient.pid = medical_information.pid'),
+			'conditions' => array('Patient.pid = MedicalInformation.pid'),
 			'dependent' => TRUE
 			)
 		);
@@ -267,6 +267,14 @@ class Patient extends AppModel {
 		$checksum = (10 - ($sum % 10)) % 10;
 		
 		return $prefix . $checksum;
+	}
+	
+	/**
+	 * Returns a string left-padded with 0's to 9 digits, split up into groups
+	 * of three
+	 */
+	function prettyPID($pid) {
+		return chunk_split(str_pad($pid, 9, '0', STR_PAD_LEFT), 3, ' ');
 	}
 }
 ?>

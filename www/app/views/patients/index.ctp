@@ -67,7 +67,7 @@ foreach ($patients as $patient):
 		</td>
 
 		<td>
-			<?php echo $patient['location']['name']; ?>
+			<?php echo $patient['Location']['name']; ?>
 		</td>
 				<td>
 			<?php echo $patient['Patient']['upn']; ?>

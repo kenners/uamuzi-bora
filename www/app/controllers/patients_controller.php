@@ -103,10 +103,13 @@ class PatientsController extends AppController {
 			
 			// Save the new row
 			if ($this->Patient->save($this->data)) {
-				// Send confirmation page (we'll want to create a row in the
-				// MedicalInformation table here too)
-				// PLEASE INSERT CODE HERE AS NEEDED
-				exit;
+				$this->Session->setFlash('<strong>' . $this->data['Patient']['forenames'] . ' ' . $this->data['Patient']['surname'] . '</strong>'
+					. ' has been added with Patient ID '
+					. '<strong>' . $this->Patient->prettyPID($this->data['Patient']['pid']) . '</strong>');
+				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
+			} else {
+				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
+				$this->redirect(array('controller' => 'Patient', 'action' => 'add'));
 			}
 		}
 		
