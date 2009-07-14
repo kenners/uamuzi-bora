@@ -53,7 +53,9 @@ class PatientsController extends AppController {
 			$this->data['Patient']['pid'] = $this->Patient->newPID();
 			
 			// Get year_of_birth from date_of_birth
-			$this->data['Patient']['year_of_birth'] = $this->data['Patient']['date_of_birth']['year'];
+			if (!empty($this->data['Patient']['year_of_birth']['year'])) {
+				$this->data['Patient']['year_of_birth'] = $this->data['Patient']['date_of_birth']['year'];
+			}
 			
 			// Generate an ISO 8601 input for date_of_birth
 			if (!empty($this->data['Patient']['date_of_birth']['day']) && !empty($this->data['Patient']['date_of_birth']['month']) && !empty($this->data['Patient']['date_of_birth']['year'])) {
