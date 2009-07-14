@@ -264,7 +264,7 @@ class Patient extends AppModel {
 		$sum = array_sum(str_split($digits));
 		
 		// When $checksum is added modulo ten, it should equal zero
-		$checksum = 10 - ($sum % 10);
+		$checksum = (10 - ($sum % 10)) % 10;
 		
 		return $prefix . $checksum;
 	}
