@@ -24,10 +24,10 @@
 <body>
 	<div id="container">
 		<!-- Header -->
-		<div id="headerbar" class="prepend-top span-24 last">
+		<div id="headerbar" class="span-24 last">
 			<!-- Title -->
-			<div class="text-left prepend-1 span-7 append-8 hide">
-				<h1>Uamuzi Bora</h1>
+			<div class="text-left prepend-1 span-7 append-8 headerbar" onclick="location.href='/';" style="cursor: pointer;">
+				<h1 class="hide">Uamuzi Bora</h1>
 			</div>
 			<!-- User box -->
 			<div  id="userbox" class="prepend-16 span-8 last">
