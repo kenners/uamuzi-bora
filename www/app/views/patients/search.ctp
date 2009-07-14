@@ -1,20 +1,82 @@
 <div class="breadcrumb">
-	<?php echo $crumb->getHtml('Patients', 'reset'); ?>
+	<?php echo $crumb->getHtml('Search Patients', null, 'auto'); ?>
 </div>
 <div id="viewTitle" class="text-left">
-<h1>Patient List</h1>
+<h1>Search Patient</h1>
+</div>
+<p>To search for a patient in the database, select what you wish to search for (e.g. Patient ID, Forename, Surname etc.) in the drop-down box below, and then type into the Search box what you wish to find.</p>
+<p>You may add further details into the additional search boxes to perform a more precise search.</p>
+<div class="span-22">
+<?php
+$searchoptions = array('pid'=>'Patient ID',
+						'surname'=>'Surname',
+						'forenames'=>'Fornames',
+						'age'=>'Age',
+						'telephone_number'=>'Telephone Number',
+						'upn'=>'CCCP Card Unique Patient Number',
+						'arvid'=>'ARV Database ID',
+						'vfcc'=>'Vestergaard Frandsen Client Code');
+
+echo $form->create('Patient', array('action' => 'search'));
+?>
+<div class="span-7">
+<?php
+echo $form->inputs(array('legend' => 'Search Field 1',
+						'search_key_1'=>array('type' => 'select',
+												'empty' => TRUE,
+												'options'=>$searchoptions),
+						'search_value_1'=>array('type'=>'text')));
+?>
+</div>
+<div class="span-7">
+<?php
+echo $form->inputs(array('legend' => 'Search Field 2',
+						'search_key_2'=>array('type' => 'select',
+												'empty' => TRUE,
+												'options'=>$searchoptions),
+						'search_value_2'=>array('type'=>'text')));
+					
+?>
+</div>
+<div class="span-7 last">
+<?php
+echo $form->inputs(array('legend' => 'Search Field 3',
+						'search_key_3'=>array('type' => 'select',
+												'empty' => TRUE,
+												'options'=>$searchoptions),
+						'search_value_3'=>array('type'=>'text')));
+?>
+</div>
+<div class="span-7">
+<?php
+echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), array('value'=>'1'));
+?>
 </div>
 
-
-
+<div class="span-7">
+<?php
+echo $form->inputs(array('legend' => 'Location',
+						'location'=>array('type' => 'select',
+												'empty' => TRUE,
+												'label' => FALSE,
+												'options'=>$searchoptions)));
+												
+?>
+</div>
+<div class="span-4 prepend-2 prepend-top last">
+	<button type="submit" class="button">
+		<img src="/img/icons/magnifier.png" alt=""/> Search
+	</button>
+</div>
+</form>
+</div>
+<!-- Here be Search Results -->
+					
 <?php
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 ?>
-<div class="span-22 last"><?php echo $html->link('Add New Patient', array('action'=>'add'), array('class'=>'button')); ?></div>
-<div class="span-12 append-10 last"><em>Before adding a new patient, please <?php echo $html->link(__('Search', true), array('action'=>'search')); ?> or browse the list of patients in the database below to check that they do not already have a record in this database.</em></div>
- 
-<div id="patientIndex" class="patients index span-22 prepend-top last">
+<div id="patientSearch" class="patients search span-22 prepend-top last">
 	
 
 <table cellpadding="0" cellspacing="0">
@@ -36,6 +98,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
+if (!empty($patients)):
 $i = 0;
 foreach ($patients as $patient):
 	$class = null;
@@ -45,7 +108,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
+			<?php $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['status']; ?>
@@ -57,7 +120,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth']));?>
+			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['sex']; ?>
@@ -84,6 +147,7 @@ foreach ($patients as $patient):
 		</td>
 	</tr>
 <?php endforeach; ?>
+<?php endif; ?>
 </table>
 </div>
 <!-- Paginator links -->

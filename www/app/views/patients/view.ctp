@@ -13,12 +13,10 @@ $javascript->link('jquery.js', false);
 		$patient=$patients[0];
 		// Patient Name
 		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
-		$pid = str_pad($patient['Patient']['pid'], 9, '0', STR_PAD_LEFT);
-		$pid = chunk_split($pid, 3, ' ');
-		echo $html->div('patientId span-22 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $pid, array('class'=>'patientIdValue')));
+		echo $html->div('patientId span-22 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
 	
 		// Date of Birth
-		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', date('d/m/Y', strtotime($patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
 		// Age (really really messy)
 		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
 			$age = date('Y') - $patient['Patient']['year_of_birth'];
