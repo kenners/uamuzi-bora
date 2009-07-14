@@ -13,10 +13,10 @@
 	text-align:right;
 }
 
-#headerbar {
-	padding-top:20px;
-}
 
+.headertext{
+
+}
 
 #userbox {
 	vertical-align:bottom;
@@ -100,9 +100,9 @@
 	font-weight:bold;
 }
 
-#headerbar {
+.headerbar {
 	margin-top:5px;
-	padding-bottom: 45px;	
+	height:60px;	
 	background-image: url(/img/ubbanner.gif);
 	background-repeat: no-repeat;
 }
@@ -128,7 +128,7 @@ div.paging span.current {
 }
 div.paging span a {
 }
-.breadcrumb{padding-bottom: 0.5em; margin-bottom: 0.5em; border-bottom-width: 1px; border-bottom-color: #8d8d8d; border-bottom-style: groove;}
+.breadcrumb{padding-top:10px; padding-bottom: 0.5em; margin-bottom: 0.5em; border-bottom-width: 1px; border-bottom-color: #8d8d8d; border-bottom-style: groove;}
 div.spinning{
 float: right;
 display: none;

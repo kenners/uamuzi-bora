@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Tests', 'reset' ); ?>
-</div>
+<?php $crumb->addThisPage('Tests', 'reset' ); ?>
 <div class="tests index">
 <h2><?php __('Tests');?></h2>
 <p>
@@ -14,7 +12,7 @@ echo $paginator->counter(array(
 <tr>
 	<th><?php echo $paginator->sort('id');?></th>
 	<th><?php echo $paginator->sort('name');?></th>
-	<th><?php echo $paginator->sort('abbreiviation');?></th>
+	<th><?php echo $paginator->sort('Abbreviation','abbreiviation');?></th>
 	<th><?php echo $paginator->sort('type');?></th>
 	<th><?php echo $paginator->sort('units');?></th>
 	<th><?php echo $paginator->sort('description');?></th>
@@ -55,7 +53,7 @@ foreach ($tests as $test):
 			<?php echo $test['Test']['comment']; ?>
 		</td>
 		<td>
-			<?php echo $test['Test']['active']; ?>
+			<?php echo $this->element('prettyStatus', array('status' =>$test['Test']['active'])); ?>
 		</td>
 		<td>
 			<?php echo $test['User']['username']; ?>

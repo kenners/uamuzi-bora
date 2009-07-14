@@ -24,20 +24,26 @@
 <body>
 	<div id="container">
 		<!-- Header -->
-		<div id="headerbar" class="prepend-top span-24 last">
+		<div id="headerbar" class="span-24 last">
 			<!-- Title -->
-			<div class="text-left prepend-1 span-7 append-8 hide">
-				<h1>Uamuzi Bora</h1>
+			<div class="text-left prepend-1 span-7 append-8 headerbar" onclick="location.href='/';" style="cursor: pointer;">
+				<h1 class="hide">Uamuzi Bora</h1>
 			</div>
 			<!-- User box -->
-			<div  id="userbox" class="prepend-16 span-8 last">
+			<div  id="userbox" class="prepend-16 span-8 last"></div>
 			
-			<?php if($session->check('Auth.User.id'))
-				{
-				echo 'Jambo <strong>' . $session->read('Auth.User.username') . '</strong>! ';
-				echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
-				}
-			?>
+			<div class="breadcrumb span-24 last">
+				<div class="prepend-1 span-15">
+					<?php echo $crumb->printHtml();?>
+				</div>
+				<div class="span-7 append-1 text-right last">
+					<?php if($session->check('Auth.User.id'))
+					{
+						echo 'Jambo <strong>' . $session->read('Auth.User.username') . '</strong>! ';
+						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
+					}
+					?>
+				</div>
 			</div>
 		</div>
 		<!-- Spinner is used for AJAX index views -->
@@ -45,7 +51,7 @@
 			<?php echo $html->image('spinner.gif'); ?>
 		</div>
 		<!-- Content -->
-		<div id="content" class="prepend-1 span-22 append-1">
+		<div id="content" class="prepend-1 prepend-top span-22 append-1">
 			<div class="prepend-4 span-16 append-4 last">
 				<?php $session->flash(); ?>
 				<?php $session->flash('auth'); ?>

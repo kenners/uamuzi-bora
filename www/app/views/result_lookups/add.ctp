@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Add', null, 'auto'); ?>
 <div class="resultLookups form span-16">
 <?php echo $form->create('ResultLookup', array('action'=>'add/'.$test_id));?>
 	<fieldset>

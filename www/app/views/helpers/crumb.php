@@ -102,6 +102,25 @@ function getHtml($title = null, $what_to_do=null, $level = null)
     }
     return $string;
 }
+function printHtml()
+{
+
+    $arr_links    = $this->Session->read('crumb_links') ;
+    $arr_titles    = $this->Session->read('crumb_titles') ;
+    $last_index    = count($arr_titles) - 1        ;
+    $string        = '<strong>Breadcrumb:</strong> <a href="/" class="'.$this->link_class.'">Home</a>' ;
+    for ($i = 0  ; $i <= $last_index  ; $i++) {
+        $title    =    $arr_titles[$i]    ;
+        $link    =    $arr_links[$i]    ;
+        if ($i < $last_index) { // no need to build link for last item
+            $link = sprintf(' %s <a href="%s" class="%s">%s</a>', $this->separator, $link, $this->link_class, $title)        ;
+        } else {
+            $link = sprintf(" %s <span class='%s'>%s</span>",$this->separator, $this->span_class, $title )                    ;     //last text, ie current page without link
+        }
+        $string    .=  $link                            ;
+    }
+    return $string;
+}
 
 
  function __stripAfter($arr, $after)

@@ -3,27 +3,33 @@
 </div>-->
 <?php
 $javascript->link('jquery.js', false);
-?>
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('View Patient', null); ?>
-</div>
+$crumb->addThisPage('View Patient', null); ?>
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
 		<?php
 		$patient=$patients[0];
 		// Patient Name
 		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
-		echo $html->div('patientId span-22 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
+		
+		echo $html->div('patientId span-14 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
 	
+		
 		// Date of Birth
-		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-5', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
 		// Age (really really messy)
 		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
 			$age = date('Y') - $patient['Patient']['year_of_birth'];
 		}else{
 			$age = 'Unknown';
 		};
-		echo $html->div('patientAge span-7 last', $html->tag('span', 'Age: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $age, array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-5', $html->tag('span', 'Age: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $age, array('class'=>'patientAgeValue')));
+		// Patient Status
+		if(($patient['Patient']['status'] == FALSE)){
+			$statusClass = 'patientAgeValue error';
+		} else {
+			$statusClass = 'patientAgeValue';
+		}
+		echo $html->div('patientAge span-4 last', $html->tag('span', 'Status: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyStatus', array('status' => $patient['Patient']['status'])), array('class'=>$statusClass)));
 		?>
 	</div>
 	<div id="otherIdentifier" class="otherIdentifier span-6 last">
@@ -46,11 +52,74 @@ $javascript->link('jquery.js', false);
 
 	<div id="tab1">
 		<h2>Demographic Information</h2>
-		<div class="tasks">
+		<div class="tasks span-22 last">
 			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
 						<a class="button negative" href="/patients/active/">Change Status to Inactive</a>
 						<a class="button positive" href="/patients/active/">Change Status to Active</a>
 			
+		</div>
+		<div class="demographicInformation large span-22 last">
+			<div class="span-11">
+				<div>
+					<strong>Sex: </strong>
+					<?php echo $patient['Patient']['sex']; ?>
+				</div>
+				<div>
+					<strong>Mother: </strong>
+					<?php echo $patient['Patient']['mother']; ?>
+				</div>
+				<div>
+					<strong>Occupation: </strong>
+					<?php echo $patient['occupation']['name']; ?>
+				</div>
+				<div>
+					<strong>Education: </strong>
+					<?php echo $patient['education']['name']; ?>
+				</div>
+				<div>
+					<strong>Marital Status: </strong>
+					<?php echo $patient['marital_status']['name']; ?>
+				</div>
+				<div>
+					<strong>Telephone Number: </strong>
+					<?php echo $patient['Patient']['telephone_number']; ?>
+				</div>
+				<div>
+					<strong>Treatment Supporter: </strong>
+					<?php echo $patient['Patient']['treatment_supporter']; ?>
+				</div>			
+			</div>
+			<div class="span-11 last">
+			<h3>Location Information</h3>
+				<div>
+					<strong>Location: </strong>
+					<?php echo $patient['location']['name']; ?>
+				</div>
+				<div>
+					<strong>Village: </strong>
+					<?php echo $patient['Patient']['village']; ?>
+				</div>
+				<div>
+					<strong>Home: </strong>
+					<?php echo $patient['Patient']['home']; ?>
+				</div>
+				<div>
+					<strong>Nearest Church: </strong>
+					<?php echo $patient['Patient']['nearest_church']; ?>
+				</div>
+				<div>
+					<strong>Nearest School: </strong>
+					<?php echo $patient['Patient']['nearest_school']; ?>
+				</div>
+				<div>
+					<strong>Nearest Health Centre: </strong>
+					<?php echo $patient['Patient']['nearest_health_centre']; ?>
+				</div>
+				<div>
+					<strong>Nearest Major Landmark: </strong>
+					<?php echo $patient['Patient']['nearest_major_landmark']; ?>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="tab2">
@@ -126,7 +195,7 @@ $javascript->link('jquery.js', false);
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?><?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>
@@ -141,9 +210,9 @@ $javascript->link('jquery.js', false);
 						<?php echo $result['user_id']; ?>
 					</td>
 					<td class="actions">
-						<?php echo $html->link(__('View', true), array('action'=>'view', $result['id'])); ?>
-						<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['id'])); ?>
-						<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
+						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
+						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
+						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
 					</td>
 				</tr>
 				<?php endforeach; ?>

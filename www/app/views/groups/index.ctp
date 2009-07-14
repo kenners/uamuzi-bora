@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Groups','reset'); ?>
-</div>
+<?php echo $crumb->addThisPage('Groups','reset'); ?>
 <div class="groups index">
 <h2><?php __('Groups');?></h2>
 <p>
