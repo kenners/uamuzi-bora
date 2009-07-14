@@ -17,8 +17,6 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('abbreiviation');?></th>
 	<th><?php echo $paginator->sort('type');?></th>
 	<th><?php echo $paginator->sort('units');?></th>
-	<th><?php echo $paginator->sort('upper_limit');?></th>
-	<th><?php echo $paginator->sort('lower_limit');?></th>
 	<th><?php echo $paginator->sort('description');?></th>
 	<th><?php echo $paginator->sort('comment');?></th>
 	<th><?php echo $paginator->sort('active');?></th>
@@ -49,12 +47,6 @@ foreach ($tests as $test):
 		</td>
 		<td>
 			<?php echo $test['Test']['units']; ?>
-		</td>
-		<td>
-			<?php echo $test['Test']['upper_limit']; ?>
-		</td>
-		<td>
-			<?php echo $test['Test']['lower_limit']; ?>
 		</td>
 		<td>
 			<?php echo $test['Test']['description']; ?>

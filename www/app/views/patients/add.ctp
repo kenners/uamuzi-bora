@@ -1,11 +1,11 @@
 <div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
+	<?php echo $crumb->getHtml('Add Patient', null, 'auto'); ?>
 </div>
 <div id="viewTitle" class="text-left">
 <h1>Add New Patient</h1>
 </div>
 <p>To add a new patient to the database, please complete the details below.</p>
-<p>Required information is marked by an asterisk (*).</p>
+<p><strong>Surname</strong> and <strong>Forenames</strong> are Required Fields (i.e. you must provide values for them).</p>
 
 <div class="span-11 text-left">
 <?php

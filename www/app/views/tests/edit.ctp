@@ -11,8 +11,6 @@
 		echo $form->input('name');
 		echo $form->input('abbreiviation');
 		echo $form->input('type');
-		echo $form->input('upper_limit');
-		echo $form->input('lower_limit');
 		echo $form->input('description');
 		echo $form->input('comment');
 		echo $form->input('active');
