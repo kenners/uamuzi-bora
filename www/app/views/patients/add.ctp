@@ -2,7 +2,7 @@
 <div id="viewTitle" class="text-left">
 <h1>Add New Patient</h1>
 </div>
-<p>To add a new patient to the database, please complete the details below.</p>
+<p>To add a new patient to the database, please complete the details below. You can <?php echo $html->link('Search', array('action'=>'search')); ?> or <?php echo $html->link('Browse', array('action'=>'index')); ?> to check that this patient doesn't already have a record in the database.</p>
 <p><strong>Surname</strong> and <strong>Forenames</strong> are Required Fields (i.e. you must provide values for them).</p>
 
 <div class="span-11 text-left">
@@ -28,7 +28,9 @@ echo $form->inputs(array('legend' => 'Basic Demographics',
 // New fieldset for other patient identifiers
 echo $form->inputs(array('legend' => 'Other Patient Identification Codes',
 						'upn'=>array('label'=>'CCCP Form Unique Patient Number',
-									'maxLength'=>11)));
+									'maxLength'=>11),
+						'arvid'=>array('label'=>'ARV Database ID (ARVID)'),
+						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)')));
 ?>
 </div>
 <!-- New 'column' on other side of page -->

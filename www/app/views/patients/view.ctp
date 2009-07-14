@@ -62,7 +62,7 @@ $crumb->addThisPage('View Patient', null); ?>
 			<div class="span-11">
 				<div>
 					<strong>Sex: </strong>
-					<?php echo $patient['Patient']['sex']; ?>
+					<?php if(!empty(echo $patient['Patient']['sex']; ?>
 				</div>
 				<div>
 					<strong>Mother: </strong>
@@ -90,7 +90,7 @@ $crumb->addThisPage('View Patient', null); ?>
 					echo $support['name'].'<br/>';
 					echo '<em>'.$support['relationship'].'</em><br/>';
 					echo $support['address'].'<br/>';
-					echo $support['telephone_number']; ?>
+					echo $support['telephone']; ?>
 				</div>			
 			</div>
 			<div class="span-11 last">

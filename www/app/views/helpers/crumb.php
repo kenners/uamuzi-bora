@@ -9,7 +9,7 @@ var $helpers     = Array("Session");
 
 function addThisPage($title = null, $what_to_do = null , $level = null )    // add the calling page
 {
-    define('THIS_URL' , $this->protocol.  '://' . $_SERVER['HTTP_HOST'] .  $_SERVER['REQUEST_URI']) ;
+    define('THIS_URL' ,'/') ;
 
     $controller   	=    $this->params['controller']    ;
     $action    		=    $this->params['action']    	;
