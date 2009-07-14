@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
+	<?php echo $crumb->getHtml('View Test', null, 'auto'); ?>
 </div>
 <div class="tests view span-16">
 <h2><?php  __('Test');?></h2>
@@ -25,7 +25,7 @@
 			&nbsp;
 		</dd>
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Type'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Units'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $test['Test']['units']; ?>
 			&nbsp;

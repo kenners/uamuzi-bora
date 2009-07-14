@@ -5,7 +5,7 @@
 $javascript->link('jquery.js', false);
 ?>
 <div class="breadcrumb">
-	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
+	<?php echo $crumb->getHtml('View Patient', null); ?>
 </div>
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
@@ -54,8 +54,6 @@ $javascript->link('jquery.js', false);
 						<a class="button positive" href="/patients/active/">Change Status to Active</a>
 			
 		</div>
-	</div
-		</div>
 	</div>
 	<div id="tab2">
 		<h2>Medical Information</h2>
@@ -69,26 +67,38 @@ $javascript->link('jquery.js', false);
 		<h2>Results</h2></h2>
 		
 		<!-- Miniform for adding results -->
-		<div class="addresult">	
-		<form id="testadder" method="post" action="/results/add/<?php echo $patient['Patient']['pid'];?>">
-		<?php
-		$testoptions=array();
-		foreach ($tests as $test){
-						$testoptions[$test['Test']['id']] = $test['Test']['name'];
-					
-		}
+		<div class="addresult box span-14 last">
+			<div class="span-5"><p class="large"><strong>Add New Test Result:</strong></p></div>
+			<?php
+			// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
+			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
+			?>
+			<div class="span-4">
+				<?php
+				// Parse the array of Test & Test IDs sent by the controller into an array we can use to make
+				// <SELECT> elements for our miniform.
+				$testoptions=array();
+				foreach ($tests as $test)
+				{
+					$testoptions[$test['Test']['id']] = $test['Test']['name'];
+				}
 
-		//$form->create(FALSE, array('url' => array('url' => '/results/add/'.$patient['Patient']['pid'])));
-		echo $form->inputs(array('legend' => 'Add New Result',
-									'id' =>array('type'=>'select',
-												'options' => $testoptions)));
-		//echo $form->end('Add New Result');
-		?>
-		<input value="Submit" type="submit">
-		</form>
+				// Build the Select box
+				echo $form->input('id',array('type'=>'select',
+												'options'=> $testoptions,
+												'label'=>'Create Result for Test:'));
+				//echo $form->end('Add New Result');
+				?>
+			</div>
+			<div class="span-5 last">
+				<button type="submit" class="button positive">
+					<img src="/img/icons/add.png" alt=""/> Add New Result
+				</button>
+			</div>
+			</form>
 		</div>
 		<!-- End of Miniform -->
-		<div id="results">
+		<div id="results" class="span-22 prepend-top last">
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<th><?php echo $paginator->sort('Result ID','id');?></th>
@@ -118,16 +128,16 @@ $javascript->link('jquery.js', false);
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?><?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
 					</td>
 					<td>
-						<?php echo $result['test_performed']; ?>
-					</td>
-					<td>
-						<?php echo $result['created']; ?>
+						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>
 					</td>
 					<td>
 						<?php echo $result['requesting_clinician']; ?>
+					</td>
+					<td>
+						<?php echo date('d/m/Y', strtotime($result['created'])); ?>
 					</td>
 					<td>
 						<?php echo $result['user_id']; ?>
@@ -142,7 +152,7 @@ $javascript->link('jquery.js', false);
 			</table>
 		</div>
 		<!-- Paginator links -->
-		<div class="paging">
+		<div class="paging span-22 last">
 			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
 			 | 	<?php echo $paginator->numbers(); ?>
 			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 

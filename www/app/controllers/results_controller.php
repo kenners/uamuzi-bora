@@ -27,13 +27,13 @@ class ResultsController extends AppController {
 	  $this->set('pid',$pid);
 	  if(!$this->Result->Patient->exists()){
 	    $this->Session->setFlash('You tried to add a result to a Patient that does not exist');
-	    $this->redirect('/');
+	    $this->redirect($this->referer());
 	  }
 	  
 	  if (!empty($this->data)) {
 	    $test_id=$this->data['id'];
-	  $this->Result->Test->id=$test_id;
-	  var_dump($this->data);
+	  	$this->Result->Test->id=$test_id;
+	 	//var_dump($this->data);
 	    if($test_id!=0)
 	      {
 		if($this->Result->Test->exists())

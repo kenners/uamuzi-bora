@@ -63,4 +63,5 @@ echo $form->inputs(array('legend' => 'Treatment Supporter',
 		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Add Patient
 	</button>
 </div>
+</form>
 </div>

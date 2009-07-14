@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
+	<?php echo $crumb->getHtml('Add Result', null, 'auto'); ?>
 </div>
 <div class="results form span-16">
 <?php echo $form->create('Result', array('action'=>'add/'.$pid));?>

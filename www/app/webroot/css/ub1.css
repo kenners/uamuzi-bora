@@ -173,3 +173,8 @@ a.hugebutton:active{
   border:1px solid #6299c5;
   color:#fff;
 }
+.rim{
+	border-color: #bfbfbf;
+	border-style: dashed;
+	border-width: 0.5px;
+}
