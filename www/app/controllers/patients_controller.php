@@ -234,7 +234,7 @@ class PatientsController extends AppController {
 			
 			// Set $this->data['Patient']['treatment_supporter'], which is either
 			// a serialised array or NULL
-			foreach (array('name', 'address', 'relationship', 'telephone_number') as $TSField) {
+			foreach (array('name', 'address', 'relationship', 'telephone') as $TSField) {
 				if (!empty($this->data['Patient']['treatment_supporter_' . $TSField])) {
 					$TSArray[$TSField] = $this->data['Patient']['treatment_supporter_' . $TSField];
 				}
@@ -249,11 +249,11 @@ class PatientsController extends AppController {
 			if ($this->Patient->save($this->data)) {
 				$this->Session->setFlash('<strong>' . $this->data['Patient']['forenames'] . ' ' . $this->data['Patient']['surname'] . '</strong>'
 					. ' has been added with Patient ID '
-					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>');
+					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>', 'default', array('class' => 'success large'));
 				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
 			} else {
-				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
-				$this->redirect(array('controller' => 'Patient', 'action' => 'add'));
+				$this->Session->setFlash('There was a problem adding this patient.  Please try again', true);
+				//$this->redirect(array('controller' => 'patients', 'action' => 'add'));
 			}
 		}
 		
