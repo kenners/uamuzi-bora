@@ -195,7 +195,6 @@ class PatientsController extends AppController {
 			
 			// Make the input how the database is expecting it
 			$this->data = $this->__prettyInput($this->data);
-
 			// Save the new row
 			if ($this->Patient->save($this->data)) {
 				$this->Session->setFlash('<strong>' . $this->data['Patient']['forenames'] . ' ' . $this->data['Patient']['surname'] . '</strong>'
