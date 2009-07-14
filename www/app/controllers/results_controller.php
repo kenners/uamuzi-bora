@@ -82,9 +82,10 @@ class ResultsController extends AppController {
 		  parent::archive($id);
 			if ($this->Result->save($this->data)) {
 			  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
+			  $pid=array_pop(Set::extract($this->data,'/Result/pid'));
 			  
 				$this->Session->setFlash(__('The Result has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->redirect(array('controller'=>'patients','action'=>'view/'.$pid));
 			} else {
 				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 			}
@@ -93,6 +94,7 @@ class ResultsController extends AppController {
 			$this->data = $this->Result->read(null, $id);
 		}
 		$tests = $this->Result->Test->find('list');
+		$this->set('type',$this->Result->find('first',array('conditions'=>array('Result.id'=>$id))));
 		$this->set(compact('tests'));
 	}
 
