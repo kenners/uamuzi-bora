@@ -18,31 +18,52 @@ $searchoptions = array('pid'=>'Patient ID',
 						'vfcc'=>'Vestergaard Frandsen Client Code');
 
 echo $form->create('Patient', array('action' => 'search'));
-
-echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), array('value'=>'1'));
-
+?>
+<div class="span-7">
+<?php
 echo $form->inputs(array('legend' => 'Search Field 1',
 						'search_key_1'=>array('type' => 'select',
 												'empty' => TRUE,
 												'options'=>$searchoptions),
 						'search_value_1'=>array('type'=>'text')));
+?>
+</div>
+<div class="span-7">
+<?php
 echo $form->inputs(array('legend' => 'Search Field 2',
 						'search_key_2'=>array('type' => 'select',
 												'empty' => TRUE,
 												'options'=>$searchoptions),
 						'search_value_2'=>array('type'=>'text')));
+					
+?>
+</div>
+<div class="span-7 last">
+<?php
 echo $form->inputs(array('legend' => 'Search Field 3',
 						'search_key_3'=>array('type' => 'select',
 												'empty' => TRUE,
 												'options'=>$searchoptions),
 						'search_value_3'=>array('type'=>'text')));
+?>
+</div>
+<div class="span-7">
+<?php
+echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), array('value'=>'1'));
+?>
+</div>
+
+<div class="span-7">
+<?php
 echo $form->inputs(array('legend' => 'Location',
 						'location'=>array('type' => 'select',
 												'empty' => TRUE,
+												'label' => FALSE,
 												'options'=>$searchoptions)));
 												
 ?>
-<div class="span-6 prepend-8 append-8 last">
+</div>
+<div class="span-4 prepend-2 prepend-top last">
 	<button type="submit" class="button">
 		<img src="/img/icons/magnifier.png" alt=""/> Search
 	</button>
@@ -87,7 +108,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $patient['Patient']['pid']; ?>
+			<?php $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['status']; ?>
@@ -99,7 +120,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo date('d/m/Y', strtotime($patient['Patient']['date_of_birth'])); ?>
+			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['sex']; ?>
