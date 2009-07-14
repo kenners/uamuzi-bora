@@ -317,7 +317,7 @@ class PatientsController extends AppController {
 		$data['Patient']['telephone_number'] = preg_replace('/[^\d]/', '', $data['Patient']['telephone_number']);
 		
 		// For some fields, when an empty string is submitted we want it to be NULL
-		foreach (array('upn', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark') as $field) {
+		foreach (array('upn', 'arvid', 'vfcc', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark') as $field) {
 			if ($data['Patient'][$field] == '') {
 				$data['Patient'][$field] = NULL;
 			}
