@@ -35,5 +35,6 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+ 	Router::connect('/jambo/admin', array('controller' => 'jambo', 'action' => 'admin'));
+	Router::connect('/jambo/*', array('controller' => 'jambo', 'action' => 'index'));
 ?>

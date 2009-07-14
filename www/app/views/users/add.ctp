@@ -9,7 +9,6 @@
 		echo $form->input('username');
 		echo $form->input('password');
 		echo $form->input('group_id');
-		echo $form->input('name');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

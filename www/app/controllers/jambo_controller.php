@@ -16,6 +16,11 @@ class JamboController extends AppController {
 	 * logged in user.
 	 */
 	function index(){}
+	
+	/**
+	 * Displays the admin functions
+	 */	
+	function admin(){}
 
 }
 ?>

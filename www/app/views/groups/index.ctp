@@ -23,7 +23,7 @@ $i = 0;
 foreach ($groups as $group):
 	$class = null;
 	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
+		$class = ' class="even"';
 	}
 ?>
 	<tr<?php echo $class;?>>

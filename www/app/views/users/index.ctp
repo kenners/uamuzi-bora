@@ -13,9 +13,7 @@ echo $paginator->counter(array(
 <tr>
 	<th><?php echo $paginator->sort('id');?></th>
 	<th><?php echo $paginator->sort('username');?></th>
-	<th><?php echo $paginator->sort('password');?></th>
 	<th><?php echo $paginator->sort('group_id');?></th>
-	<th><?php echo $paginator->sort('name');?></th>
 	<th><?php echo $paginator->sort('created');?></th>
 	<th><?php echo $paginator->sort('modified');?></th>
 	<th class="actions"><?php __('Actions');?></th>
@@ -25,7 +23,7 @@ $i = 0;
 foreach ($users as $user):
 	$class = null;
 	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
+		$class = ' class="even"';
 	}
 ?>
 	<tr<?php echo $class;?>>
@@ -36,13 +34,7 @@ foreach ($users as $user):
 			<?php echo $user['User']['username']; ?>
 		</td>
 		<td>
-			<?php echo $user['User']['password']; ?>
-		</td>
-		<td>
 			<?php echo $html->link($user['Group']['name'], array('controller'=> 'groups', 'action'=>'view', $user['Group']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $user['User']['name']; ?>
 		</td>
 		<td>
 			<?php echo $user['User']['created']; ?>

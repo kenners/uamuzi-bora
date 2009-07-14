@@ -2,8 +2,7 @@
 	<?php echo $crumb->getHtml('Jambo', null, 'auto'); ?>
 </div>
 <div id="viewTitle" class="text-left">
-	<h1>Welcome to Uamuzi Bora</h1>
-	<h2>What would you like to do?</h2>
+	<p><span class="welcome1">Welcome!</span>&nbsp;&nbsp;&nbsp;<span class="welcome2">What would you like to do?</span></p>
 
 	<div class="massivebuttons prepend-6 span-10 append-6 text-center">
 		<div class="span-10 last">
@@ -17,9 +16,6 @@
 		</div>
 		<div class="span-10 last">
 			<a href="/export/backup" class="hugebutton">Backup the Database</a>
-		</div>
-		<div class="span-10 last">
-			<a href="/export/bug" class="hugebutton">File a Bug Report</a>
 		</div>
 		<div class="span-10 last">
 			<a href="/jambo/admin" class="hugebutton">Admin Functions</a>

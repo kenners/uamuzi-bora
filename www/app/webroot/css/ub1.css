@@ -178,3 +178,9 @@ a.hugebutton:active{
 	border-style: dashed;
 	border-width: 0.5px;
 }
+
+.welcome1{font-weight:normal;color:#111;font-size:3em;line-height:1;}
+
+.welcome2{font-size:2em;line-height:1;font-weight:normal;color:#111;}
+h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em;}

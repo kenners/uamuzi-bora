@@ -10,7 +10,6 @@
 		echo $form->input('username');
 		echo $form->input('password');
 		echo $form->input('group_id');
-		echo $form->input('name');
 		echo $form->input('archive_reason');
 	?>
 	</fieldset>
