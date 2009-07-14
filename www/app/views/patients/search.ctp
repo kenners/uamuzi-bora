@@ -10,7 +10,7 @@
 <?php
 $searchoptions = array('pid'=>'Patient ID',
 						'surname'=>'Surname',
-						'forenames'=>'Fornames',
+						'forenames'=>'Forenames',
 						'age'=>'Age',
 						'telephone_number'=>'Telephone Number',
 						'upn'=>'CCCP Card Unique Patient Number',
@@ -56,10 +56,8 @@ echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), arra
 <div class="span-7">
 <?php
 echo $form->inputs(array('legend' => 'Location',
-						'location'=>array('type' => 'select',
-												'empty' => TRUE,
-												'label' => FALSE,
-												'options'=>$searchoptions)));
+						'location_id'=>array('empty' => TRUE,
+												'label' => FALSE)));
 												
 ?>
 </div>

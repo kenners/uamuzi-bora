@@ -30,7 +30,7 @@ class PatientsController extends AppController {
   function search(){
     //if(!empty($this->data))
     //  {
-
+	$this->set(array('locations' => $this->Location->generatetreelist(null, null, null, '-')));
 	
 	$field_name='surname';//Set::extract('/Patient/field_name',$this->data);
 	$search='Ro';//Set::extract('/Patient/search',$this->data);
