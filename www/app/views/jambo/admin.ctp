@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Admin', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Admin', null, 'auto'); ?>
 <div id="viewTitle" class="text-left">
 	<p><span class="welcome1">Administration</span></p>
 
@@ -36,9 +34,6 @@
 		</div>
 		<div class="prepend-2 span-7 append-2">
 			<a href="/groups" class="hugebutton">Browse User Groups</a>
-		</div>
-		<div class="prepend-2 span-7 append-2">
-			<a href="/jambo/admin" class="hugebutton">Admin Functions</a>
 		</div>
 	</div>
 </div>

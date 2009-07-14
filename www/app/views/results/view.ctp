@@ -1,9 +1,7 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('View Result', null, 'auto'); ?>
 <div class="results view span-16">
 <h2><?php  __('Result');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
+	<dl><?php $i = 0; $class = ' class="even"';?>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $result['Result']['id']; ?>

@@ -3,10 +3,7 @@
 </div>-->
 <?php
 $javascript->link('jquery.js', false);
-?>
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('View Patient', null); ?>
-</div>
+$crumb->addThisPage('View Patient', null); ?>
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
 		<?php
@@ -126,7 +123,7 @@ $javascript->link('jquery.js', false);
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?><?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>
@@ -141,7 +138,7 @@ $javascript->link('jquery.js', false);
 						<?php echo $result['user_id']; ?>
 					</td>
 					<td class="actions">
-						<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>
+						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
 						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
 						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
 					</td>

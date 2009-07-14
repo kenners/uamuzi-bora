@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('View', null, 'auto'); ?>
-</div>
+<?php echo $crumb->addThisPage('View', null, 'auto'); ?>
 <div class="users view span-16">
 <h2><?php  __('User');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>

@@ -1,3 +1,4 @@
+<?php $crumb->addThisPage('Add Medical Information', null, 'auto'); ?>
 <div id="viewTitle" class="text-left">
 <h1>Skeletal view: please refactor</h1>
 </div>

@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add Result', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Add Result', null, 'auto'); ?>
 <div class="results form span-16">
 <?php echo $form->create('Result', array('action'=>'add/'.$pid));?>
 	<fieldset>

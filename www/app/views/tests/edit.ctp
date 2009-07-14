@@ -1,7 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Edit', null, 'auto'); ?>
-</div>
-
+<?php echo $crumb->getHtml('Edit', null, 'auto'); ?>
 <div class="tests form span-16">
 <?php echo $form->create('Test');?>
 	<fieldset>
@@ -10,7 +7,7 @@
 		echo $form->input('id');
 		echo $form->input('name');
 		echo $form->input('abbreiviation');
-		echo $form->input('type');
+		echo $form->input('type', array('type'=>'hidden'));
 		echo $form->input('description');
 		echo $form->input('comment');
 		echo $form->input('active');

@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Jambo', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Jambo', 'reset'); ?>
 <div id="viewTitle" class="text-left">
 	<p><span class="welcome1">Welcome!</span>&nbsp;&nbsp;&nbsp;<span class="welcome2">What would you like to do?</span></p>
 

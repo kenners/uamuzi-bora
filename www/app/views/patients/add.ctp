@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add Patient', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Add Patient', null, 'auto'); ?>
 <div id="viewTitle" class="text-left">
 <h1>Add New Patient</h1>
 </div>

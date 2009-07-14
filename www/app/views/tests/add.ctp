@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Add', null, 'auto'); ?>
-</div>
+<?php $crumb->addThisPage('Add', null, 'auto'); ?>
 <div class="tests form span-16">
 <?php
 echo $form->create('Test');

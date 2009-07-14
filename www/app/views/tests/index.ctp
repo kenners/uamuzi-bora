@@ -1,6 +1,4 @@
-<div class="breadcrumb">
-	<?php echo $crumb->getHtml('Tests', 'reset' ); ?>
-</div>
+<?php $crumb->addThisPage('Tests', 'reset' ); ?>
 <div class="tests index">
 <h2><?php __('Tests');?></h2>
 <p>
