@@ -141,9 +141,9 @@ $javascript->link('jquery.js', false);
 						<?php echo $result['user_id']; ?>
 					</td>
 					<td class="actions">
-						<?php echo $html->link(__('View', true), array('action'=>'view', $result['id'])); ?>
-						<?php echo $html->link(__('Edit', true), array('action'=>'edit', $result['id'])); ?>
-						<?php echo $html->link(__('Delete', true), array('action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
+						<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>
+						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
+						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
 					</td>
 				</tr>
 				<?php endforeach; ?>
