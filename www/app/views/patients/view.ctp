@@ -62,7 +62,7 @@ $crumb->addThisPage('View Patient', null); ?>
 			<div class="span-11">
 				<div>
 					<strong>Sex: </strong>
-					<?php if(!empty(echo $patient['Patient']['sex']; ?>
+					<?php if(!empty($patient['Patient']['sex'])){echo $patient['Patient']['sex'];} ?>
 				</div>
 				<div>
 					<strong>Mother: </strong>
