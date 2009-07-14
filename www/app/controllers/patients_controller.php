@@ -202,7 +202,7 @@ class PatientsController extends AppController {
 					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>', 'default', array('class' => 'success large'));
 				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
 			} else {
-				$this->Session->setFlash('There was a problem adding this patient.  Please try again', true);
+				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
 				//$this->redirect(array('controller' => 'patients', 'action' => 'add'));
 			}
 		}
@@ -256,10 +256,11 @@ class PatientsController extends AppController {
 			// Update the row
 			if ($this->Patient->save($this->data)) {
 				$this->Session->setFlash('The patient details were successfully updated');
+				$this->redirect('/patients/view/' . $this->data['Patient']['pid']);
 			} else {
 				$this->Session->setFlash('There was a problem updating this patient\'s details.  Please try again');
 			}
-			$this->redirect('/patients/view/' . $this->data['Patient']['pid']);
+			
 			
 		} elseif ($this->Patient->isValidPID($pid) && $this->Patient->valueExists($pid, 'Patient', 'pid')) {
 		// What to do if a valid $pid has been passed (i.e. we want to show the
