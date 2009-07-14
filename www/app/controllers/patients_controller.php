@@ -16,7 +16,8 @@ class PatientsController extends AppController {
 		'Occupation',
 		'Education',
 		'MaritalStatus',
-		'Location'
+		'Location',
+		'MedicalInformation'
 		);
 	/**
 	 * Debugging list all patients function
@@ -128,9 +129,16 @@ class PatientsController extends AppController {
 	 * PLEASE BUILD/REPLACE AS NEEDED
 	 */
 	function view($pid = null) {
-		if (!$pid) {
+		if (!$pid || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
 			$this->Session->setFlash(__('Invalid Patient.', true));
 			$this->redirect(array('action'=>'index'));
+		}
+		
+		// Check that there is a corresponding row in the MedicalInformation
+		// model.  If there isn't, Something Bad has happened; silently
+		// create it.
+		if (!$this->MedicalInformation->valueExists($pid, 'MedicalInformation', 'pid')) {
+			$this->MedicalInformation->save(array('MedicalInformation' => array('pid' => $pid)));
 		}
 
 		$this->Patient->recursive = 2;
