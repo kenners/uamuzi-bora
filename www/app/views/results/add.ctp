@@ -29,7 +29,7 @@
 	?>
 	</fieldset>
 <button type="submit" class="button positive">
-	<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Add Patient
+	<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Add Result
 </button>
 </div>
 
