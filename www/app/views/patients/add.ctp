@@ -7,7 +7,7 @@
 
 <div class="span-11 text-left">
 <?php
-echo $form->create('Patient');
+echo $form->create('Patient', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Basic Demographics',
 						'surname'=>array('label'=>'Surname*'),
 						'forenames'=>array('label'=>'Forenames*'),
