@@ -52,7 +52,7 @@
 		</div>
 		<!-- Content -->
 		<div id="content" class="prepend-1 prepend-top span-22 append-1">
-			<div class="prepend-4 span-16 append-4 last">
+			<div class="prepend-3 span-16 append-3 last">
 				<?php $session->flash(); ?>
 				<?php $session->flash('auth'); ?>
 			</div>
