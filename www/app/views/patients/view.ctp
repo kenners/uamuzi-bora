@@ -211,7 +211,7 @@ $crumb->addThisPage('View Patient', null); ?>
 						<?php echo date('d/m/Y', strtotime($result['created'])); ?>
 					</td>
 					<td>
-						<?php echo $result['user_id']; ?>
+						<?php echo $result['User']['username']; ?>
 					</td>
 					<td class="actions">
 						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
