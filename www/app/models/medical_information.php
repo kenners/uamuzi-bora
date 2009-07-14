@@ -19,26 +19,26 @@ class MedicalInformation extends AppModel {
 		'pid' => array(
 			'className' => 'Patient',
 			'foreignKey' => FALSE,
-			'conditions' => array('MedicalInformation.pid' => 'Patient.pid')
+			'conditions' => array('MedicalInformation.pid = pid.pid')
 			),
 		'patient_source' => array('className' => 'PatientSource'),
 		'funding' => array('className' => 'Funding'),
 		'hiv_positive_test_location' => array(
 			'className' => 'Location',
 			'foreignKey' => FALSE,
-			'conditions' => array('MedicalInformation.hiv_positive_test_location_id' => 'Location.id')
+			'conditions' => array('MedicalInformation.hiv_positive_test_location_id = hiv_positive_test_location.id')
 			),
 		'art_service_type' => array('className' => 'ArtServiceType'),
 		'art_starting_regimen' => array(
 			'className' => 'Regimen',
 			'foreignKey' => FALSE,
-			'conditions' => array('MedicalInformation.art_starting_regimen_id' => 'Regimen.id')
+			'conditions' => array('MedicalInformation.art_starting_regimen_id = art_starting_regimen.id')
 			),
 		'art_indication' => array('className' => 'ArtIndication'),
 		'transfer_in_district' => array(
 			'className' => 'Location',
 			'foreignKey' => FALSE,
-			'conditions' => array('MedicalInformation.transfer_in_district_id' => 'Location.id')
+			'conditions' => array('MedicalInformation.transfer_in_district_id = transfer_in_district.id')
 			)
 		);
 	
