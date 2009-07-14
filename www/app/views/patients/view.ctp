@@ -10,17 +10,26 @@ $crumb->addThisPage('View Patient', null); ?>
 		$patient=$patients[0];
 		// Patient Name
 		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
-		echo $html->div('patientId span-22 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
+		
+		echo $html->div('patientId span-14 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
 	
+		
 		// Date of Birth
-		echo $html->div('patientAge span-7', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-5', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
 		// Age (really really messy)
 		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
 			$age = date('Y') - $patient['Patient']['year_of_birth'];
 		}else{
 			$age = 'Unknown';
 		};
-		echo $html->div('patientAge span-7 last', $html->tag('span', 'Age: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $age, array('class'=>'patientAgeValue')));
+		echo $html->div('patientAge span-5', $html->tag('span', 'Age: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $age, array('class'=>'patientAgeValue')));
+		// Patient Status
+		if(($patient['Patient']['status'] == FALSE)){
+			$statusClass = 'patientAgeValue error';
+		} else {
+			$statusClass = 'patientAgeValue';
+		}
+		echo $html->div('patientAge span-4 last', $html->tag('span', 'Status: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyStatus', array('status' => $patient['Patient']['status'])), array('class'=>$statusClass)));
 		?>
 	</div>
 	<div id="otherIdentifier" class="otherIdentifier span-6 last">
@@ -43,11 +52,74 @@ $crumb->addThisPage('View Patient', null); ?>
 
 	<div id="tab1">
 		<h2>Demographic Information</h2>
-		<div class="tasks">
+		<div class="tasks span-22 last">
 			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
 						<a class="button negative" href="/patients/active/">Change Status to Inactive</a>
 						<a class="button positive" href="/patients/active/">Change Status to Active</a>
 			
+		</div>
+		<div class="demographicInformation large span-22 last">
+			<div class="span-11">
+				<div>
+					<strong>Sex: </strong>
+					<?php echo $patient['Patient']['sex']; ?>
+				</div>
+				<div>
+					<strong>Mother: </strong>
+					<?php echo $patient['Patient']['mother']; ?>
+				</div>
+				<div>
+					<strong>Occupation: </strong>
+					<?php echo $patient['occupation']['name']; ?>
+				</div>
+				<div>
+					<strong>Education: </strong>
+					<?php echo $patient['education']['name']; ?>
+				</div>
+				<div>
+					<strong>Marital Status: </strong>
+					<?php echo $patient['marital_status']['name']; ?>
+				</div>
+				<div>
+					<strong>Telephone Number: </strong>
+					<?php echo $patient['Patient']['telephone_number']; ?>
+				</div>
+				<div>
+					<strong>Treatment Supporter: </strong>
+					<?php echo $patient['Patient']['treatment_supporter']; ?>
+				</div>			
+			</div>
+			<div class="span-11 last">
+			<h3>Location Information</h3>
+				<div>
+					<strong>Location: </strong>
+					<?php echo $patient['location']['name']; ?>
+				</div>
+				<div>
+					<strong>Village: </strong>
+					<?php echo $patient['Patient']['village']; ?>
+				</div>
+				<div>
+					<strong>Home: </strong>
+					<?php echo $patient['Patient']['home']; ?>
+				</div>
+				<div>
+					<strong>Nearest Church: </strong>
+					<?php echo $patient['Patient']['nearest_church']; ?>
+				</div>
+				<div>
+					<strong>Nearest School: </strong>
+					<?php echo $patient['Patient']['nearest_school']; ?>
+				</div>
+				<div>
+					<strong>Nearest Health Centre: </strong>
+					<?php echo $patient['Patient']['nearest_health_centre']; ?>
+				</div>
+				<div>
+					<strong>Nearest Major Landmark: </strong>
+					<?php echo $patient['Patient']['nearest_major_landmark']; ?>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="tab2">
