@@ -17,7 +17,8 @@ class PatientsController extends AppController {
 		'Education',
 		'MaritalStatus',
 		'Location',
-		'MedicalInformation'
+		'MedicalInformation',
+		'ArchivePatient'
 		);
 	/**
 	 * Debugging list all patients function
@@ -254,6 +255,7 @@ class PatientsController extends AppController {
 			$this->data = $this->__prettyInput($this->data);
 			
 			// Update the row
+			parent::archive($this->data['Patient']['pid']);
 			if ($this->Patient->save($this->data)) {
 				$this->Session->setFlash('The patient details were successfully updated');
 				$this->redirect('/patients/view/' . $this->data['Patient']['pid']);

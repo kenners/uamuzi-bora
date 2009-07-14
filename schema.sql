@@ -28,6 +28,13 @@ ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_information
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_starting_regimen_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_service_type_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_indication_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_user_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_vf_testing_site_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_occupation_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_marital_status_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_location_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_inactive_reason_id_fkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_education_id_fkey;
 DROP INDEX public.aro_aco_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
@@ -66,6 +73,7 @@ ALTER TABLE ONLY public.archive_users DROP CONSTRAINT archive_users_pkey;
 ALTER TABLE ONLY public.archive_tests DROP CONSTRAINT archive_tests_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
 ALTER TABLE ONLY public.archive_result_lookups DROP CONSTRAINT archive_result_lookups_pkey;
+ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_pkey;
 ALTER TABLE ONLY public.archive_groups DROP CONSTRAINT archive_groups_pkey;
 ALTER TABLE ONLY public.acos DROP CONSTRAINT acos_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
@@ -90,6 +98,7 @@ ALTER TABLE public.archive_users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_result_lookups ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_patients ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_groups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.acos ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
@@ -139,6 +148,8 @@ DROP SEQUENCE public.archive_results_id_seq;
 DROP TABLE public.archive_results;
 DROP SEQUENCE public.archive_result_lookups_id_seq;
 DROP TABLE public.archive_result_lookups;
+DROP SEQUENCE public.archive_patients_id_seq;
+DROP TABLE public.archive_patients;
 DROP SEQUENCE public.archive_groups_id_seq;
 DROP TABLE public.archive_groups;
 DROP SEQUENCE public.acos_id_seq;
@@ -254,6 +265,70 @@ ALTER SEQUENCE archive_groups_id_seq OWNED BY archive_groups.id;
 --
 
 SELECT pg_catalog.setval('archive_groups_id_seq', 1, false);
+
+
+--
+-- Name: archive_patients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_patients (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone DEFAULT now() NOT NULL,
+    archive_reason character varying,
+    archive_pid integer NOT NULL,
+    archive_upn character varying,
+    archive_arvid character varying,
+    archive_vfcc character varying,
+    archive_surname character varying NOT NULL,
+    archive_forenames character varying NOT NULL,
+    archive_date_of_birth date,
+    archive_year_of_birth integer,
+    archive_sex character varying,
+    archive_mother character varying,
+    archive_occupation_id integer,
+    archive_education_id integer,
+    archive_marital_status_id integer,
+    archive_telephone_number character varying,
+    archive_treatment_supporter text,
+    archive_location_id integer,
+    archive_village character varying,
+    archive_home character varying,
+    archive_nearest_church character varying,
+    archive_nearest_school character varying,
+    archive_nearest_health_centre character varying,
+    archive_nearest_major_landmark character varying,
+    archive_vf_testing_site integer,
+    archive_status boolean NOT NULL,
+    archive_inactive_reason_id integer,
+    archive_status_timestamp timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: archive_patients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_patients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_patients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_patients_id_seq OWNED BY archive_patients.id;
+
+
+--
+-- Name: archive_patients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_patients_id_seq', 1, false);
 
 
 --
@@ -504,7 +579,7 @@ SELECT pg_catalog.setval('aros_acos_id_seq', 1, false);
 --
 
 CREATE SEQUENCE aros_id_seq
-    START WITH 1
+    START WITH 5
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -691,7 +766,7 @@ CREATE TABLE groups (
 --
 
 CREATE SEQUENCE groups_id_seq
-    START WITH 1
+    START WITH 3
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1171,7 +1246,7 @@ CREATE TABLE users (
 --
 
 CREATE SEQUENCE users_id_seq
-    START WITH 1
+    START WITH 3
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1243,6 +1318,13 @@ ALTER TABLE acos ALTER COLUMN id SET DEFAULT nextval('acos_id_seq'::regclass);
 --
 
 ALTER TABLE archive_groups ALTER COLUMN id SET DEFAULT nextval('archive_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_patients ALTER COLUMN id SET DEFAULT nextval('archive_patients_id_seq'::regclass);
 
 
 --
@@ -1412,6 +1494,14 @@ COPY acos (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
 --
 
 COPY archive_groups (id, archive_id, user_id, created, archive_reason, archive_name, archive_description, archive_created, archive_modified) FROM stdin;
+\.
+
+
+--
+-- Data for Name: archive_patients; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_patients (id, user_id, created, archive_reason, archive_pid, archive_upn, archive_arvid, archive_vfcc, archive_surname, archive_forenames, archive_date_of_birth, archive_year_of_birth, archive_sex, archive_mother, archive_occupation_id, archive_education_id, archive_marital_status_id, archive_telephone_number, archive_treatment_supporter, archive_location_id, archive_village, archive_home, archive_nearest_church, archive_nearest_school, archive_nearest_health_centre, archive_nearest_major_landmark, archive_vf_testing_site, archive_status, archive_inactive_reason_id, archive_status_timestamp) FROM stdin;
 \.
 
 
@@ -1744,6 +1834,14 @@ ALTER TABLE ONLY archive_groups
 
 
 --
+-- Name: archive_patients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: archive_result_lookups_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2044,6 +2142,62 @@ ALTER TABLE ONLY vf_testing_sites
 --
 
 CREATE UNIQUE INDEX aro_aco_key ON aros_acos USING btree (aro_id, aco_id);
+
+
+--
+-- Name: archive_patients_archive_education_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_education_id_fkey FOREIGN KEY (archive_education_id) REFERENCES educations(id);
+
+
+--
+-- Name: archive_patients_archive_inactive_reason_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_inactive_reason_id_fkey FOREIGN KEY (archive_inactive_reason_id) REFERENCES inactive_reasons(id);
+
+
+--
+-- Name: archive_patients_archive_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_location_id_fkey FOREIGN KEY (archive_location_id) REFERENCES locations(id);
+
+
+--
+-- Name: archive_patients_archive_marital_status_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_marital_status_id_fkey FOREIGN KEY (archive_marital_status_id) REFERENCES marital_statuses(id);
+
+
+--
+-- Name: archive_patients_archive_occupation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_occupation_id_fkey FOREIGN KEY (archive_occupation_id) REFERENCES occupations(id);
+
+
+--
+-- Name: archive_patients_archive_vf_testing_site_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_archive_vf_testing_site_fkey FOREIGN KEY (archive_vf_testing_site) REFERENCES vf_testing_sites(site_code);
+
+
+--
+-- Name: archive_patients_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_patients
+    ADD CONSTRAINT archive_patients_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
