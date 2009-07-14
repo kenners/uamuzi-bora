@@ -48,13 +48,13 @@ foreach ($patients as $patient):
 			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['status']; ?>
-		</td>
-		<td>
 			<?php echo $patient['Patient']['surname']; ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['forenames']; ?>
+		</td>
+		<td>
+			<?php echo $this->element('prettyStatus', array('status' =>$patient['Patient']['status'])); ?>
 		</td>
 		<td>
 			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth']));?>
