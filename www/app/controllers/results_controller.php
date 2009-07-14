@@ -44,34 +44,27 @@ class ResultsController extends AppController {
 					$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 				}  
 			} else {
-				if (isset($this->data['id'])){
-					// So we're coming from the miniform
-					$test_id=$this->data['id'];
-					$this->Result->Test->id=$test_id;
-					// Let's check to see if the Test ID submitted via the miniform actually exists as a Test
-					if($this->Result->Test->exists()) {
-						// Yes, it appears that the Test does exist
-						$this->set('test_id',$test_id);
-						// Let's find out what Type (decimal,lookup,text etc) of test it is
-						$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
+				// So we're coming from the miniform
+				$test_id=$this->data['id'];
+				$this->Result->Test->id=$test_id;
+				// Let's check to see if the Test ID submitted via the miniform actually exists as a Test
+				if($this->Result->Test->exists()) {
+					// Yes, it appears that the Test does exist
+					$this->set('test_id',$test_id);
+					// Let's find out what Type (decimal,lookup,text etc) of test it is
+					$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
 				
-						// Now get the data to send to the view to build the add results form
-						$tests = $this->Result->Test->find('list');
-						$this->set(compact('tests'));
-					} else {
-						// Nope, the Test ID is not valid.
-						$this->Session->setFlash('Not a valid test');
-						// Go back to whence ye came...
-						$this->redirect($this->referer());
-					}
+					// Now get the data to send to the view to build the add results form
+					$tests = $this->Result->Test->find('list');
+					$this->set(compact('tests'));
 				} else {
 					// Nope, the Test ID is not valid.
-					$this->Session->setFlash('No Test ID provided. Please try adding a result again from the Patients View screen.');
+					$this->Session->setFlash('Not a valid test');
 					// Go back to whence ye came...
-					$this->redirect('/');
+					$this->redirect($this->referer());
 				}
 			}
-		}
+		} else {$this->redirect('/');}
 	}
 
 	function edit($id = null) {
