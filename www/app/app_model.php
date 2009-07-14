@@ -118,21 +118,16 @@ class AppModel extends Model {
 	
 	/**
 	 * Custom validation function that returns TRUE if $value exists in the 
-	 * column $column ('id' by default).  If $model is set, then it uses
-	 * $this->$model->find(), otherwise it uses $this->find().
+	 * column $column ('id' by default) of the model $model
 	 */
-	function valueExists($value, $model = NULL, $column = 'id') {
+	function valueExists($value, $model, $column = 'id') {
 		// Set the conditions
-		$conditions = array($column => $value);
+		$conditions = array($model . '.' . $column => $value);
 
 		// Set $count, the number of rows with $value in $column, calling
-		// ClassRegistry to access the model if necessary
-		if (!is_null($model)) {
-			$this->$model =& ClassRegistry::init($model);
-			$count = $this->$model->find('count', array('conditions' => $conditions));
-		} else {
-			$count = $this->find('count', array('conditions' => $conditions));
-		}
+		// ClassRegistry to access the model
+		$this->$model =& ClassRegistry::init($model);
+		$count = $this->$model->find('count', array('conditions' => $conditions));
 		
 		// If $count is at least 1, then return TRUE
 		return $count >= 1;
