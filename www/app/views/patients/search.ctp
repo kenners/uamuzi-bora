@@ -54,8 +54,7 @@ echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), arra
 <div class="span-7">
 <?php
 echo $form->inputs(array('legend' => 'Location',
-						'location_id'=>array('empty' => TRUE,
-												'label' => FALSE)));
+						'location_id'=>array('label' => FALSE)));
 												
 ?>
 </div>
@@ -104,8 +103,10 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
+
+			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
 		</td>
+
 		<td>
 			<?php echo $patient['Patient']['surname']; ?>
 		</td>
@@ -113,7 +114,9 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['forenames']; ?>
 		</td>
 		<td>
+
 			<?php echo $this->element('prettyStatus', array('status' =>$patient['Patient']['status'])); ?>
+
 		</td>
 		<td>
 			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])); ?>

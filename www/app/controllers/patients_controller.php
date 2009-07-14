@@ -29,33 +29,173 @@ class PatientsController extends AppController {
 	}
 
   function search(){
-    //if(!empty($this->data))
-    //  {
-	$this->set(array('locations' => $this->Location->generatetreelist(null, null, null, '-')));
+    $paginate=array('recursive'=>-1);
+    $this->set(array('locations' => $this->Location->generatetreelist(null, null, null, '-')));
+    if(!empty($this->data))
+      {
+	$active_key='status';
+	$location_key='Patient.location_id';
+	//extract data from form
+	$search_key_1=array_pop(Set::extract('/Patient/search_key_1',$this->data));
+	$search_value_1=array_pop(Set::extract('/Patient/search_value_1',$this->data));
+	$search_key_2=array_pop(Set::extract('/Patient/search_key_2',$this->data));
+	$search_value_2=array_pop(Set::extract('/Patient/search_value_2',$this->data));
+	$search_key_3=array_pop(Set::extract('/Patient/search_key_3',$this->data));
+	$search_value_3=array_pop(Set::extract('/Patient/search_value_3',$this->data));
+	$active=array_pop(Set::extract('/Patient/status',$this->data));
+	$location=array_pop(Set::extract('/Patient/location_id',$this->data));
+       
+      
+	// If we have a test field want to use LIKE
+	switch($search_key_1)
+	  {
+	  case 'surname':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  case '.forenames':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  case 'telephone_number':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  case 'upn':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  case 'arvid':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  case 'vfcc':
+	    $search_key_1=$search_key_1.' LIKE';
+	    break;
+	  }
+	switch($search_key_2)
+	  {
+	  case 'surname':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  case 'forenames':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  case 'telephone_number':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  case '.upn':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  case 'arvid':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  case 'vfcc':
+	    $search_key_2=$search_key_2.' LIKE';
+	    break;
+	  }
+	switch($search_key_3)
+	  {
+	  case 'surname':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  case '.forenames':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  case 'telephone_number':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  case 'upn':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  case 'arvid':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  case 'vfcc':
+	    $search_key_3=$search_key_3.' LIKE';
+	    break;
+	  }
+
+       
+	//fix active value
+	if(strcmp($active,'2')==0){
+	 
+	  $active=false;
+	}else if(strcmp($active,'1')==0){
+	  $active=true;
+	}
+	else if($active==null){
+	  $active=array(true,false);
+	 
+	}
+	//Get all the sublocations so we can include alle of them
+	$location_arr=$this->Patient->Location->children($location);
+	$locations=array();
+	foreach($location_arr as $loc){
+	  array_push($locations,$loc['Location']['id']);
+	}
+       
+	array_push($locations,$location);
+	$result=array();
+	//Check how many $search_keys we have, and the call with 1,2 or 3 conditions
+	if($search_key_1!=null)
+	  {
+	    if($search_key_2 != null)
+	      {
+		if($search_key_3 != null)
+		  {
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,'Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations));
+		 
+		   		     
+		  }else{
+	       
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations));
+		   
+		      
+		  }
+	      }
+	    //Add results with just one of the conditions to the bottom
+	    $result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,$active_key=>$active,$location_key=>$locations)));
+		 
+	 
+	    //Want to add results where just one of the conditions was fullfilled
+	    if($search_key_2 != null)
+	      {
+		   
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations)));
+		 
+	       
+	      }
+	    if($search_key_3 != null)
+	      {
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations)));
+	      }
+	     	   
+	    $this->set('patients',$result);
+	    if(count($result)==0)
+	      {
+		$this->Session->setFlash('Couldn\'t find any patients fullfilling those conditions');
+	      }
+	    
+	     
+	  }else{
+	    $this->Session->setFlash('You need to specify at least one search criteria');
+	  }
 	
-	$field_name='surname';//Set::extract('/Patient/field_name',$this->data);
-	$search='Ro';//Set::extract('/Patient/search',$this->data);
-	
-	//$this->set('patients',$this->paginate(array('conditions'=>array($field_name.' LIKE'=>$search))));
-	  var_dump($this->paginate('Patient',array($field_name.' LIKE'=>$search)));
-	
-	  //  }
+      }
   }
-	
-	
-	/**
+  
+
+  /**
 	 * Populate the Patient model with data for a new patient
 	 */
 	function add() {
 		// What to do if we have been sent data (i.e. the form has been filled
 		// out)
 		if (!empty($this->data)) {
+		  
 			// Generate a new PID
 			$this->data['Patient']['pid'] = $this->Patient->newPID();
 			
 			// Get year_of_birth from date_of_birth
-			if (!empty($this->data['Patient']['year_of_birth']['year'])) {
+			if (!empty($this->data['Patient']['date_of_birth']['year'])) {
 				$this->data['Patient']['year_of_birth'] = $this->data['Patient']['date_of_birth']['year'];
+				
 			}
 			
 			// Generate an ISO 8601 input for date_of_birth

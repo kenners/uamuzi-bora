@@ -6,7 +6,7 @@ class TestsController extends AppController {
 	var $uses= array('Test','ArchiveTest','User');
 	
 	function index() {
-		$this->Test->recursive = 0;
+	    	$this->Test->recursive = 0;
 		$this->set('tests', $this->paginate());
 	}
 
