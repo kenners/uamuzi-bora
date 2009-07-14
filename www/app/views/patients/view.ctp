@@ -86,7 +86,11 @@ $crumb->addThisPage('View Patient', null); ?>
 				</div>
 				<div>
 					<strong>Treatment Supporter: </strong>
-					<?php echo $patient['Patient']['treatment_supporter']; ?>
+					<?php $support = unserialize($patient['Patient']['treatment_supporter']);
+					echo $support['name'].'<br/>';
+					echo '<em>'.$support['relationship'].'</em><br/>';
+					echo $support['address'].'<br/>';
+					echo $support['telephone_number']; ?>
 				</div>			
 			</div>
 			<div class="span-11 last">

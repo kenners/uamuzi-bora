@@ -93,7 +93,7 @@ class PatientsController extends AppController {
 			
 			// Set $this->data['Patient']['treatment_supporter'], which is either
 			// a serialised array or NULL
-			foreach (array('name', 'address', 'relationship', 'telephone number') as $TSField) {
+			foreach (array('name', 'address', 'relationship', 'telephone_number') as $TSField) {
 				if (!empty($this->data['Patient']['treatment_supporter_' . $TSField])) {
 					$TSArray[$TSField] = $this->data['Patient']['treatment_supporter_' . $TSField];
 				}
