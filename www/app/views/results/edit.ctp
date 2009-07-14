@@ -1,12 +1,12 @@
 <?php $crumb->addThisPage('Edit', null, 'auto'); ?>
 <div class="results form span-16">
-<?php echo $form->create('Result', array('action'=>'edit/'.$pid));?>
+<?php echo $form->create('Result');?>
 	<fieldset>
  		<legend><?php __('Edit Result for '.$type['Test']['name']);?></legend>
  		<p><strong>Test:</strong> <?php echo $type['Test']['name'];?><br/><strong>Description:</strong> <?php echo $type['Test']['description'];?></p>
 	<?php
-		//echo $form->input('pid');
-		echo $form->input('test_id',array('type'=>'hidden','value'=>$test_id));
+		echo $form->input('pid',array('type'=>'hidden'));
+		echo $form->input('test_id',array('type'=>'hidden'));
 		switch($type['Test']['type']) {
   			case "decimal":
 				echo $form->input('value_decimal', array('label'=>'Value','after'=>$type['Test']['units']));
