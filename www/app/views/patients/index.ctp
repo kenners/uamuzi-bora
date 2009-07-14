@@ -45,7 +45,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $patient['Patient']['pid']; ?>
+			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['status']; ?>
@@ -57,7 +57,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo date('d/m/Y', strtotime($patient['Patient']['date_of_birth'])); ?>
+			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth']));?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['sex']; ?>
