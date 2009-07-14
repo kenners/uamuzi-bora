@@ -121,15 +121,13 @@ class Patient extends AppModel {
 		'year_of_birth' => array(
 			'positive integer' => array(
 				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
 				'message' => 'The year of birth should be a positive integer'
 			),
 			'not in the future' => array(
 				'rule' => array('customValidationFunction', 'isNotFutureYear'),
+				'allowEmpty' => TRUE,
 				'message' => 'The year of birth is in the future'
-			),
-			'not null' => array(
-				'rule' => 'notEmpty',
-				'message' => 'The year of birth must not be left empty'
 			)
 		),
 		'occupation_id' => array(

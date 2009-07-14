@@ -941,7 +941,7 @@ CREATE TABLE patients (
     surname character varying NOT NULL,
     forenames character varying NOT NULL,
     date_of_birth date,
-    year_of_birth integer NOT NULL,
+    year_of_birth integer,
     sex character varying,
     mother character varying,
     occupation_id integer,
