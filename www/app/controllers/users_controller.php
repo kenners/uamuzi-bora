@@ -79,6 +79,8 @@ class UsersController extends AppController {
             }
         }
         debug($log);
+	$this->Session->setFlash('Database succesfully initialized'); 
+	$this->redirect(array('controller'=>'/'));
   }
   function initDB() {// A one time use function to initialze the aros_acos table
     $group =& $this->User->Group;
@@ -90,7 +92,8 @@ class UsersController extends AppController {
     $group->id = 2;
     $this->Acl->deny($group, 'controllers');
     $this->Acl->allow($group, 'controllers/Results');
-    
+    $this->Session->setFlash('Database succesfully initialized'); 
+    $this->redirect(array('controller'=>'/'));
     
     
  

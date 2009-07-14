@@ -522,7 +522,7 @@ ALTER SEQUENCE aros_id_seq OWNED BY aros.id;
 -- Name: aros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_id_seq', 1, false);
+SELECT pg_catalog.setval('aros_id_seq', 5, false);
 
 
 --
@@ -709,7 +709,7 @@ ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 -- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('groups_id_seq', 1, false);
+SELECT pg_catalog.setval('groups_id_seq', 3, false);
 
 
 --
@@ -1189,7 +1189,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('users_id_seq', 2, false);
+SELECT pg_catalog.setval('users_id_seq', 3, false);
 
 
 --
