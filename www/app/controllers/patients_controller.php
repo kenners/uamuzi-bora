@@ -288,7 +288,31 @@ class PatientsController extends AppController {
 
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
-	
+		var_dump($this->paginate('Patient',array('Patient.pid'=>$pid)));
 	}
+  function indexAttendence()
+  {
+    
+    $results=$this->Patient->Result->find('all',array('fields'=>'Result.pid','conditions'=>array('Result.test_id'=>1,'Result.created >'=>date('Y-m-d',strtotime('today')))));
+    $pids=array();
+    foreach($results as $result)
+      {
+	array_push($pids,array_pop(Set::extract('/Result/pid',$result)));
+	
+      }
+    $attendence=array();
+    foreach($pids as $pid){
+      array_push($attendence,$this->Patient->Result->find('first',array('order'=>'Result.created DESC','conditions'=>array('Result.test_id'=>1,'Result.pid'=>$pid))));
+    }
+    var_dump($attendence);
+    foreach($attendence as $att)
+      {
+	$value=array_pop(Set::extract('/Test/value_lookup',$att));
+    $resultLookups=$this->Patient->Result->ResulLookup->find('first',array('conditions'=>array('ResultLookup.test_id'=>1,'ResultLookup.value'=>$value)));
+      }
+    
+    $this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
+   
+  }
 }
 ?>

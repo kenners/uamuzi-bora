@@ -19,8 +19,8 @@ class ResultsController extends AppController {
 		$result=$this->Result->find('first',array('conditions'=>array('Result.id'=>$id),'recursive'=>1));
 		$this->set('result', $result);
 	}
-
-	function add($pid = null) {
+  
+        function add($pid = null) {
 		$this->Result->Patient->id=$pid;
 		$this->set('pid',$pid);
 		if(!$this->Result->Patient->exists()) {
@@ -109,6 +109,25 @@ class ResultsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 	}
+  function add_attendence($pid=null){
+    
+    $this->Result->Patient->id=$pid;
+    $this->set('pid',$pid);
+    if(!$this->Result->Patient->exists())
+      {
+	$this->Session->setFlash('You tried to add attendence to a Patient that does not exist');
+	$this->redirect($this->referer());
+      }
+    $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1));
+    $this->Result->create();
+    if ($this->Result->save($data)) 
+      {
+	$this->Session->setFlash(__('The Attendence has been saved', true));
+	$this->redirect(array('controller'=>'patients','action'=>'search'));
+      } else {
+	$this->Session->setFlash(__('The Attendence could not be saved. Please, try again.', true));
+      }  
+  }
 
 }
 ?>

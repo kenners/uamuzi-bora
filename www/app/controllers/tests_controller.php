@@ -15,9 +15,9 @@ class TestsController extends AppController {
 			$this->Session->setFlash(__('Invalid Test.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$test=$this->Test->find('first',array('conditions'=>array('Test.id'=>$id),'recursive'=>1));
+		$test=$this->Test->find('first',array('conditions'=>array('Test.id'=>$id),'recursive'=>2));
 		$this->set('test', $test);
-
+		
 	}
 
 	function add() {

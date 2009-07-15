@@ -12,8 +12,11 @@ class Result extends AppModel {
 		   'Test'=>array('className'=>'Test'),
 		   'Patient'=>array('className'=>'Patient',
 				    'foreignKey'=>'pid'),
-		   'User'=>array('className'=>'User')
+		   'User'=>array('className'=>'User'),
+		   'ResultLookup'=>array('className'=>'RestultLookup',
+					 'foreignKey'=>'value_lookup')
 		   );
+		   
 
   /**
    * Validate save()
