@@ -1,6 +1,6 @@
 <?php $crumb->addThisPage('Patients', 'reset'); ?>
 <div id="viewTitle" class="text-left">
-<h1>Patient List</h1>
+<h1>Clinic Patients for <?php echo date('l jS F Y') ?></h1>
 </div>
 
 
@@ -9,8 +9,8 @@
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 ?>
-<div class="span-22 last"><?php echo $html->link('Add New Patient', array('action'=>'add'), array('class'=>'button')); ?></div>
-<div class="span-12 append-10 last"><em>Before adding a new patient, please <?php echo $html->link(__('Search', true), array('action'=>'search')); ?> or browse the list of patients in the database below to check that they do not already have a record in this database.</em></div>
+
+<div class="span-12 append-10 last">Patients who have been logged as arriving for clinic today are listed below.</div>
  
 <div id="patientIndex" class="patients index span-22 prepend-top last">
 	
@@ -22,7 +22,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 	<th><?php echo $paginator->sort('Forenames','forenames');?></th>
 	<th><?php echo $paginator->sort('DoB','date_of_birth');?></th>
 	<th><?php echo $paginator->sort('Sex','sex');?></th>
-	<th><?php echo $paginator->sort('Attendence','value_lookup');?></th>
+	<th><?php echo $paginator->sort('Attendance Status','value_lookup');?></th>
 	
 	
 
@@ -61,8 +61,7 @@ foreach ($patients as $patient):
 		
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
-			<?php echo $html->link(__('Edit attendance status', true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $patient['Patient']['pid']), null, sprintf(__('Are you sure you want to delete # %s?', true), $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('Edit Attendance Status', true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
