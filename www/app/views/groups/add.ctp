@@ -1,4 +1,4 @@
-<?php $crumb->addThisPage('Add', null, 'auto'); ?>
+<?php $crumb->addThisPage('Add Group', null, 'auto'); ?>
 <div class="groups form span-16">
 <?php echo $form->create('Group', array('action' => 'add'));?>
 	<fieldset>
@@ -13,8 +13,10 @@
 <div class="actions span-5 last">
 	<h3>Actions</h3>
 	<ul>
+		
 		<li><?php echo $html->link(__('List Groups', true), array('action'=>'index'));?></li>
 		<li><?php echo $html->link(__('List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
 	</ul>
+	
 </div>
