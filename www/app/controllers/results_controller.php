@@ -61,7 +61,6 @@ class ResultsController extends AppController {
 					$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
 					//Get all the options :
 					$this->set('options',$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test_id))));
-					var_dump($this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test_id))));
 					// Now get the data to send to the view to build the add results form
 					$tests = $this->Result->Test->find('list');
 					$patients = $this->Result->Patient->find('list');

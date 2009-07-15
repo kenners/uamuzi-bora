@@ -51,65 +51,107 @@ class PatientsController extends AppController {
 	// If we have a test field want to use LIKE
 	switch($search_key_1)
 	  {
-	  case 'surname':
-	    $search_key_1=$search_key_1.' LIKE';
+	  case 'pid':
+	    $search_key_1=$search_key_1.' =';
+	    $search_value_1=$search_value_1;
 	    break;
-	  case '.forenames':
-	    $search_key_1=$search_key_1.' LIKE';
+	   case 'age':
+	    $search_key_1=$search_key_1.' =';
+	    $search_value_1=$search_value_1; 
+	    break;
+	  case 'surname':
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
+	    break;
+	  case 'forenames':
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'upn':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  }
 	switch($search_key_2)
 	  {
+	  case 'pid':
+	    $search_key_2=$search_key_2.' =';
+	    $search_value_2=$search_value_2;
+	    break;
+	   case 'age':
+	    $search_key_2=$search_key_2.' =';
+	    $search_value_2=$search_value_2; 
+	    break;
 	  case 'surname':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'forenames':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
-	  case '.upn':
-	    $search_key_2=$search_key_2.' LIKE';
+	  case 'upn':
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  }
 	switch($search_key_3)
 	  {
 	  case 'surname':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
+	    break;
+	  case 'pid':
+	    $search_key_3=$search_key_3.' =';
+	    $search_value_3=$search_value_3;
+	    break;
+	   case 'age':
+	    $search_key_3=$search_key_3.' =';
+	    $search_value_3=$search_value_3; 
 	    break;
 	  case '.forenames':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'upn':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  }
 
@@ -141,31 +183,31 @@ class PatientsController extends AppController {
 	      {
 		if($search_key_3 != null)
 		  {
-		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,'Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations));
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,'Patient.'.$search_key_2.$search_value_2,'Patient.'.$search_key_3.$search_value_3,$active_key=>$active,$location_key=>$locations));
 		 
 		   		     
 		  }else{
 	       
-		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations));
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,'Patient.'.$search_key_2.$search_value_2,$active_key=>$active,$location_key=>$locations));
 		   
 		      
 		  }
 	      }
 	    //Add results with just one of the conditions to the bottom
-	    $result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,$active_key=>$active,$location_key=>$locations)));
+	    $result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,$active_key=>$active,$location_key=>$locations)));
 		 
 	 
 	    //Want to add results where just one of the conditions was fullfilled
 	    if($search_key_2 != null)
 	      {
 		   
-		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations)));
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_2.$search_value_2,$active_key=>$active,$location_key=>$locations)));
 		 
 	       
 	      }
 	    if($search_key_3 != null)
 	      {
-		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations)));
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_3.$search_value_3,$active_key=>$active,$location_key=>$locations)));
 	      }
 	     	   
 	    $this->set('patients',$result);
