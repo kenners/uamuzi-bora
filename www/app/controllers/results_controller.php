@@ -118,7 +118,7 @@ class ResultsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 	}
-  function add_attendence($pid=null){
+  function add_attendance($pid=null){
     
     $this->Result->Patient->id=$pid;
     $this->set('pid',$pid);

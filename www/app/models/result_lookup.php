@@ -34,7 +34,14 @@ class ResultLookup extends appModel{
 							  'rule' => 'notEmpty',
 							  'message' => 'The user id can\'t be empty'
 							  )
+
 				    ),
+			'description'=>array(
+				       'not null' => array(
+							   'rule' => 'notEmpty',
+							   'message' => 'The user id can\'t be empty'
+							   )
+				       ),
 			'user_id'=>array(
 				      'int'=>array(
 						  'rule'=>'numeric',

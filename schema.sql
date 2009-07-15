@@ -1152,7 +1152,7 @@ CREATE TABLE result_lookups (
     id integer NOT NULL,
     test_id integer NOT NULL,
     value character varying NOT NULL,
-    description character varying,
+    description character varying NOT NULL,
     comment character varying,
     user_id integer NOT NULL,
     modified timestamp without time zone NOT NULL

@@ -20,6 +20,11 @@ class ResultLookupsController extends AppController {
 	}
 
   function add($test_id=null) {
+    if($test_id==null)
+      {
+	$this->redirect('You have to specify a test to add a result option to');
+	$this->redirect($this->referer());
+      }
     $this->ResultLookup->Test->id=$test_id;
     $this->set('test_id',$test_id);
     $test=$this->ResultLookup->Test->read(null,$test_id);
