@@ -82,9 +82,11 @@ class MedicalInformationsController extends AppController {
 			}
 		}
 		
-		// $this->data wasn't set (otherwise we'd have redirected), so set some
-		// variables to be sent to the form
-		$this->data = $this->MedicalInformation->findByPid($pid);
+		// We need to set some stuff before the form can be displayed
+		if (!isset($this->data)) {
+			// if condition required in case validation has failed
+			$this->data = $this->MedicalInformation->findByPid($pid);
+		}
 		$this->set(array(
 			'medical_information' => $this->MedicalInformation->read(NULL, $pid),
 			'patient_sources' => $this->PatientSource->find('list'),
