@@ -924,7 +924,7 @@ CREATE TABLE medical_informations (
     art_indication_id integer,
     transfer_in_date date,
     transfer_in_district_id integer,
-    trasnfer_in_facility text,
+    transfer_in_facility character varying,
     transfer_out_date date,
     transfer_out_event text
 );
@@ -1699,7 +1699,7 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 -- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, trasnfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
+COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
 \.
 
 
