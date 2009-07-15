@@ -99,8 +99,12 @@ class ResultsController extends AppController {
 			$this->data = $this->Result->read(null, $id);
 		}
 		$tests = $this->Result->Test->find('list');
-		$this->set('type',$this->Result->find('first',array('conditions'=>array('Result.id'=>$id))));
+		$type=$this->Result->find('first',array('conditions'=>array('Result.id'=>$id)));
+		$test_id=array_pop(Set::extract('/Result/test_id',$type));
+		$this->set('type',$type);
 		$this->set(compact('tests'));
+		//Get all the options :
+		$this->set('options',$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test_id))));
 	}
 
 	function delete($id = null) {
@@ -124,6 +128,25 @@ class ResultsController extends AppController {
 	$this->redirect($this->referer());
       }
     $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1));
+    $this->Result->create();
+    if ($this->Result->save($data)) 
+      {
+	$this->Session->setFlash(__('The Attendence has been saved', true));
+	$this->redirect(array('controller'=>'patients','action'=>'search'));
+      } else {
+	$this->Session->setFlash(__('The Attendence could not be saved. Please, try again.', true));
+      }  
+  }
+  function ad_attendence($pid=null){
+    
+    $this->Result->Patient->id=$pid;
+    $this->set('pid',$pid);
+    if(!$this->Result->Patient->exists())
+      {
+	$this->Session->setFlash('You tried to add attendence to a Patient that does not exist');
+	$this->redirect($this->referer());
+      }
+    $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>2));
     $this->Result->create();
     if ($this->Result->save($data)) 
       {
