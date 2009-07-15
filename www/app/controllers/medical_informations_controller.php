@@ -1,7 +1,17 @@
 <?php
 class MedicalInformationsController extends AppController {
 	var $name = 'MedicalInformations';
-	var $uses = array('MedicalInformation', 'Patient');
+	var $uses = array(
+		'MedicalInformation',
+		'ArchiveMedicalInformation',
+		'Patient',
+		'PatientSource',
+		'Funding',
+		'Location',
+		'ArtServiceType',
+		'Regimen',
+		'ArtIndication'
+		);
 	
 	/**
 	 * This function should only ever be referred from PatientsController::add.
@@ -30,6 +40,61 @@ class MedicalInformationsController extends AppController {
 		
 		// Send $pid to the view so that it can create the necesssary links
 		$this->set('pid', $pid);
+	}
+	
+	/**
+	 * Edit a row in the MedicalInformation table, with appropriate auditing
+	 */
+	function edit($pid = NULL) {
+		// Check $pid is okay
+		if (empty($pid) || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
+			$this->redirect(array('controller' => 'patients', 'action' => 'index'));
+		}
+		
+		// If there's somehow not a row in the medical_informations table, then
+		// create it now.  Hopefully this will never happen, but it might if, say
+		// the connection was lost in the middle of adding a new patient.
+		if (!$this->MedicalInformation->valueExists($pid, 'MedicalInformation', 'pid')) {
+			$this->MedicalInformation->save(array('MedicalInformation' => array('pid' => $pid)));
+		}
+		
+		// If some data has been sent, then archive and edit the database table,
+		// then redirect to PatientsController::view
+		if (isset($this->data)) {
+			// Necessary because if validation fails we want $this->data to be
+			// pristine
+			$data = $this->data;
+			
+			// Fix all of the dates to ISO 8601
+			foreach (array('hiv_positive_date', 'hiv_positive_clinic_start_date', 'art_start_date', 'art_eligibility_date', 'transfer_in_date', 'transfer_out_date') as $dateField) {
+				$data['MedicalInformation'][$dateField] = $data['MedicalInformation'][$dateField]['year'] . '-'
+														. $data['MedicalInformation'][$dateField]['month'] . '-'
+														. $data['MedicalInformation'][$dateField]['day'];
+			}
+			
+			// Archive the existing data
+			parent::archive($pid);
+			
+			// Save the new row
+			if ($this->MedicalInformation->save($data)) {
+				$this->Session->setFlash('Medical information successfully updated');
+				$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
+			}
+		}
+		
+		// $this->data wasn't set (otherwise we'd have redirected), so set some
+		// variables to be sent to the form
+		$this->data = $this->MedicalInformation->findByPid($pid);
+		$this->set(array(
+			'medical_information' => $this->MedicalInformation->read(NULL, $pid),
+			'patient_sources' => $this->PatientSource->find('list'),
+			'fundings' => $this->Funding->find('list'),
+			'hiv_positive_test_locations' => $this->Location->generatetreelist(null, null, null, '-'),
+			'art_service_types' => $this->ArtServiceType->find('list'),
+			'art_starting_regimens' => $this->Regimen->find('list'),
+			'art_indications' => $this->ArtIndication->find('list'),
+			'transfer_in_districts' => $this->Location->generatetreelist(null, null, null, '-')
+			));
 	}
 }
 ?>
