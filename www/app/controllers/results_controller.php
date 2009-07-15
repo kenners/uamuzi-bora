@@ -59,10 +59,16 @@ class ResultsController extends AppController {
 					$this->set('test_id',$test_id);
 					// Let's find out what Type (decimal,lookup,text etc) of test it is
 					$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
-				
+					//Get all the options :
+					$this->set('options',$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test_id))));
+					var_dump($this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test_id))));
 					// Now get the data to send to the view to build the add results form
 					$tests = $this->Result->Test->find('list');
-					$this->set(compact('tests'));
+					$patients = $this->Result->Patient->find('list');
+					$users = $this->Result->User->find('list');
+					$resultLookups = $this->Result->ResultLookup->find('list');
+					$this->set(compact('tests', 'patients', 'users', 'resultLookups'));
+					
 				} else {
 					// Nope, the Test ID is not valid.
 					$this->Session->setFlash('Not a valid test');

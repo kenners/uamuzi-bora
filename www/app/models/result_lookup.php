@@ -10,12 +10,12 @@ class ResultLookup extends appModel{
 		       'User'=>array('className'=>'User'),
 		       'Test'=>array('className'=>'Test')
 		       );
-var $hasMany=array('ResultLookup'=>array(
-					'className'=>'ResultLookup',
-					'foreignKey'=>'value_lookup',
-					'condition'=> array('Result.test_id ='=>'ResultLookup.test_id')
+		       var $hasMany=array('Result'=>array(
+							  'className'=>'Result',
+							  'foreignKey'=>'value_lookup'
+							  //'condition'=> array('ResultLookup.test_id ='=>'Result.test_id')
 							   )
-				     );
+					  );
 
   var $validate = array(
 			'test_id'=>array(

@@ -200,7 +200,7 @@ $crumb->addThisPage('View Patient', null); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['value']; ?>
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>

@@ -240,7 +240,6 @@ class PatientsController extends AppController {
 
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
-		var_dump($this->paginate('Patient',array('Patient.pid'=>$pid)));
 	}
 
   function indexAttendence()

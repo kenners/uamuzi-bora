@@ -26,7 +26,7 @@ class ResultLookupsController extends AppController {
     $type=Set::extract('/Test/type',$test);
     if (!empty($this->data))
       {
-	$test_id=Set::extract('\ResultLookup\test_id',$this->data);
+	$test_id=array_pop(Set::extract('/ResultLookup/test_id',$this->data));
 	$this->set('test_id',$test_id);
 	$test=$this->ResultLookup->Test->read(null,$test_id);
 	$type=array_pop(Set::extract('/Test/type',$test));

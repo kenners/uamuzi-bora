@@ -13,7 +13,8 @@ class Result extends AppModel {
 		   'Patient'=>array('className'=>'Patient',
 				    'foreignKey'=>'pid'),
 		   'User'=>array('className'=>'User'),
-		   'ResultLookup'=>array('className'=>'RestultLookup',
+		   'ResultLookup'=>array('className'=>'ResultLookup',
+					 //'conditions'=>array('Result.test_id'=>'ResultLookup.test_id')
 					 'foreignKey'=>'value_lookup')
 		   );
 		   

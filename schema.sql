@@ -1195,7 +1195,7 @@ CREATE TABLE results (
     test_id integer NOT NULL,
     value_decimal double precision,
     value_text character varying,
-    value_lookup character varying,
+    value_lookup integer,
     test_performed timestamp without time zone,
     created timestamp without time zone,
     requesting_clinician character varying,
