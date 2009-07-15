@@ -284,7 +284,7 @@ class PatientsController extends AppController {
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
 	}
 
-  function indexAttendence()
+  function Attendance()
   {
     
     $results=$this->Patient->Result->find('all',array('fields'=>array('Result.pid'),'conditions'=>array('Result.test_id'=>1,'Result.created >'=>date('Y-m-d',strtotime('today')))));
