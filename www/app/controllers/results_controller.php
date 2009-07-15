@@ -90,7 +90,7 @@ class ResultsController extends AppController {
 			  $pid=array_pop(Set::extract($this->data,'/Result/pid'));
 			  
 				$this->Session->setFlash(__('The Result has been saved', true));
-				$this->redirect(array('controller'=>'patients','action'=>'view/'.$pid));
+				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 			}
@@ -110,12 +110,12 @@ class ResultsController extends AppController {
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Result', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect($this->referer()));
 		}
 		parent::archive($id);
 		if ($this->Result->del($id)) {
 			$this->Session->setFlash(__('Result deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect($this->referer()));
 		}
 	}
   function add_attendance($pid=null){
