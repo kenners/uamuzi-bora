@@ -132,7 +132,7 @@ $crumb->addThisPage('View Patient', null); ?>
 				<h4>Status Info</h4>
 				<div>
 					<strong>Status: </strong>
-					<?php if(!empty($patient['Patient']['status'])){echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status']));} ?>
+					<?php echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status'])); ?>
 				</div>
 				<div>
 					<strong>Status Last Changed: </strong>
@@ -227,7 +227,7 @@ $crumb->addThisPage('View Patient', null); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['value']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['description']; ?> [<?php echo $result['ResultLookup']['value']; ?>]
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>

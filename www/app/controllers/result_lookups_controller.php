@@ -30,7 +30,6 @@ class ResultLookupsController extends AppController {
 	$this->set('test_id',$test_id);
 	$test=$this->ResultLookup->Test->read(null,$test_id);
 	$type=array_pop(Set::extract('/Test/type',$test));
-	var_dump($type);
       if($this->ResultLookup->Test->exists())
 	{
 	      

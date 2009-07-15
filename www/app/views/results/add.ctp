@@ -18,7 +18,7 @@
 			$valueoptions=array();
 				foreach ($options as $option)
 				{
-					$valueoptions[$option['ResultLookup']['id']] = $option['ResultLookup']['value'];
+					$valueoptions[$option['ResultLookup']['id']] = $option['ResultLookup']['description'];
 				}
 
 				// Build the Select box
