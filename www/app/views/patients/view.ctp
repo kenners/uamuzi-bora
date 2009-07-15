@@ -61,6 +61,7 @@ $crumb->addThisPage('View Patient', null); ?>
 				<?php } ?>
 		</div>
 		<div class="demographicInformation large span-22 last">
+
 			<div class="span-11">
 				<div>
 					<strong>Sex: </strong>
@@ -72,23 +73,23 @@ $crumb->addThisPage('View Patient', null); ?>
 				</div>
 				<div>
 					<strong>Occupation: </strong>
-					<?php if(!empty($patient['Patient']['occupation'])){echo $patient['occupation']['name'];} ?>
+					<?php if(!empty($patient['Occupation']['name'])){echo $patient['Occupation']['name'];} ?>
 				</div>
 				<div>
 					<strong>Education: </strong>
-					<?php if(!empty($patient['Patient']['education'])){$patient['education']['name'];} ?>
+					<?php if(!empty($patient['Education']['name'])){echo $patient['Education']['name'];} ?>
 				</div>
 				<div>
 					<strong>Marital Status: </strong>
-					<?php if(!empty($patient['Patient']['marital_status'])){$patient['marital_status']['name'];} ?>
+					<?php if(!empty($patient['MaritalStatus']['name'])){echo $patient['MaritalStatus']['name'];} ?>
 				</div>
 				<div>
 					<strong>Telephone Number: </strong>
-					<?php if(!empty($patient['Patient']['telephone_number'])){$patient['Patient']['telephone_number'];} ?>
+					<?php if(!empty($patient['Patient']['telephone_number'])){echo $patient['Patient']['telephone_number'];} ?>
 				</div>
 				<div>
 					<strong>Treatment Supporter: </strong><br/>
-					<?php if(!empty($patient['Patient']['treatment_supporter'])){$support = unserialize($patient['Patient']['treatment_supporter']);}
+					<?php if(!empty($patient['Patient']['treatment_supporter'])){echo $support = unserialize($patient['Patient']['treatment_supporter']);}
 					if(!empty($support['name'])){echo $support['name'].'<br/>';}
 					if(!empty($support['relationship'])){echo '<em>'.$support['relationship'].'</em><br/>';}
 					if(!empty($support['address'])){echo $support['address'].'<br/>';}
@@ -98,7 +99,7 @@ $crumb->addThisPage('View Patient', null); ?>
 			<div class="span-11 last">
 				<div>
 					<strong>Location: </strong>
-					<?php if(!empty($patient['Patient']['location'])){echo $patient['location']['name'];} ?>
+					<?php if(!empty($patient['Location']['name'])){echo $patient['Location']['name'];} ?>
 				</div>
 				<div>
 					<strong>Village: </strong>
@@ -124,11 +125,37 @@ $crumb->addThisPage('View Patient', null); ?>
 					<strong>Nearest Major Landmark: </strong>
 					<?php if(!empty($patient['Patient']['nearest_major_landmark'])){echo $patient['Patient']['nearest_major_landmark'];} ?>
 				</div>
+				<div>
+					<strong>VF Testing Site: </strong>
+					<?php if(!empty($patient['VfTestingSite']['site_name'])){echo $patient['Patient']['site_name'].' ('.$patient['VfTestingSite']['site_name'].')';} ?>
+				</div>
+				<h4>Status Info</h4>
+				<div>
+					<strong>Status: </strong>
+					<?php echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status'])); ?>
+				</div>
+				<div>
+					<strong>Status Last Changed: </strong>
+					<?php if(!empty($patient['Patient']['status_timestamp'])){echo $this->element('prettyDate', array('date' => $patient['Patient']['status_timestamp']));} ?>
+				</div>
+				<div>
+					<strong>Status Reason: </strong>
+					<?php if(!empty($patient['InactiveReason']['name'])){echo $patient['InactiveReason']['name'];} ?>
+				</div>
+				
+
 			</div>
 		</div>
 	</div>
 	<div id="tab2">
 		<h2>Medical Information</h2>
+	
+			
+		
+	
+	
+	
+	
 	</div>
 	
 	<div id="tab3">
@@ -200,7 +227,7 @@ $crumb->addThisPage('View Patient', null); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['value']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['description']; ?> [<?php echo $result['ResultLookup']['value']; ?>]
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>
