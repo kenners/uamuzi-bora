@@ -218,7 +218,10 @@ class PatientsController extends AppController {
 	    
 	     
 	  }else{
-	    $this->Session->setFlash('You need to specify at least one search criteria');
+	    $result=parent::__combine_array($result,$this->paginate('Patient',array($location_key=>$locations)));
+	      
+	     	   
+	    $this->set('patients',$result);
 	  }
 	
       }

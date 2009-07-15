@@ -61,6 +61,7 @@ foreach ($patients as $patient):
 		
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('Edit attendance status', true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $patient['Patient']['pid']), null, sprintf(__('Are you sure you want to delete # %s?', true), $patient['Patient']['pid'])); ?>
 		</td>
 	</tr>

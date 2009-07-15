@@ -88,17 +88,6 @@ class ResultLookupsController extends AppController {
 		$this->set(compact('tests'));
 	}
 
-	function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for ResultLookup', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		parent::archive($id);
-		if ($this->ResultLookup->del($id)) {
-			$this->Session->setFlash(__('ResultLookup deleted', true));
-			$this->redirect(array('action'=>'index'));
-		}
-	}
 
 }
 
