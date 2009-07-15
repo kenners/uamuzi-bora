@@ -54,7 +54,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['sex']; ?>
 		</td>
 		<td>
-			<?php echo $values[$counter]['ResultLookup']['value']; 
+			<?php echo $values[$counter]['ResultLookup']['description']; 
 			$counter++;
 			?>
 		</td>
