@@ -35,6 +35,15 @@ ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archiv
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_location_id_fkey;
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_inactive_reason_id_fkey;
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_archive_education_id_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_user_id_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_transfer_in_district__fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_pid_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_patient_source_id_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_hiv_positive_test_loc_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_funding_id_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_art_starting_regimen__fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_art_service_type_id_fkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_archive_art_indication_id_fkey;
 DROP INDEX public.aro_aco_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_site_name_key;
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
@@ -74,6 +83,7 @@ ALTER TABLE ONLY public.archive_tests DROP CONSTRAINT archive_tests_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
 ALTER TABLE ONLY public.archive_result_lookups DROP CONSTRAINT archive_result_lookups_pkey;
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_pkey;
+ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_pkey;
 ALTER TABLE ONLY public.archive_groups DROP CONSTRAINT archive_groups_pkey;
 ALTER TABLE ONLY public.acos DROP CONSTRAINT acos_pkey;
 ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
@@ -99,6 +109,7 @@ ALTER TABLE public.archive_tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_patients ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_medical_informations ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_groups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.acos ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE public.vf_testing_sites_site_code_seq;
@@ -150,6 +161,8 @@ DROP SEQUENCE public.archive_result_lookups_id_seq;
 DROP TABLE public.archive_result_lookups;
 DROP SEQUENCE public.archive_patients_id_seq;
 DROP TABLE public.archive_patients;
+DROP SEQUENCE public.archive_medical_informations_id_seq;
+DROP TABLE public.archive_medical_informations;
 DROP SEQUENCE public.archive_groups_id_seq;
 DROP TABLE public.archive_groups;
 DROP SEQUENCE public.acos_id_seq;
@@ -265,6 +278,61 @@ ALTER SEQUENCE archive_groups_id_seq OWNED BY archive_groups.id;
 --
 
 SELECT pg_catalog.setval('archive_groups_id_seq', 1, false);
+
+
+--
+-- Name: archive_medical_informations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_medical_informations (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone DEFAULT now() NOT NULL,
+    archive_reason character varying,
+    archive_pid integer NOT NULL,
+    archive_patient_source_id integer,
+    archive_funding_id integer,
+    archive_hiv_positive_date date,
+    archive_hiv_positive_test_location_id integer,
+    archive_hiv_positive_clinic_start_date date,
+    archive_hiv_positive_who_stage integer,
+    archive_art_naive boolean,
+    archive_art_service_type_id integer,
+    archive_art_starting_regimen_id integer,
+    archive_art_start_date date,
+    archive_art_eligibility_date date,
+    archive_art_indication_id integer,
+    archive_transfer_in_date date,
+    archive_transfer_in_district_id integer,
+    archive_transfer_in_facility text,
+    archive_transfer_out_date date
+);
+
+
+--
+-- Name: archive_medical_informations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_medical_informations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_medical_informations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_medical_informations_id_seq OWNED BY archive_medical_informations.id;
+
+
+--
+-- Name: archive_medical_informations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_medical_informations_id_seq', 1, false);
 
 
 --
@@ -1324,6 +1392,13 @@ ALTER TABLE archive_groups ALTER COLUMN id SET DEFAULT nextval('archive_groups_i
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE archive_medical_informations ALTER COLUMN id SET DEFAULT nextval('archive_medical_informations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE archive_patients ALTER COLUMN id SET DEFAULT nextval('archive_patients_id_seq'::regclass);
 
 
@@ -1494,6 +1569,14 @@ COPY acos (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
 --
 
 COPY archive_groups (id, archive_id, user_id, created, archive_reason, archive_name, archive_description, archive_created, archive_modified) FROM stdin;
+\.
+
+
+--
+-- Data for Name: archive_medical_informations; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_medical_informations (id, user_id, created, archive_reason, archive_pid, archive_patient_source_id, archive_funding_id, archive_hiv_positive_date, archive_hiv_positive_test_location_id, archive_hiv_positive_clinic_start_date, archive_hiv_positive_who_stage, archive_art_naive, archive_art_service_type_id, archive_art_starting_regimen_id, archive_art_start_date, archive_art_eligibility_date, archive_art_indication_id, archive_transfer_in_date, archive_transfer_in_district_id, archive_transfer_in_facility, archive_transfer_out_date) FROM stdin;
 \.
 
 
@@ -1834,6 +1917,14 @@ ALTER TABLE ONLY archive_groups
 
 
 --
+-- Name: archive_medical_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: archive_patients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2142,6 +2233,78 @@ ALTER TABLE ONLY vf_testing_sites
 --
 
 CREATE UNIQUE INDEX aro_aco_key ON aros_acos USING btree (aro_id, aco_id);
+
+
+--
+-- Name: archive_medical_informations_archive_art_indication_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_art_indication_id_fkey FOREIGN KEY (archive_art_indication_id) REFERENCES art_indications(id);
+
+
+--
+-- Name: archive_medical_informations_archive_art_service_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_art_service_type_id_fkey FOREIGN KEY (archive_art_service_type_id) REFERENCES art_service_types(id);
+
+
+--
+-- Name: archive_medical_informations_archive_art_starting_regimen__fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_art_starting_regimen__fkey FOREIGN KEY (archive_art_starting_regimen_id) REFERENCES regimens(id);
+
+
+--
+-- Name: archive_medical_informations_archive_funding_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_funding_id_fkey FOREIGN KEY (archive_funding_id) REFERENCES fundings(id);
+
+
+--
+-- Name: archive_medical_informations_archive_hiv_positive_test_loc_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_hiv_positive_test_loc_fkey FOREIGN KEY (archive_hiv_positive_test_location_id) REFERENCES locations(id);
+
+
+--
+-- Name: archive_medical_informations_archive_patient_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_patient_source_id_fkey FOREIGN KEY (archive_patient_source_id) REFERENCES patient_sources(id);
+
+
+--
+-- Name: archive_medical_informations_archive_pid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_pid_fkey FOREIGN KEY (archive_pid) REFERENCES patients(pid);
+
+
+--
+-- Name: archive_medical_informations_archive_transfer_in_district__fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_archive_transfer_in_district__fkey FOREIGN KEY (archive_transfer_in_district_id) REFERENCES locations(id);
+
+
+--
+-- Name: archive_medical_informations_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY archive_medical_informations
+    ADD CONSTRAINT archive_medical_informations_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
