@@ -314,37 +314,40 @@ class PatientsController extends AppController {
 	 * Edit a row in the `patients' table
 	 */
 	function edit($pid = NULL) {
+		// Check PID is good
+		if (empty($pid) || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
+			$this->redirect(array('controller' => 'patients', 'action' => 'index'));
+		}
+		
 		if (isset($this->data)) {
 		// What to do if we've submitted new data (i.e. the edit form has been
 		// submitted)
 			
+			// Don't mess with $this->data in case validation fails
+			$data = $this->data;
+			
 			// The input needs a bit of fiddling to rearrange things to how the
 			// the database table is expecting them to be
-			$this->data = $this->__prettyInput($this->data);
+			$data = $this->__prettyInput($data);
 			
 			// Update the row
-			parent::archive($this->data['Patient']['pid']);
-			if ($this->Patient->save($this->data)) {
+			parent::archive($pid);
+			if ($this->Patient->save($data)) {
 				$this->Session->setFlash('The patient details were successfully updated');
 				$this->redirect('/patients/view/' . $this->data['Patient']['pid']);
-			} else {
-				$this->Session->setFlash('There was a problem updating this patient\'s details.  Please try again');
 			}
-			
-			
-		} elseif ($this->Patient->isValidPID($pid) && $this->Patient->valueExists($pid, 'Patient', 'pid')) {
-		// What to do if a valid $pid has been passed (i.e. we want to show the
-		// edit form)
-			
-			$this->data = $this->Patient->read(NULL, $pid);
-			
-		} else {
-		// Something funny is going on via an astandard route
-		
-			$this->Session->setFlash('That is not a valid patient');
-			$this->redirect(array('action' => 'index'));
-			
 		}
+		
+		// We need to display the form
+		if (!isset($this->data)) {
+			$this->data = $this->Patient->findByPid($pid);
+		}
+		$this->set(array(
+			'occupations' => $this->Occupation->find('list'),
+			'educations' => $this->Education->find('list'),
+			'marital_statuses' => $this->MaritalStatus->find('list'),
+			'locations' => $this->Location->generatetreelist(null, null, null, '-')
+			));
 	}
 	
 	/**
