@@ -54,9 +54,11 @@ $crumb->addThisPage('View Patient', null); ?>
 		<h2>Demographic Information</h2>
 		<div class="tasks span-22 last">
 			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
-						<a class="button negative" href="/patients/active/">Change Status to Inactive</a>
-						<a class="button positive" href="/patients/active/">Change Status to Active</a>
-			
+				<?php if ($patient['Patient']['status']) { ?>
+			<a class="button negative" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
+				<?php } else { ?>
+			<a class="button positive" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
+				<?php } ?>
 		</div>
 		<div class="demographicInformation large span-22 last">
 
@@ -225,7 +227,7 @@ $crumb->addThisPage('View Patient', null); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['value_lookup']; ?>
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['value']; ?>
 					</td>
 					<td>
 						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>

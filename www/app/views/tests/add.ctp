@@ -1,7 +1,7 @@
 <?php $crumb->addThisPage('Add', null, 'auto'); ?>
 <div class="tests form span-16">
 <?php
-echo $form->create('Test');
+echo $form->create('Test', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Add Test',
 						'name'=>array('label' => 'Test Name',
 									'after'=>'<br/><em>What is the name of the test? (e.g. Haemaglobin)</em>'),

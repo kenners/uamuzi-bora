@@ -15,7 +15,15 @@
         		echo $form->textarea('value_text');
         		break;
     		case "lookup":
-        		echo $form->input('value_lookup', array('label'=>'Value'));
+			$valueoptions=array();
+				foreach ($options as $option)
+				{
+					$valueoptions[$option['ResultLookup']['id']] = $option['ResultLookup']['value'];
+				}
+
+				// Build the Select box
+				echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions,'label'=>'Value:'));
+        		
         		break;
        	}
 		echo $form->input('test_performed', array('dateFormat' => 'DMY',

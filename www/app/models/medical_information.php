@@ -21,20 +21,20 @@ class MedicalInformation extends AppModel {
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.pid = pid.pid')
 			),
-		'patient_source' => array('className' => 'PatientSource'),
-		'funding' => array('className' => 'Funding'),
+		'PatientSource' => array('className' => 'PatientSource'),
+		'Funding' => array('className' => 'Funding'),
 		'hiv_positive_test_location' => array(
 			'className' => 'Location',
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.hiv_positive_test_location_id = hiv_positive_test_location.id')
 			),
-		'art_service_type' => array('className' => 'ArtServiceType'),
+		'ArtServiceType' => array('className' => 'ArtServiceType'),
 		'art_starting_regimen' => array(
 			'className' => 'Regimen',
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.art_starting_regimen_id = art_starting_regimen.id')
 			),
-		'art_indication' => array('className' => 'ArtIndication'),
+		'ArtIndication' => array('className' => 'ArtIndication'),
 		'transfer_in_district' => array(
 			'className' => 'Location',
 			'foreignKey' => FALSE,

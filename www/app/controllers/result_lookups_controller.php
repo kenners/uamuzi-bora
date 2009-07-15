@@ -23,20 +23,27 @@ class ResultLookupsController extends AppController {
     $this->ResultLookup->Test->id=$test_id;
     $this->set('test_id',$test_id);
     $test=$this->ResultLookup->Test->read(null,$test_id);
-    $type=Set::extract('\Test\type',$test);
+    $type=Set::extract('/Test/type',$test);
     if (!empty($this->data))
-    {
+      {
+	$test_id=array_pop(Set::extract('/ResultLookup/test_id',$this->data));
+	$this->set('test_id',$test_id);
+	$test=$this->ResultLookup->Test->read(null,$test_id);
+	$type=array_pop(Set::extract('/Test/type',$test));
+	var_dump($type);
       if($this->ResultLookup->Test->exists())
 	{
+	      
+	      
 	  if(strcmp($type,'lookup')==0) {
 		
 	    $this->ResultLookup->create();
 	    //Insert the user-id from session and test_id from the url
 	    $this->data=Set::insert($this->data,'ResultLookup.user_id',$this->Auth->user('id'));
-	    $this->data=Set::insert($this->data,'ResultLookup.test_id',$test_id);
+	    
 	    if ($this->ResultLookup->save($this->data)) {
 	      $this->Session->setFlash(__('The ResultLookup has been saved', true));
-	      $this->redirect(array('controller'=>'tests','action'=>'index'));//redirec to tests/index
+	      $this->redirect(array('controller'=>'tests','action'=>'view/'.$test_id));//redirec to tests/index
 	    } else {
 	      $this->Session->setFlash(__('The ResultLookup could not be saved. Please, try again.', true));
 	    }

@@ -1,6 +1,6 @@
 <?php $crumb->addThisPage('Add', null, 'auto'); ?>
 <div class="users form span-16">
-<?php echo $form->create('User');?>
+<?php echo $form->create('User', array('action' => 'add'));?>
 	<fieldset>
  		<legend><?php __('Add User');?></legend>
 	<?php

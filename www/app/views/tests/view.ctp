@@ -58,7 +58,7 @@
 <div class="actions span-5 last">
 	<h3>Actions</h3>
 	<ul>
-		<li><?php echo $html->link(__('Add New Test Result Option', true), array('controller'=> 'result_lookups', 'action'=>'add'));?> </li>
+		<li><?php echo $html->link(__('Add New Test Result Option', true), array('controller'=> 'result_lookups', 'action'=>'add/'.$test['Test']['id']));?> </li>
 		<li><?php echo $html->link(__('Edit Test', true), array('action'=>'edit', $test['Test']['id'])); ?> </li>
 		<li><?php echo $html->link(__('Delete Test', true), array('action'=>'delete', $test['Test']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $test['Test']['id'])); ?> </li>
 		<li><?php echo $html->link(__('List Tests', true), array('action'=>'index')); ?> </li>
@@ -98,7 +98,7 @@
 			<td><?php echo $resultLookup['value'];?></td>
 			<td><?php echo $resultLookup['description'];?></td>
 			<td><?php echo $resultLookup['comment'];?></td>
-			<td><?php echo $resultLookup['username'];?></td>
+			<td><?php echo $resultLookup['User']['username'];?></td>
 			<td><?php echo $resultLookup['modified'];?></td>
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller'=> 'result_lookups', 'action'=>'view', $resultLookup['id'])); ?>

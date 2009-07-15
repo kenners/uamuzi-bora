@@ -18,7 +18,8 @@ class PatientsController extends AppController {
 		'MaritalStatus',
 		'Location',
 		'MedicalInformation',
-		'ArchivePatient'
+		'ArchivePatient',
+		'InactiveReason'
 		);
 	/**
 	 * Debugging list all patients function
@@ -50,65 +51,107 @@ class PatientsController extends AppController {
 	// If we have a test field want to use LIKE
 	switch($search_key_1)
 	  {
-	  case 'surname':
-	    $search_key_1=$search_key_1.' LIKE';
+	  case 'pid':
+	    $search_key_1=$search_key_1.' =';
+	    $search_value_1=$search_value_1;
 	    break;
-	  case '.forenames':
-	    $search_key_1=$search_key_1.' LIKE';
+	   case 'age':
+	    $search_key_1=$search_key_1.' =';
+	    $search_value_1=$search_value_1; 
+	    break;
+	  case 'surname':
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
+	    break;
+	  case 'forenames':
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'upn':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_1=$search_key_1.' LIKE';
+	    $search_key_1=$search_key_1.' ~~*';
+	    $search_value_1=" '%".$search_value_1."%'";
 	    break;
 	  }
 	switch($search_key_2)
 	  {
+	  case 'pid':
+	    $search_key_2=$search_key_2.' =';
+	    $search_value_2=$search_value_2;
+	    break;
+	   case 'age':
+	    $search_key_2=$search_key_2.' =';
+	    $search_value_2=$search_value_2; 
+	    break;
 	  case 'surname':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'forenames':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
-	  case '.upn':
-	    $search_key_2=$search_key_2.' LIKE';
+	  case 'upn':
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_2=$search_key_2.' LIKE';
+	    $search_key_2=$search_key_2.' ~~*';
+	    $search_value_2=" '%".$search_value_2."%'";
 	    break;
 	  }
 	switch($search_key_3)
 	  {
 	  case 'surname':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
+	    break;
+	  case 'pid':
+	    $search_key_3=$search_key_3.' =';
+	    $search_value_3=$search_value_3;
+	    break;
+	   case 'age':
+	    $search_key_3=$search_key_3.' =';
+	    $search_value_3=$search_value_3; 
 	    break;
 	  case '.forenames':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'telephone_number':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'upn':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'arvid':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  case 'vfcc':
-	    $search_key_3=$search_key_3.' LIKE';
+	    $search_key_3=$search_key_3.' ~~*';
+	    $search_value_3=" '%".$search_value_3."%'";
 	    break;
 	  }
 
@@ -140,31 +183,31 @@ class PatientsController extends AppController {
 	      {
 		if($search_key_3 != null)
 		  {
-		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,'Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations));
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,'Patient.'.$search_key_2.$search_value_2,'Patient.'.$search_key_3.$search_value_3,$active_key=>$active,$location_key=>$locations));
 		 
 		   		     
 		  }else{
 	       
-		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,'Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations));
+		    $result=$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,'Patient.'.$search_key_2.$search_value_2,$active_key=>$active,$location_key=>$locations));
 		   
 		      
 		  }
 	      }
 	    //Add results with just one of the conditions to the bottom
-	    $result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_1=>$search_value_1,$active_key=>$active,$location_key=>$locations)));
+	    $result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_1.$search_value_1,$active_key=>$active,$location_key=>$locations)));
 		 
 	 
 	    //Want to add results where just one of the conditions was fullfilled
 	    if($search_key_2 != null)
 	      {
 		   
-		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_2=>$search_value_2,$active_key=>$active,$location_key=>$locations)));
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_2.$search_value_2,$active_key=>$active,$location_key=>$locations)));
 		 
 	       
 	      }
 	    if($search_key_3 != null)
 	      {
-		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_3=>$search_value_3,$active_key=>$active,$location_key=>$locations)));
+		$result=parent::__combine_array($result,$this->paginate('Patient',array('Patient.'.$search_key_3.$search_value_3,$active_key=>$active,$location_key=>$locations)));
 	      }
 	     	   
 	    $this->set('patients',$result);
@@ -239,43 +282,120 @@ class PatientsController extends AppController {
 
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
-	
 	}
+
+  function indexAttendence()
+  {
+    
+    $results=$this->Patient->Result->find('all',array('fields'=>array('Result.pid'),'conditions'=>array('Result.test_id'=>1,'Result.created >'=>date('Y-m-d',strtotime('today')))));
+    $pids=array();
+    foreach($results as $result)
+      {
+	array_push($pids,array_pop(Set::extract('/Result/pid',$result)));
+	
+      }
+    $attendence=array();
+    foreach($pids as $pid){
+      array_push($attendence,$this->Patient->Result->find('first',array('order'=>'Result.created DESC','conditions'=>array('Result.test_id'=>1,'Result.pid'=>$pid))));
+    }
+    $this->set('values',$attendence);
+    
+    $this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
+  
+  }
+
 	
 	/**
 	 * Edit a row in the `patients' table
 	 */
 	function edit($pid = NULL) {
+		// Check PID is good
+		if (empty($pid) || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
+			$this->redirect(array('controller' => 'patients', 'action' => 'index'));
+		}
+		
 		if (isset($this->data)) {
 		// What to do if we've submitted new data (i.e. the edit form has been
 		// submitted)
 			
+			// Don't mess with $this->data in case validation fails
+			$data = $this->data;
+			
 			// The input needs a bit of fiddling to rearrange things to how the
 			// the database table is expecting them to be
-			$this->data = $this->__prettyInput($this->data);
+			$data = $this->__prettyInput($data);
 			
 			// Update the row
-			parent::archive($this->data['Patient']['pid']);
-			if ($this->Patient->save($this->data)) {
+			parent::archive($pid);
+			if ($this->Patient->save($data)) {
 				$this->Session->setFlash('The patient details were successfully updated');
 				$this->redirect('/patients/view/' . $this->data['Patient']['pid']);
+			}
+		}
+		
+		// We need to display the form
+		if (!isset($this->data)) {
+			$this->data = $this->Patient->findByPid($pid);
+		}
+		$this->set(array(
+			'occupations' => $this->Occupation->find('list'),
+			'educations' => $this->Education->find('list'),
+			'marital_statuses' => $this->MaritalStatus->find('list'),
+			'locations' => $this->Location->generatetreelist(null, null, null, '-')
+			));
+	}
+	
+	/**
+	 * If the status of the row with PID $pid is FALSE (i.e. the patient is
+	 * inactive) then toggle to active (with appropriate auditing) and redirect
+	 * to the referring page.  Otherwise, show a form for InactiveReason which, 
+	 * when submitted and written to database, redirects to the original
+	 * referer.
+	 */
+	function toggleStatus($pid = NULL) {
+		// Check $pid is valid
+		if (!$pid || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->Patient->id = $pid;
+		
+		if ($this->Patient->field('status')) {
+		// `status' is currently TRUE, so we either need to display the form to
+		// choose an inactive reason, or receive the submission of said form
+			if (isset($this->data)) {
+				// Archive the current row
+				parent::archive($pid);
+				
+				// Perform the toggle
+				$data['Patient']['pid'] = $pid;
+				$data['Patient']['status'] = FALSE;
+				$data['Patient']['inactive_reason_id'] = $this->data['Patient']['inactive_reason_id'];
+				$data['Patient']['status_timestamp'] = date('c');
+				$this->Patient->save($data);
+				
+				// Redirect back to where you came from
+				$this->redirect($this->data['Patient']['referer']);
 			} else {
-				$this->Session->setFlash('There was a problem updating this patient\'s details.  Please try again');
+				$this->set(array('pid' => $pid,
+								'referer' => $this->referer(),
+								'inactive_reasons' => $this->InactiveReason->find('list')
+							));
 			}
 			
-			
-		} elseif ($this->Patient->isValidPID($pid) && $this->Patient->valueExists($pid, 'Patient', 'pid')) {
-		// What to do if a valid $pid has been passed (i.e. we want to show the
-		// edit form)
-			
-			$this->data = $this->Patient->read(NULL, $pid);
-			
 		} else {
-		// Something funny is going on via an astandard route
-		
-			$this->Session->setFlash('That is not a valid patient');
-			$this->redirect(array('action' => 'index'));
+		// `status' is currently FALSE, so toggle it to true
+			// Archive the current row
+			parent::archive($pid);
 			
+			// Perform the toggle
+			$data['Patient']['pid'] = $pid;
+			$data['Patient']['status'] = TRUE;
+			$data['Patient']['inactive_reason_id'] = NULL;
+			$data['Patient']['status_timestamp'] = date('c');
+			$this->Patient->save($data);
+			
+			// Redirect back to where you came from
+			$this->redirect($this->referer());
 		}
 	}
 	
@@ -344,5 +464,6 @@ class PatientsController extends AppController {
 		
 		return $data;
 	}
+
 }
 ?>
