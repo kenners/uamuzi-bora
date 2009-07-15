@@ -18,7 +18,8 @@ class PatientsController extends AppController {
 		'MaritalStatus',
 		'Location',
 		'MedicalInformation',
-		'ArchivePatient'
+		'ArchivePatient',
+		'InactiveReason'
 		);
 	/**
 	 * Debugging list all patients function
@@ -276,6 +277,60 @@ class PatientsController extends AppController {
 			$this->Session->setFlash('That is not a valid patient');
 			$this->redirect(array('action' => 'index'));
 			
+		}
+	}
+	
+	/**
+	 * If the status of the row with PID $pid is FALSE (i.e. the patient is
+	 * inactive) then toggle to active (with appropriate auditing) and redirect
+	 * to the referring page.  Otherwise, show a form for InactiveReason which, 
+	 * when submitted and written to database, redirects to the original
+	 * referer.
+	 */
+	function toggleStatus($pid = NULL) {
+		// Check $pid is valid
+		if (!$pid || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->Patient->id = $pid;
+		
+		if ($this->Patient->field('status')) {
+		// `status' is currently TRUE, so we either need to display the form to
+		// choose an inactive reason, or receive the submission of said form
+			if (isset($this->data)) {
+				// Archive the current row
+				parent::archive($pid);
+				
+				// Perform the toggle
+				$data['Patient']['pid'] = $pid;
+				$data['Patient']['status'] = FALSE;
+				$data['Patient']['inactive_reason_id'] = $this->data['Patient']['inactive_reason_id'];
+				$data['Patient']['status_timestamp'] = date('c');
+				$this->Patient->save($data);
+				
+				// Redirect back to where you came from
+				$this->redirect($this->data['Patient']['referer']);
+			} else {
+				$this->set(array('pid' => $pid,
+								'referer' => $this->referer(),
+								'inactive_reasons' => $this->InactiveReason->find('list')
+							));
+			}
+			
+		} else {
+		// `status' is currently FALSE, so toggle it to true
+			// Archive the current row
+			parent::archive($pid);
+			
+			// Perform the toggle
+			$data['Patient']['pid'] = $pid;
+			$data['Patient']['status'] = TRUE;
+			$data['Patient']['inactive_reason_id'] = NULL;
+			$data['Patient']['status_timestamp'] = date('c');
+			$this->Patient->save($data);
+			
+			// Redirect back to where you came from
+			$this->redirect($this->referer());
 		}
 	}
 	

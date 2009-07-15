@@ -54,9 +54,11 @@ $crumb->addThisPage('View Patient', null); ?>
 		<h2>Demographic Information</h2>
 		<div class="tasks span-22 last">
 			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
-						<a class="button negative" href="/patients/active/">Change Status to Inactive</a>
-						<a class="button positive" href="/patients/active/">Change Status to Active</a>
-			
+				<?php if ($patient['Patient']['status']) { ?>
+			<a class="button negative" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
+				<?php } else { ?>
+			<a class="button positive" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
+				<?php } ?>
 		</div>
 		<div class="demographicInformation large span-22 last">
 			<div class="span-11">
