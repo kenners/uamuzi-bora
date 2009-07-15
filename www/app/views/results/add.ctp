@@ -13,16 +13,18 @@
         		break;
     		case "text":
         		echo $form->textarea('value_text');
-        		break;
+	        	break;
     		case "lookup":
 			$valueoptions=array();
 				foreach ($options as $option)
 				{
 					$valueoptions[$option['ResultLookup']['id']] = $option['ResultLookup']['description'];
+											                        
 				}
 
 				// Build the Select box
 				echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions,'label'=>'Value:'));
+								
         		
         		break;
        	}

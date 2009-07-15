@@ -5,7 +5,7 @@
  		<legend><?php __('Edit ResultLookup');?></legend>
 	<?php
 		echo $form->input('id');
-		echo $form->input('test_id');
+		echo $form->input('test_id',array('type'=>'hidden'));
 		echo $form->input('value');
 		echo $form->input('description');
 		echo $form->input('comment');

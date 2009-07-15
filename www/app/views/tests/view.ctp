@@ -103,7 +103,7 @@
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller'=> 'result_lookups', 'action'=>'view', $resultLookup['id'])); ?>
 				<?php echo $html->link(__('Edit', true), array('controller'=> 'result_lookups', 'action'=>'edit', $resultLookup['id'])); ?>
-				<?php echo $html->link(__('Delete', true), array('controller'=> 'result_lookups', 'action'=>'delete', $resultLookup['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $resultLookup['id'])); ?>
+				
 			</td>
 		</tr>
 	<?php endforeach; ?>
