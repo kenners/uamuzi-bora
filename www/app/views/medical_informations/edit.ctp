@@ -7,6 +7,7 @@
 
 <?php
 $crumb->addThisPage('Edit Patient Medical Information', null, 'auto');
+echo $form->hidden('pid');
 echo $form->inputs(array(
 	'legend' => 'General',
 	'patient_source_id'=>array('empty' => '(Choose an Option)'),

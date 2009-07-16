@@ -67,9 +67,13 @@ class MedicalInformationsController extends AppController {
 			
 			// Fix all of the dates to ISO 8601
 			foreach (array('hiv_positive_date', 'hiv_positive_clinic_start_date', 'art_start_date', 'art_eligibility_date', 'transfer_in_date', 'transfer_out_date') as $dateField) {
-				$data['MedicalInformation'][$dateField] = $data['MedicalInformation'][$dateField]['year'] . '-'
-														. $data['MedicalInformation'][$dateField]['month'] . '-'
-														. $data['MedicalInformation'][$dateField]['day'];
+				if (!empty($data['MedicalInformation'][$dateField]['day']) && !empty($data['MedicalInformation'][$dateField]['month']) && !empty($data['MedicalInformation'][$dateField]['year'])) {
+					$data['MedicalInformation'][$dateField] = $data['MedicalInformation'][$dateField]['year'] . '-'
+															. $data['MedicalInformation'][$dateField]['month'] . '-'
+															. $data['MedicalInformation'][$dateField]['day'];
+				} else {
+					$data['MedicalInformation'][$dateField] = NULL;
+				}
 			}
 			
 			// Archive the existing data
