@@ -1,4 +1,4 @@
-<?php $crumb->addThisPage('Patients', 'reset'); ?>
+<?php $crumb->addThisPage('Today\'s Patients', 'reset'); ?>
 <div id="viewTitle" class="text-left">
 
 <h1>Clinic Patients for <?php echo date('l jS F Y') ?></h1>
@@ -65,7 +65,6 @@ foreach ($patients as $patient):
 			$counter++;
 			?>
 		</td>
-		
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
 			<?php echo $html->link(__('Edit Attendance Status', true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
