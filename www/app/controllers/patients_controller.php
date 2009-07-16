@@ -343,6 +343,7 @@ class PatientsController extends AppController {
 			$this->data = $this->Patient->findByPid($pid);
 		}
 		$this->set(array(
+			'fullname' => $this->Patient->field('forenames', array('pid' => $pid)) . ' ' . $this->Patient->field('surname', array('pid' => $pid)),
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),

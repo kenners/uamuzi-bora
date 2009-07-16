@@ -92,6 +92,7 @@ class MedicalInformationsController extends AppController {
 			$this->data = $this->MedicalInformation->findByPid($pid);
 		}
 		$this->set(array(
+			'fullname' => $this->Patient->field('forenames', array('pid' => $pid)) . ' ' . $this->Patient->field('surname', array('pid' => $pid)),
 			'medical_information' => $this->MedicalInformation->read(NULL, $pid),
 			'patient_sources' => $this->PatientSource->find('list'),
 			'fundings' => $this->Funding->find('list'),
