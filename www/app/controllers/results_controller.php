@@ -133,7 +133,7 @@ class ResultsController extends AppController {
     if ($this->Result->save($data)) 
       {
 	$this->Session->setFlash(__('The Attendence has been saved', true));
-	$this->redirect(array('controller'=>'patients','action'=>'search'));
+	$this->redirect($this->referer());
       } else {
 	$this->Session->setFlash(__('The Attendence could not be saved. Please, try again.', true));
       }  
