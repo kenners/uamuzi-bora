@@ -302,9 +302,13 @@ class PatientsController extends AppController {
       array_push($attendence,$this->Patient->Result->find('first',array('order'=>'Result.created DESC','conditions'=>array('Result.test_id'=>1,'Result.pid'=>$pid))));
     }
     $this->set('values',$attendence);
-    
-    $this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
-  
+    if(!empty($pids))
+      {
+	$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
+      }else{
+	$this->paginate();
+		$this->set('patients',null);
+      }
   }
 
 	

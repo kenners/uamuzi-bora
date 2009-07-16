@@ -1,6 +1,6 @@
 <?php $crumb->addThisPage('Patients', 'reset'); ?>
 <div id="viewTitle" class="text-left">
-<h1>Patient List</h1>
+<h1>Attendence</h1>
 </div>
 
 
@@ -9,8 +9,8 @@
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 ?>
-<div class="span-22 last"><?php echo $html->link('Add New Patient', array('action'=>'add'), array('class'=>'button')); ?></div>
-<div class="span-12 append-10 last"><em>Before adding a new patient, please <?php echo $html->link(__('Search', true), array('action'=>'search')); ?> or browse the list of patients in the database below to check that they do not already have a record in this database.</em></div>
+
+<div class="span-12 append-10 last"><em>A list of all patients who has been logged in today:.</em></div>
  
 <div id="patientIndex" class="patients index span-22 prepend-top last">
 	
@@ -31,6 +31,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 <?php
 $i = 0;
 $counter=0;
+if(!empty($patients)):
 foreach ($patients as $patient):
 	$class = null;
 	if ($i++ % 2 == 0) {
@@ -54,7 +55,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['sex']; ?>
 		</td>
 		<td>
-			<?php echo $values[$counter]['ResultLookup']['value']; 
+			<?php echo $values[$counter]['ResultLookup']['description'].'['.$values[$counter]['ResultLookup']['value'].']'; 
 			$counter++;
 			?>
 		</td>
@@ -66,6 +67,7 @@ foreach ($patients as $patient):
 		</td>
 	</tr>
 <?php endforeach; ?>
+<?php endif; ?>
 </table>
 </div>
 <!-- Paginator links -->
