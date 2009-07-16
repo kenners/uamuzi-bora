@@ -19,7 +19,8 @@ class PatientsController extends AppController {
 		'Location',
 		'MedicalInformation',
 		'ArchivePatient',
-		'InactiveReason'
+		'InactiveReason',
+		'VfTestingSite'
 		);
 	/**
 	 * Debugging list all patients function
@@ -259,7 +260,8 @@ class PatientsController extends AppController {
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),
-			'locations' => $this->Location->generatetreelist(null, null, null, '-')
+			'locations' => $this->Location->generatetreelist(null, null, null, '-'),
+			'vf_testing_sites' => $this->VfTestingSite->find('list', array('fields' => array('VfTestingSite.site_code', 'VfTestingSite.site_name')))
 			));
 	}
 	/**
@@ -344,7 +346,8 @@ class PatientsController extends AppController {
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),
-			'locations' => $this->Location->generatetreelist(null, null, null, '-')
+			'locations' => $this->Location->generatetreelist(null, null, null, '-'),
+			'vf_testing_sites' => $this->VfTestingSite->find('list', array('fields' => array('VfTestingSite.site_code', 'VfTestingSite.site_name')))
 			));
 	}
 	
@@ -442,7 +445,7 @@ class PatientsController extends AppController {
 		$data['Patient']['telephone_number'] = preg_replace('/[^\d]/', '', $data['Patient']['telephone_number']);
 		
 		// For some fields, when an empty string is submitted we want it to be NULL
-		foreach (array('upn', 'arvid', 'vfcc', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark') as $field) {
+		foreach (array('upn', 'arvid', 'vfcc', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark', 'vf_testing_site') as $field) {
 			if ($data['Patient'][$field] == '') {
 				$data['Patient'][$field] = NULL;
 			}
