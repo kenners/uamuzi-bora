@@ -61,7 +61,6 @@
 		<li><?php echo $html->link(__('Add New Test Result Option', true), array('controller'=> 'result_lookups', 'action'=>'add/'.$test['Test']['id']));?> </li>
 		<li><?php echo $html->link(__('Edit Test', true), array('action'=>'edit', $test['Test']['id'])); ?> </li>
 		<li><?php echo $html->link(__('List Tests', true), array('action'=>'index')); ?> </li>
-		<?php endif; ?>
 	</ul>
 </div>
 <?php if ($test['Test']['type'] == 'lookup'):?>
