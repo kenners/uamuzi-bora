@@ -1,8 +1,8 @@
-<?php $crumb->addThisPage('View', null, 'auto'); ?>
+<?php $crumb->addThisPage('View Test Result Option', null, 'auto'); ?>
 <div class="resultLookups view span-16">
 <h2><?php  __('ResultLookup');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('ID'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $resultLookup['ResultLookup']['id']; ?>
 			&nbsp;
@@ -44,9 +44,6 @@
 	<ul>
 		<li><?php echo $html->link(__('Edit ResultLookup', true), array('action'=>'edit', $resultLookup['ResultLookup']['id'])); ?> </li>
 		<li><?php echo $html->link(__('Delete ResultLookup', true), array('action'=>'delete', $resultLookup['ResultLookup']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $resultLookup['ResultLookup']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List ResultLookups', true), array('action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New ResultLookup', true), array('action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Test', true), array('controller'=> 'tests', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

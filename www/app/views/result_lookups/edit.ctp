@@ -1,15 +1,14 @@
-<?php $crumb->addThisPage('Edit', null, 'auto'); ?>
+<?php $crumb->addThisPage('Edit Test Result Option', null, 'auto'); ?>
 <div class="resultLookups form span-16">
 <?php echo $form->create('ResultLookup');?>
 	<fieldset>
- 		<legend><?php __('Edit ResultLookup');?></legend>
+ 		<legend><?php __('Edit Test Result Option');?></legend>
 	<?php
-		echo $form->input('id');
-		echo $form->input('test_id',array('type'=>'hidden'));
-		echo $form->input('value');
-		echo $form->input('description');
-		echo $form->input('comment');
-		echo $form->input('archive_reason');
+		echo $form->input('id',array('type'=>'hidden','value'=>$id));
+		echo $form->input('test_id',array('type'=>'hidden','value'=>$test_id));
+		echo $form->input('value'=>array('after'=>'<br/><em>This is the value that is stored in the database and is <strong>not</strong> displayed to the user e.g. "a"</em>'));
+		echo $form->input('description'=>array('after'=>'<br/><em>The description <strong>is</strong> displayed to the user - it is a human-friendly representation of the value e.g. "Option A"</em>'));
+		echo $form->input('comment'=>array('after'=>'<br/><em>This is never displayed to normal users, and is only visible to admin users editing the test.</em>'));
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>
@@ -18,8 +17,6 @@
 	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('ResultLookup.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('ResultLookup.id'))); ?></li>
-		<li><?php echo $html->link(__('List ResultLookups', true), array('action'=>'index'));?></li>
-		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Test', true), array('controller'=> 'tests', 'action'=>'add')); ?> </li>
+				<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
 	</ul>
 </div>
