@@ -128,7 +128,7 @@ class ResultsController extends AppController {
 	$this->Session->setFlash('You tried to add attendence to a Patient that does not exist');
 	$this->redirect($this->referer());
       }
-    $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1));
+    $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1, 'test_performed'=> date('Y-m-d',strtotime('now'))));
     $this->Result->create();
     if ($this->Result->save($data)) 
       {

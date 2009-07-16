@@ -59,16 +59,15 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['sex']; ?>
 		</td>
 		<td>
-
-			<?php echo $values[$counter]['ResultLookup']['description']; 
-
-			$counter++;
-			?>
+			<?php echo $html->link(__($values[$counter]['ResultLookup']['description'], true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
-			<?php echo $html->link(__('Edit Attendance Status', true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
-		</td>
+			
+		</td><?php
+
+			$counter++;
+			?>
 	</tr>
 <?php endforeach; ?>
 <?php endif; ?>
