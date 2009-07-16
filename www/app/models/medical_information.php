@@ -205,11 +205,11 @@ class MedicalInformation extends AppModel {
 				'rule' => array('customValidationFunction', 'valueExists', 'Location', 'id'),
 				'allowEmpty' => TRUE,
 				'message' => 'This is not a valid transfer_in_district_id'
-				),
-			'is a district' => array(
-				'rule' => array('customValidationFunction', 'isDepth', 'Location', 2),
-				'allowEmpty' => TRUE,
-				'message' => 'This is not a district'
+//				),
+//			'is a district' => array(
+//				'rule' => array('customValidationFunction', 'isDepth', 'Location', 2),
+//				'allowEmpty' => TRUE,
+//				'message' => 'This is not a district'
 				)
 			),
 		'transfer_out_date' => array(
