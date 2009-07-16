@@ -142,6 +142,7 @@ foreach ($patients as $patient):
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
