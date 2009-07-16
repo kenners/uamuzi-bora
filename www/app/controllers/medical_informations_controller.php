@@ -14,6 +14,13 @@ class MedicalInformationsController extends AppController {
 		);
 	
 	/**
+	 * index() doesn't make sense from a UI perspective, so just redirect to /
+	 */
+	function index() {
+		$this->redirect('/');
+	}
+	
+	/**
 	 * This function should only ever be referred from PatientsController::add.
 	 * It is used firstly to display the flash message (information on the
 	 * patient just added), and secondly to create a row in the

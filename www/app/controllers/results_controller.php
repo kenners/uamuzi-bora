@@ -5,12 +5,13 @@ class ResultsController extends AppController {
 	var $helpers = array('Html', 'Form', 'Crumb');
 	var $uses=array('Result','ArchiveResult', 'User');
 	
+	/**
+	 * index() doesn't make sense from a UI perspective, so just redirect to /
+	 */
 	function index() {
-		$this->Result->recursive = 0;
-		$this->set('results', $this->paginate());
-		
+		$this->redirect('/');
 	}
-
+	
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid Result.', true));

@@ -43,7 +43,6 @@
 	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('Edit ResultLookup', true), array('action'=>'edit', $resultLookup['ResultLookup']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete ResultLookup', true), array('action'=>'delete', $resultLookup['ResultLookup']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $resultLookup['ResultLookup']['id'])); ?> </li>
 		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
 	</ul>
 </div>
