@@ -176,7 +176,13 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			<div class="span-11 last">
 				<div>
 					<strong>ART Naive? </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['art_naive'])){echo $medical_information['MedicalInformation']['art_naive'];} ?>
+					<?php if(!empty($medical_information['MedicalInformation']['art_naive']))
+						{
+							if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {
+								echo 'Yes';
+							}} else {
+									echo 'No';
+								} ?>
 				</div>
 				<div>
 					<strong>ART Service Type: </strong>
