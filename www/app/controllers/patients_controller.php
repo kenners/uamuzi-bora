@@ -413,6 +413,14 @@ class PatientsController extends AppController {
 	 * common to both actions (so that everything is how PostgreSQL expects it)
 	 */
 	private function __prettyInput($data) {
+		// Humanize (i.e. capitalise) the patients name
+		if (!empty($data['Patient']['forenames'])) {
+			$data['Patient']['forenames'] = Inflector::humanize($data['Patient']['forenames']);
+		}
+		if (!empty($data['Patient']['surname'])) {
+			$data['Patient']['surname'] = Inflector::humanize($data['Patient']['surname']);
+		}		
+		
 		// Get year_of_birth from date_of_birth
 		if (!empty($data['Patient']['date_of_birth']['year'])) {
 			$data['Patient']['year_of_birth'] = $data['Patient']['date_of_birth']['year'];
