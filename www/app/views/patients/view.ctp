@@ -186,7 +186,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				</div>
 				<div>
 					<strong>ART Service Type: </strong>
-					<?php if(!empty($medical_information['ArtServiceType']['name'])){echo $$medical_information['ArtServiceType']['name'];} ?>
+					<?php if(!empty($medical_information['ArtServiceType']['name'])){echo $medical_information['ArtServiceType']['name'];} ?>
 				</div>
 				<div>
 					<strong>ART Starting Regimen: </strong>
@@ -212,7 +212,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				</div>
 				<div>
 					<strong>Transfer In District: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['transfer_in_district']['name'])){echo $medical_information['MedicalInformation']['transfer_in_district']['name'];} ?>
+					<?php if(!empty($medical_information['transfer_in_district']['name'])){echo $medical_information['transfer_in_district']['name'];} ?>
 				</div>
 				<div>
 					<strong>Transfer In Facility: </strong>
@@ -225,7 +225,6 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			
 			</div>
 		</div>
-	
 	</div>
 	
 	<div id="tab3">
