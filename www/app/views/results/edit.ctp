@@ -1,4 +1,4 @@
-<?php $crumb->addThisPage('Edit', null, 'auto'); ?>
+<?php $crumb->addThisPage('Result Edit', null, 'auto'); ?>
 <div class="results form span-16">
 <?php echo $form->create('Result');?>
 	<fieldset>

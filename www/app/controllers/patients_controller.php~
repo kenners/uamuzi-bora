@@ -19,8 +19,7 @@ class PatientsController extends AppController {
 		'Location',
 		'MedicalInformation',
 		'ArchivePatient',
-		'InactiveReason',
-		'VfTestingSite'
+		'InactiveReason'
 		);
 	/**
 	 * Debugging list all patients function
@@ -260,8 +259,7 @@ class PatientsController extends AppController {
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),
-			'locations' => $this->Location->generatetreelist(null, null, null, '-'),
-			'vf_testing_sites' => $this->VfTestingSite->find('list', array('fields' => array('VfTestingSite.site_code', 'VfTestingSite.site_name')))
+			'locations' => $this->Location->generatetreelist(null, null, null, '-')
 			));
 	}
 	/**
@@ -287,7 +285,6 @@ class PatientsController extends AppController {
 
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
-		$this->set('medical_informations', $this->paginate('MedicalInformation', array('MedicalInformation.pid' => $pid)));
 	}
 
   function attendance()
@@ -305,13 +302,9 @@ class PatientsController extends AppController {
       array_push($attendence,$this->Patient->Result->find('first',array('order'=>'Result.created DESC','conditions'=>array('Result.test_id'=>1,'Result.pid'=>$pid))));
     }
     $this->set('values',$attendence);
-    if(!empty($pids))
-      {
-	$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
-      }else{
-	$this->paginate();
-		$this->set('patients',null);
-      }
+    
+    $this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
+  
   }
 
 	
@@ -348,12 +341,10 @@ class PatientsController extends AppController {
 			$this->data = $this->Patient->findByPid($pid);
 		}
 		$this->set(array(
-			'fullname' => $this->Patient->field('forenames', array('pid' => $pid)) . ' ' . $this->Patient->field('surname', array('pid' => $pid)),
 			'occupations' => $this->Occupation->find('list'),
 			'educations' => $this->Education->find('list'),
 			'marital_statuses' => $this->MaritalStatus->find('list'),
-			'locations' => $this->Location->generatetreelist(null, null, null, '-'),
-			'vf_testing_sites' => $this->VfTestingSite->find('list', array('fields' => array('VfTestingSite.site_code', 'VfTestingSite.site_name')))
+			'locations' => $this->Location->generatetreelist(null, null, null, '-')
 			));
 	}
 	
@@ -417,14 +408,6 @@ class PatientsController extends AppController {
 	 * common to both actions (so that everything is how PostgreSQL expects it)
 	 */
 	private function __prettyInput($data) {
-		// Humanize (i.e. capitalise) the patients name
-		if (!empty($data['Patient']['forenames'])) {
-			$data['Patient']['forenames'] = Inflector::humanize($data['Patient']['forenames']);
-		}
-		if (!empty($data['Patient']['surname'])) {
-			$data['Patient']['surname'] = Inflector::humanize($data['Patient']['surname']);
-		}		
-		
 		// Get year_of_birth from date_of_birth
 		if (!empty($data['Patient']['date_of_birth']['year'])) {
 			$data['Patient']['year_of_birth'] = $data['Patient']['date_of_birth']['year'];
@@ -459,7 +442,7 @@ class PatientsController extends AppController {
 		$data['Patient']['telephone_number'] = preg_replace('/[^\d]/', '', $data['Patient']['telephone_number']);
 		
 		// For some fields, when an empty string is submitted we want it to be NULL
-		foreach (array('upn', 'arvid', 'vfcc', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark', 'vf_testing_site') as $field) {
+		foreach (array('upn', 'arvid', 'vfcc', 'mother', 'telephone_number', 'village', 'home', 'nearest_church', 'nearest_school', 'nearest_health_centre', 'nearest_major_landmark') as $field) {
 			if ($data['Patient'][$field] == '') {
 				$data['Patient'][$field] = NULL;
 			}

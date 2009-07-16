@@ -13,9 +13,6 @@
 			<a href="/patients/search" class="hugebutton">Search for a Patient</a>
 		</div>
 		<div class="span-10 last">
-			<a href="/export/backup" class="hugebutton">Backup the Database</a>
-		</div>
-		<div class="span-10 last">
 			<a href="/jambo/admin" class="hugebutton">Admin Functions</a>
 		</div>
 	</div>

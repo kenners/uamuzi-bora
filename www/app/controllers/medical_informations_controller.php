@@ -14,6 +14,13 @@ class MedicalInformationsController extends AppController {
 		);
 	
 	/**
+	 * index() doesn't make sense from a UI perspective, so just redirect to /
+	 */
+	function index() {
+		$this->redirect('/');
+	}
+	
+	/**
 	 * This function should only ever be referred from PatientsController::add.
 	 * It is used firstly to display the flash message (information on the
 	 * patient just added), and secondly to create a row in the
@@ -67,9 +74,13 @@ class MedicalInformationsController extends AppController {
 			
 			// Fix all of the dates to ISO 8601
 			foreach (array('hiv_positive_date', 'hiv_positive_clinic_start_date', 'art_start_date', 'art_eligibility_date', 'transfer_in_date', 'transfer_out_date') as $dateField) {
-				$data['MedicalInformation'][$dateField] = $data['MedicalInformation'][$dateField]['year'] . '-'
-														. $data['MedicalInformation'][$dateField]['month'] . '-'
-														. $data['MedicalInformation'][$dateField]['day'];
+				if (!empty($data['MedicalInformation'][$dateField]['day']) && !empty($data['MedicalInformation'][$dateField]['month']) && !empty($data['MedicalInformation'][$dateField]['year'])) {
+					$data['MedicalInformation'][$dateField] = $data['MedicalInformation'][$dateField]['year'] . '-'
+															. $data['MedicalInformation'][$dateField]['month'] . '-'
+															. $data['MedicalInformation'][$dateField]['day'];
+				} else {
+					$data['MedicalInformation'][$dateField] = NULL;
+				}
 			}
 			
 			// Archive the existing data
@@ -88,6 +99,7 @@ class MedicalInformationsController extends AppController {
 			$this->data = $this->MedicalInformation->findByPid($pid);
 		}
 		$this->set(array(
+			'fullname' => $this->Patient->field('forenames', array('pid' => $pid)) . ' ' . $this->Patient->field('surname', array('pid' => $pid)),
 			'medical_information' => $this->MedicalInformation->read(NULL, $pid),
 			'patient_sources' => $this->PatientSource->find('list'),
 			'fundings' => $this->Funding->find('list'),

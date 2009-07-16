@@ -1,4 +1,4 @@
-<?php echo $crumb->addThisPage('View', null, 'auto'); ?>
+<?php echo $crumb->addThisPage('View Group', null, 'auto'); ?>
 <div class="groups view span-16">
 <h2><?php  __('Group');?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>

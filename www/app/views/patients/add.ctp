@@ -30,7 +30,8 @@ echo $form->inputs(array('legend' => 'Other Patient Identification Codes',
 						'upn'=>array('label'=>'CCCP Form Unique Patient Number',
 									'maxLength'=>11),
 						'arvid'=>array('label'=>'ARV Database ID (ARVID)'),
-						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)')));
+						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)'),
+						'vf_testing_site'=>array('empty' => '(Choose an Option)')));
 ?>
 </div>
 <!-- New 'column' on other side of page -->
@@ -44,15 +45,6 @@ echo $form->inputs(array('legend' => 'Location Information',
 						'nearest_school',
 						'nearest_health_centre',
 						'nearest_major_landmark'));
-echo $form->inputs(array('legend' => 'Treatment Supporter',
-						'treatment_supporter_name' => array('type'=>'text',
-															'label'=>'Name'),
-						'treatment_supporter_address' => array('type'=>'text',
-															'label'=>'Address'),
-						'treatment_supporter_relationship' => array('type'=>'text',
-															'label'=>'Relationship'),
-						'treatment_supporter_telephone' => array('type'=>'text',
-															'label'=>'Telephone Number')));
 // End the form
 // Not using CakePHP's built-in functions to do this as we want prettified Blueprint buttons
 //echo $form->end('Add');

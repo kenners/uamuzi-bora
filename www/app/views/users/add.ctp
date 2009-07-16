@@ -1,4 +1,4 @@
-<?php $crumb->addThisPage('Add', null, 'auto'); ?>
+<?php $crumb->addThisPage('Add User', null, 'auto'); ?>
 <div class="users form span-16">
 <?php echo $form->create('User', array('action' => 'add'));?>
 	<fieldset>
@@ -17,11 +17,5 @@
 		<li><?php echo $html->link(__('List Users', true), array('action'=>'index'));?></li>
 		<li><?php echo $html->link(__('List Groups', true), array('controller'=> 'groups', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Group', true), array('controller'=> 'groups', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Test', true), array('controller'=> 'tests', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Results', true), array('controller'=> 'results', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Result', true), array('controller'=> 'results', 'action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Result Lookups', true), array('controller'=> 'result_lookups', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Result Lookup', true), array('controller'=> 'result_lookups', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

@@ -1,67 +1,47 @@
 <?php $crumb->addThisPage('View Result', null, 'auto'); ?>
-<div class="results view span-16">
-<h2><?php  __('Result');?></h2>
-	<dl><?php $i = 0; $class = ' class="even"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Pid'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['pid']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Value Decimal'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['value_decimal']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Value Text'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['value_text']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Value Lookup'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['value_lookup']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test Performed'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['test_performed']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Requesting Clinician'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['Result']['requesting_clinician']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Last Edited By'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $result['User']['username']; ?>
-			&nbsp;
-		</dd>
-	</dl>
+<h2>Viewing <?php echo $result['Test']['name']; ?> Result </h2>
+<div class="results view span-16 large">
+	<div>
+		<strong>Result ID: </strong>
+		<?php echo $result['Result']['id']; ?>
+	</div>
+	<div>
+		<strong>Patient ID: </strong>
+		<?php echo $this->element('prettyPID', array('pid' =>$result['Result']['pid'])); ?>
+	</div>
+	<div>
+		<strong>Patient Name: </strong>
+		<?php echo $result['Patient']['forenames'] .' '. $result['Patient']['surname']; ?>
+	</div>
+	<div>
+		<strong>Test: </strong>
+		<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
+	</div>
+	<div>
+		<strong>Value: </strong>
+		<?php echo $result['Result']['value_lookup']; ?><?php echo $result['Result']['value_text']; ?><?php echo $result['Result']['value_decimal']; ?>
+	</div>
+	<div>
+		<strong>Test Date: </strong>
+		<?php echo $this->element('prettyDate', array('date' =>$result['Result']['test_performed'])); ?>
+	</div>
+	<div>
+		<strong>Result Added to Database: </strong>
+		<?php echo $this->element('prettyDate', array('date' =>$result['Result']['created'])); ?>
+	</div>
+	<div>
+		<strong>Requesting Clinician: </strong>
+		<?php echo $result['Result']['requesting_clinician']; ?>
+	</div>
+	<div>
+		<strong>Last Edited By: </strong>
+		<?php echo $result['User']['username']; ?>
+	</div>
 </div>
 <div class="actions span-5 last">
 	<h3>Actions</h3>
 	<ul>
 		<li><?php echo $html->link(__('Edit Result', true), array('action'=>'edit', $result['Result']['id'])); ?> </li>
 		<li><?php echo $html->link(__('Delete Result', true), array('action'=>'delete', $result['Result']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['Result']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List Results', true), array('action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Result', true), array('action'=>'add')); ?> </li>
-		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Test', true), array('controller'=> 'tests', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

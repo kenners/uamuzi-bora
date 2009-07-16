@@ -1,4 +1,4 @@
-<?php echo $crumb->addThisPage('Edit', null, 'auto'); ?>
+<?php echo $crumb->addThisPage('Edit Group', null, 'auto'); ?>
 <div class="groups form span-16">
 <?php echo $form->create('Group');?>
 	<fieldset>

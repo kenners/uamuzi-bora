@@ -1,4 +1,4 @@
-<?php $crumb->addThisPage('Add', null, 'auto'); ?>
+<?php $crumb->addThisPage('Add Test', null, 'auto'); ?>
 <div class="tests form span-16">
 <?php
 echo $form->create('Test', array('action' => 'add'));
