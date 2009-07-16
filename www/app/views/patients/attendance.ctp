@@ -14,7 +14,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 
 
 <div class="span-12 append-10 last">Patients who have been logged as arriving for clinic today are listed below.</div>
-p
+
  
 <div id="patientIndex" class="patients index span-22 prepend-top last">
 	
