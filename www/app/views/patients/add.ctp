@@ -30,7 +30,8 @@ echo $form->inputs(array('legend' => 'Other Patient Identification Codes',
 						'upn'=>array('label'=>'CCCP Form Unique Patient Number',
 									'maxLength'=>11),
 						'arvid'=>array('label'=>'ARV Database ID (ARVID)'),
-						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)')));
+						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)'),
+						'vf_testing_site'=>array('empty' => '(Choose an Option)')));
 ?>
 </div>
 <!-- New 'column' on other side of page -->

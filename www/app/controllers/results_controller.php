@@ -110,12 +110,12 @@ class ResultsController extends AppController {
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Result', true));
-			$this->redirect($this->referer()));
+			$this->redirect($this->referer());
 		}
 		parent::archive($id);
 		if ($this->Result->del($id)) {
 			$this->Session->setFlash(__('Result deleted', true));
-			$this->redirect($this->referer()));
+			$this->redirect($this->referer());
 		}
 	}
   function add_attendance($pid=null){
