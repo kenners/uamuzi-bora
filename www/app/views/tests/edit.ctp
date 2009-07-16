@@ -20,7 +20,6 @@
 <div class="actions span-5 last">
 	<h3>Actions</h3>
 	<ul>
-		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('Test.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Test.id'))); ?></li>
 		<li><?php echo $html->link(__('List Tests', true), array('action'=>'index'));?></li>
 	</ul>
 </div>
