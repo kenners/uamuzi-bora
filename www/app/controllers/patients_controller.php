@@ -287,6 +287,7 @@ class PatientsController extends AppController {
 
 		//$paginate=array('Result'=>array('order'=>'created DESC'));
 		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
+		$this->set('medical_informations', $this->paginate('MedicalInformation', array('MedicalInformation.pid' => $pid)));
 	}
 
   function attendance()

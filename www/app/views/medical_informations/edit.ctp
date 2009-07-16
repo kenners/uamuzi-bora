@@ -1,5 +1,5 @@
 <div id="viewTitle" class="text-left">
-<h1>Update Information for <?php echo $this->data['pid']['forenames'].' '.$this->data['pid']['surname'];?></h1>
+<h1>Update Information for <?php echo $fullname;?></h1>
 </div>
 
 <?php echo $form->create('MedicalInformation', array('controller' => 'MedicalInformation', 'action' => 'edit'));?>
