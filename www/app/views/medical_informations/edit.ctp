@@ -1,11 +1,12 @@
 <div id="viewTitle" class="text-left">
-<h1>Modify Patient Medical Information</h1>
+<h1>Update Information for <?php echo $this->data['pid']['forenames'].' '.$this->data['pid']['surname'];?></h1>
 </div>
 
 <?php echo $form->create('MedicalInformation', array('controller' => 'MedicalInformation', 'action' => 'edit'));?>
 <div class="span-11 text-left">
 
 <?php
+$crumb->addThisPage('Edit Patient Medical Information', null, 'auto');
 echo $form->inputs(array(
 	'legend' => 'General',
 	'patient_source_id'=>array('empty' => '(Choose an Option)'),
@@ -44,7 +45,8 @@ echo $form->inputs(array(
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y')),
-	'hiv_positive_test_location_id' => array('label'=>'HIV+ Test Location'),
+	'hiv_positive_test_location_id' => array('label'=>'HIV+ Test Location',
+												'empty' => TRUE),
 	'hiv_positive_clinic_start_date' => array('label'=>'HIV Clinic Start Date',
 								'dateFormat' => 'DMY',
 								'empty' => TRUE,

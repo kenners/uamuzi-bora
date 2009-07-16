@@ -1,6 +1,6 @@
 <?php $crumb->addThisPage('Edit Patient Details', null, 'auto'); ?>
 <div id="viewTitle" class="text-left">
-<h1>Edit Patient Details</h1>
+<h1>Edit Patient Details for <?php echo $this->data['Patient']['forenames'].' '.$this->data['Patient']['surname']; ?></h1>
 </div>
 
 <div class="span-11 text-left">

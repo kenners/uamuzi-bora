@@ -3,7 +3,7 @@
 </div>-->
 <?php
 $javascript->link('jquery.js', false);
-$crumb->addThisPage('View Patient', null); ?>
+$crumb->addThisPage('View Patient', null, 'auto'); ?>
 <div id="patientBox" class="text-left span-22 last">
 	<div id="vitalInfo" class="vitalInfo span-14">
 		<?php
@@ -149,23 +149,23 @@ $crumb->addThisPage('View Patient', null); ?>
 	<?php var_dump($patient); ?>
 	</pre>
 	<?php
-	$patient['MedicalInformation']['patient_source_id']
-	$patient['MedicalInformation']['funding_id']
-	$patient['MedicalInformation']['hiv_positive_date']
-	$patient['MedicalInformation']['hiv_positive']
-	$patient['hiv_positive_test_location']['name']
-	$patient['MedicalInformation']['hiv_positive_clinic_start_date']
-	$patient['MedicalInformation']['hiv_positive_who_stage']
-	$patient['MedicalInformation']['art_naive']
-	$patient['MedicalInformation']['art_service_type_id']
-	$patient['MedicalInformation']['art_starting_regimen_id']
-	$patient['MedicalInformation']['art_start_date']
-	$patient['MedicalInformation']['art_eligibility_date']
-	$patient['MedicalInformation']['art_indication_id']
-	$patient['MedicalInformation']['transfer_in_date']
-	$patient['MedicalInformation']['transfer_in_district_id']
-	$patient['MedicalInformation']['transfer_in_facility']
-	$patient['MedicalInformation']['transfer_out_date']
+	$patient['MedicalInformation']['patient_source_id'];
+	$patient['MedicalInformation']['funding_id'];
+	$patient['MedicalInformation']['hiv_positive_date'];
+	$patient['MedicalInformation']['hiv_positive'];
+	$patient['hiv_positive_test_location']['name'];
+	$patient['MedicalInformation']['hiv_positive_clinic_start_date'];
+	$patient['MedicalInformation']['hiv_positive_who_stage'];
+	$patient['MedicalInformation']['art_naive'];
+	$patient['MedicalInformation']['art_service_type_id'];
+	$patient['MedicalInformation']['art_starting_regimen_id'];
+	$patient['MedicalInformation']['art_start_date'];
+	$patient['MedicalInformation']['art_eligibility_date'];
+	$patient['MedicalInformation']['art_indication_id'];
+	$patient['MedicalInformation']['transfer_in_date'];
+	$patient['MedicalInformation']['transfer_in_district_id'];
+	$patient['MedicalInformation']['transfer_in_facility'];
+	$patient['MedicalInformation']['transfer_out_date'];
 	?>
 	
 	

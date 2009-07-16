@@ -3,6 +3,7 @@
 </div>
 
 <?php
+$crumb->addThisPage('Update Patient Status', null, 'auto');
 echo $form->create('Patient', array('url' => '/patients/toggleStatus/' . $pid));
 echo $form->hidden('referer', array('value' => $referer));
 echo $form->input('inactive_reason_id');
