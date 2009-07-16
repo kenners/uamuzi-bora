@@ -299,13 +299,13 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['description']; ?> [<?php echo $result['ResultLookup']['value']; ?>]
 					</td>
 					<td>
-						<?php echo date('d/m/Y', strtotime($result['test_performed'])); ?>
+						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
 					</td>
 					<td>
 						<?php echo $result['requesting_clinician']; ?>
 					</td>
 					<td>
-						<?php echo date('d/m/Y', strtotime($result['created'])); ?>
+						<?php echo $this->element('prettyDate', array('date' => $result['created'])); ?>
 					</td>
 					<td>
 						<?php echo $result['User']['username']; ?>
