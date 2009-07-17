@@ -83,6 +83,9 @@ class ResultLookupsController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->ResultLookup->read(null, $id);
+			$test_id = $this->data['ResultLookup']['test_id'];
+    		$this->set('test_id',$test_id);
+    		$this->set('id',$id);
 		}
 		$tests = $this->ResultLookup->Test->find('list');
 		$this->set(compact('tests'));
