@@ -51,14 +51,7 @@ class Result extends AppModel {
 							    'message'=> 'The value must be an integer'
 							    )
 					      ),
-			
-			'requesting_clinician'=>array(
-						      'text'=>array(
-								    'rule'=>'alphaNumeric',
-								    'allowEmpty'=>TRUE,
-								    'message'=> 'The Requesting clinician must be a text'
-								    )
-						      ),
+
 			'user_id'=>array(
 					 'int'=>array(
 						      'rule'=>'numeric',
