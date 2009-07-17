@@ -1,6 +1,6 @@
-<?php $crumb->addThisPage('Result Edit', null, 'auto'); ?>
+<?php $crumb->addThisPage('Edit Result', null, 'auto'); ?>
 <div class="results form span-16">
-<?php echo $form->create('Result');?>
+<?php echo $form->create('Result', array('action'=>'edit/'.$result_id));?>
 	<fieldset>
  		<legend><?php __('Edit Result for '.$type['Test']['name']);?></legend>
  		<p><strong>Test:</strong> <?php echo $type['Test']['name'];?><br/><strong>Description:</strong> <?php echo $type['Test']['description'];?></p>

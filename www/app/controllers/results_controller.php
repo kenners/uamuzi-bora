@@ -89,19 +89,22 @@ class ResultsController extends AppController {
 		}
 		if (!empty($this->data)) {
 		  parent::archive($id);
+		  $pid=array_pop(Set::extract($this->data,'/Result/pid'));
 			if ($this->Result->save($this->data)) {
 			  $this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
-			  $pid=array_pop(Set::extract($this->data,'/Result/pid'));
-			  
 				$this->Session->setFlash(__('The Result has been saved', true));
 				$this->redirect('/patients/view/'.$pid);
 			} else {
 				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
+				$this->set('pid',$pid);
 			}
 		}
 		if (empty($this->data)) {
 			$this->data = $this->Result->read(null, $id);
+			$pid=array_pop(Set::extract($this->data,'/Result/pid'));
+			$this->set('pid',$pid);
 		}
+		$this->set('result_id',$id);
 		$tests = $this->Result->Test->find('list');
 		$type=$this->Result->find('first',array('conditions'=>array('Result.id'=>$id)));
 		$test_id=array_pop(Set::extract('/Result/test_id',$type));
