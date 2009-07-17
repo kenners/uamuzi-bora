@@ -38,9 +38,7 @@ class ResultsController extends AppController {
 				$this->Result->create();
 				// IN case we nedd to reload the form, we set the test_id and type
 				$test_id=Set::extract('\Result\test_id',$this->data);
-				
-				$this->set('test_id',$test_id);
-					// Let's find out what Type (decimal,lookup,text etc) of test it is
+				// Let's find out what Type (decimal,lookup,text etc) of test it is
 				$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
 				$this->data=Set::insert($this->data,'Result.user_id',$this->Auth->user('id'));
 				$this->data=Set::insert($this->data,'Result.pid',$pid);
@@ -49,6 +47,11 @@ class ResultsController extends AppController {
 					$this->redirect(array('controller'=>'patients','action'=>'view/'.$pid));
 				} else {
 					$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
+					// Set up the form variables again for the reloaded view, as we've probably failed validation
+					$test_id = $this->data['Result']['test_id'];
+					$this->set('test_id',$test_id);
+					$this->set('type',$this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test_id),'recursive'=>-1)));
+					
 				}  
 			} else {
 				// So we're coming from the miniform

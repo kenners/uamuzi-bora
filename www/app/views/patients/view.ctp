@@ -296,7 +296,12 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php echo $result['ResultLookup']['description']; ?> [<?php echo $result['ResultLookup']['value']; ?>]
+						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php if(!empty($result['ResultLookup']['description'])){
+										echo $result['ResultLookup']['description'];
+										}?> 
+						<? if(!empty($result['ResultLookup']['value'])){?>
+						[<?php echo $result['ResultLookup']['value']; ?>]
+						<?php } ?>
 					</td>
 					<td>
 						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
