@@ -94,7 +94,7 @@ class ResultsController extends AppController {
 			  $pid=array_pop(Set::extract($this->data,'/Result/pid'));
 			  
 				$this->Session->setFlash(__('The Result has been saved', true));
-				$this->redirect($this->referer());
+				$this->redirect('/patients/view/'.$pid);
 			} else {
 				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 			}
