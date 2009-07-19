@@ -29,6 +29,7 @@ class Patient extends AppModel {
 	);
 	var $hasMany=array(
 			   'Result'=>array('className'=>'Result',
+					   'order' => 'Result.test_performed DESC, Result.created DESC',
 					   'foreignKey'=>'pid')
 			   );
 	
