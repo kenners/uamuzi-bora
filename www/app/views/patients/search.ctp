@@ -47,7 +47,8 @@ echo $form->inputs(array('legend' => 'Search Field 3',
 </div>
 <div class="span-7">
 <?php
-echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), array('value'=>'1'));
+//echo $form->radio('status', array('1'=>'Active','2'=>'Inactive',''=>'Any'), array('value'=>'1'));
+echo '&nbsp;';
 ?>
 </div>
 
