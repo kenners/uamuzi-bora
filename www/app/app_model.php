@@ -1,5 +1,9 @@
 <?php
 class AppModel extends Model {
+
+
+	var $actsAs = array('Containable');
+	
 	/**
 	 * A wrapper for custom validation functions.  This abstracts the logic of
 	 * extracting the value to be tested from $data.  This means that we don't

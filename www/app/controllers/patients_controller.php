@@ -280,13 +280,24 @@ class PatientsController extends AppController {
 		if (!$this->MedicalInformation->valueExists($pid, 'MedicalInformation', 'pid')) {
 			$this->MedicalInformation->save(array('MedicalInformation' => array('pid' => $pid)));
 		}
-
-		$this->Patient->recursive = 2;
-
+		
 		$this->set('tests',$this->Patient->Result->Test->find('all',array('recursive'=>-1,'conditions'=>array('active'=>true))));
-
-		//$paginate=array('Result'=>array('order'=>'created DESC'));
-		$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pid)));
+		
+		// Super-duper containable to the rescue of database recursion hell!
+		$this->set('patients',
+				$this->Patient->find('all', array(
+					'conditions' => array('Patient.pid'=>$pid),
+					'contain' => array(
+						'Result' => array(
+							'Test',
+							'ResultLookup',
+							'User' => array('fields'=>'username'),
+							'order'=>'test_performed ASC'
+							)
+						)
+					)
+				)
+			);
 		$this->set('medical_informations', $this->paginate('MedicalInformation', array('MedicalInformation.pid' => $pid)));
 	}
 
