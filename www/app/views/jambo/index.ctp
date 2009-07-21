@@ -4,16 +4,16 @@
 
 	<div class="massivebuttons prepend-6 span-10 append-6 text-center">
 		<div class="span-10 last">
-			<a href="/patients/add" class="hugebutton">Add a New Patient</a>
+			<a href="/patients/attendance" class="hugebutton">View Today's Clinic Patients</a>
 		</div>
 		<div class="span-10 last">
-			<a href="/patients" class="hugebutton">Browse Patients</a>
+			<a href="/patients/add" class="hugebutton">Add a New Patient</a>
 		</div>
 		<div class="span-10 last">
 			<a href="/patients/search" class="hugebutton">Search for a Patient</a>
 		</div>
 		<div class="span-10 last">
-			<a href="/patients/attendance" class="hugebutton">View Today's Clinic Patients</a>
+			<a href="/patients" class="hugebutton">List All Patients</a>
 		</div>
 		<div class="span-10 last">
 			<a href="/jambo/admin" class="hugebutton">Admin Functions</a>
