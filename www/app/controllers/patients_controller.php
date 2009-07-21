@@ -292,7 +292,7 @@ class PatientsController extends AppController {
 							'Test',
 							'ResultLookup',
 							'User' => array('fields'=>'username'),
-							'order'=>'test_performed ASC'
+							'order'=>'test_performed DESC'
 							)
 						)
 					)
@@ -301,28 +301,33 @@ class PatientsController extends AppController {
 		$this->set('medical_informations', $this->paginate('MedicalInformation', array('MedicalInformation.pid' => $pid)));
 	}
 
-  function attendance()
-  {
-    $results=$this->Patient->Result->find('all',array('fields'=>array('Result.pid'),'conditions'=>array('Result.test_id'=>1,'Result.created >'=>date('Y-m-d',strtotime('today')))));
-    $pids=array();
-    foreach($results as $result)
-      {
-	array_push($pids,array_pop(Set::extract('/Result/pid',$result)));
-	
-      }
-    $attendence=array();
-    foreach($pids as $pid){
-      array_push($attendence,$this->Patient->Result->find('first',array('order'=>'Result.created DESC','conditions'=>array('Result.test_id'=>1,'Result.pid'=>$pid))));
-    }
-    $this->set('values',$attendence);
-    if(!empty($pids))
-      {
-	$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
-      }else{
-	$this->paginate();
-		$this->set('patients',null);
-      }
-  }
+
+	function attendance() {
+		$results=$this->Patient->Result->find('all',array('fields'=>array('Result.pid'),
+															'conditions'=>array('Result.test_id'=>1,
+																			'Result.created >'=>date('Y-m-d',strtotime('today')))
+																			));
+		$pids=array();
+		foreach($results as $result) {
+			array_push($pids,array_pop(Set::extract('/Result/pid',$result)));
+		}
+		$attendence=array();
+		foreach($pids as $pid){
+			array_push($attendence,$this->Patient->Result->find('first',array(
+																			'order'=>'Result.created DESC',
+																			'conditions'=>array('Result.test_id'=>1,
+																			'Result.pid'=>$pid)
+																			)));
+		}
+		$this->set('values',$attendence);
+		if(!empty($pids)) {
+			$this->set('tests',$this->Patient->Result->Test->find('all',array('recursive'=>-1,'conditions'=>array('active'=>true))));
+			$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
+		}else{
+			$this->paginate();
+			$this->set('patients',null);
+		}
+	}
 
 	
 	/**
