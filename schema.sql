@@ -1897,6 +1897,9 @@ COPY vf_testing_sites (site_code, site_name, type, location_id, latitude, longit
 26	Naluchira	Church	41	0.34894999999999998	34.694180000000003
 27	Ingotse	Health Centre	42	0.35544999999999999	34.697879999999998
 28	Bushiri	Church	42	0.36499999999999999	34.729170000000003
+29	Emulama	Church	43	0.37630000000000002	34.755450000000003
+30	Matiha	Church	43	0.36153000000000002	34.76567
+31	Shikakala	Unknown	25	\N	\N
 \.
 
 

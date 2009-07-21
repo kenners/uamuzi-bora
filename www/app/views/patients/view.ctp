@@ -299,7 +299,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php if(!empty($result['ResultLookup']['description'])){
 										echo $result['ResultLookup']['description'];
 										}?> 
-						<? if(!empty($result['ResultLookup']['value'])){?>
+						<?php if(!empty($result['ResultLookup']['value'])){?>
 						[<?php echo $result['ResultLookup']['value']; ?>]
 						<?php } ?>
 					</td>
