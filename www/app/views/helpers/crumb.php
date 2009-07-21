@@ -89,7 +89,7 @@ function getHtml($title = null, $what_to_do=null, $level = null)
     $arr_links    = $this->Session->read('crumb_links') ;
     $arr_titles    = $this->Session->read('crumb_titles') ;
     $last_index    = count($arr_titles) - 1        ;
-    $string        = '<strong>Breadcrumb:</strong> <a href="/" class="'.$this->link_class.'">Home</a>' ;
+    $string        = '<a href="/" class="'.$this->link_class.'">Home</a>' ;
     for ($i = 0  ; $i <= $last_index  ; $i++) {
         $title    =    $arr_titles[$i]    ;
         $link    =    $arr_links[$i]    ;
@@ -108,7 +108,7 @@ function printHtml()
     $arr_links    = $this->Session->read('crumb_links') ;
     $arr_titles    = $this->Session->read('crumb_titles') ;
     $last_index    = count($arr_titles) - 1        ;
-    $string        = '<strong>Breadcrumb:</strong> <a href="/" class="'.$this->link_class.'">Home</a>' ;
+    $string        = '<a href="/" class="'.$this->link_class.'">Home</a>' ;
     for ($i = 0  ; $i <= $last_index  ; $i++) {
         $title    =    $arr_titles[$i]    ;
         $link    =    $arr_links[$i]    ;
