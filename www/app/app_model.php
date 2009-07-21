@@ -1,7 +1,7 @@
 <?php
 class AppModel extends Model {
-
-
+	// Allows us to use Contain in all find/paginate queries, helping to improve
+	// query speed and reduce db load.
 	var $actsAs = array('Containable');
 	
 	/**
