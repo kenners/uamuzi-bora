@@ -17,7 +17,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th><?php echo $paginator->sort('Patient ID','pid');?></th>
+	<th><?php echo $paginator->sort('UPN','upn');?></th>
 	<th><?php echo $paginator->sort('Surname','surname');?></th>
 	<th><?php echo $paginator->sort('Forenames','forenames');?></th>
 	<th><?php echo $paginator->sort('Status','status');?></th>
@@ -25,9 +25,6 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 	<th><?php echo $paginator->sort('Sex','sex');?></th>
 	<th><?php echo $paginator->sort('Telephone','telephone_number');?></th>
 	<th><?php echo $paginator->sort('Location','location_id');?></th>
-	<th><?php echo $paginator->sort('CCCP UPN','upn');?></th>
-	<th><?php echo $paginator->sort('ARV ID','arvid');?></th>
-	<th><?php echo $paginator->sort('VF Client Code','vfcc');?></th>
 	
 	
 
@@ -43,7 +40,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
+			<?php echo $patient['Patient']['upn']; ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['surname']; ?>
@@ -66,15 +63,6 @@ foreach ($patients as $patient):
 
 		<td>
 			<?php echo $patient['Location']['name']; ?>
-		</td>
-				<td>
-			<?php echo $patient['Patient']['upn']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['arvid']; ?>
-		</td>
-		<td>
-			<?php echo $patient['Patient']['vfcc']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?> <?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid'])); ?>
