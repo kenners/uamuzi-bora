@@ -11,7 +11,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		// Patient Name
 		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
 		
-		echo $html->div('patientId span-14 last', $html->tag('span', 'Patient ID: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdValue')));
+		echo $html->div('patientId span-14 last', $html->tag('span', 'UPN: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])), array('class'=>'patientIdValue')));
 	
 		
 		// Date of Birth
@@ -35,8 +35,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 	<div id="otherIdentifier" class="otherIdentifier span-6 last">
 		<h3>Other Identifiers</h3>
 		<?php
-		echo $html->div('patientIdentifier span-6', $html->tag('span', 'CCCP UPN: ', array('class'=>'patientIdentiferLabel')) . $html->tag('span', $patient['Patient']['upn'], array('class'=>'patientIdentifierValue')));
-		echo $html->div('patientIdentifier span-6', $html->tag('span', 'ARVID: ', array('class'=>'patientIdentiferLabel')) . $html->tag('span', $patient['Patient']['arvid'], array('class'=>'patientIdentifierValue')));
+		echo $html->div('patientIdentifier span-6', $html->tag('span', 'PID: ', array('class'=>'patientIdentiferLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])), array('class'=>'patientIdentifierValue')));
 		echo $html->div('patientIdentifier span-6', $html->tag('span', 'VFCC: ', array('class'=>'patientIdentiferLabel')) . $html->tag('span', $patient['Patient']['vfcc'], array('class'=>'patientIdentifierValue')));
 	?>
 	</div>
@@ -235,13 +234,13 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		<h2>Results</h2></h2>
 		
 		<!-- Miniform for adding results -->
-		<div class="addresult box span-14 rim last">
+		<div class="addresult box span-20 rim last">
 			<div class="span-5"><p class="large"><strong>Add New Test Result:</strong></p></div>
 			<?php
 			// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
 			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
 			?>
-			<div class="span-4">
+			<div class="span-8">
 				<?php
 				// Parse the array of Test & Test IDs sent by the controller into an array we can use to make
 				// <SELECT> elements for our miniform.
@@ -258,7 +257,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				//echo $form->end('Add New Result');
 				?>
 			</div>
-			<div class="span-5 last">
+			<div class="prepend-2 span-5 last">
 				<button type="submit" class="button positive">
 					<img src="/img/icons/add.png" alt=""/> Add New Result
 				</button>
