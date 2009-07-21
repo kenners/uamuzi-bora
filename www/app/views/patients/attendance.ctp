@@ -21,18 +21,24 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th><?php echo $paginator->sort('Patient ID','pid');?></th>
+	<th><?php echo $paginator->sort('UPN','upn');?></th>
 	<th><?php echo $paginator->sort('Surname','surname');?></th>
 	<th><?php echo $paginator->sort('Forenames','forenames');?></th>
 	<th><?php echo $paginator->sort('DoB','date_of_birth');?></th>
 	<th><?php echo $paginator->sort('Sex','sex');?></th>
 	<th><?php echo $paginator->sort('Attendance Status','value_lookup');?></th>
-	
-	
-
 	<th class="actions"><?php __('Actions');?></th>
+	<th class="actions"><?php __('Add Results');?></th>
+	<th class="actions"></th>
 </tr>
 <?php
+// Parse the array of Test & Test IDs sent by the controller into an array we can use to make
+// <SELECT> elements for our miniform.
+$testoptions=array();
+foreach ($tests as $test) {
+	$testoptions[$test['Test']['id']] = $test['Test']['name'];
+}
+
 $i = 0;
 $counter=0;
 if(!empty($patients)):
@@ -44,7 +50,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->element('prettyPID', array('pid' => $patient['Patient']['pid'])); ?>
+			<?php echo $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['surname']; ?>
@@ -64,10 +70,25 @@ foreach ($patients as $patient):
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
 			
-		</td><?php
-
-			$counter++;
+		</td>
+		<td class="actions">
+			<?php
+			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
+			// Build the Select box
+			echo $form->input('id',array('type'=>'select',
+												'options'=> $testoptions,
+												'label'=>FALSE));
 			?>
+		</td>
+		<td>
+			<?php
+			echo $form->end('Add Result');
+			?>
+		</td>
+		
+		<?php
+		$counter++;
+		?>
 	</tr>
 <?php endforeach; ?>
 <?php endif; ?>
