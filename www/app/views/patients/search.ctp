@@ -9,8 +9,6 @@ $searchoptions = array(
 						'upn'=>'Unique Patient Number',
 						'surname'=>'Surname',
 						'forenames'=>'Forenames',
-						'age'=>'Age',
-						'telephone_number'=>'Telephone Number',
 						'pid'=>'Patient ID',
 						'vfcc'=>'Vestergaard Frandsen Client Code');
 
@@ -117,8 +115,8 @@ foreach ($patients as $patient):
 			<?php echo $patient['Patient']['vfcc']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
-			<?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
+			<?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

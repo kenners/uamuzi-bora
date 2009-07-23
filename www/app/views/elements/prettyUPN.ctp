@@ -1,10 +1,18 @@
 <?php
 /**
- * Returns a string left-padded with 0's to 9 digits, split up into groups
- * of three
+ * Returns a prettified UPN in the format xxx-xxx-xxxxx
  */
 if (!empty($pid)){
-	echo chunk_split(str_pad($pid, 9, '0', STR_PAD_LEFT), 3, '&nbsp;');
+	if(strlen($pid) == 11){
+		$part1 = substr($pid, 0, 3);
+		$part2 = substr($pid, 3, 3);
+		$part3 = substr($pid, -5);
+		$prettyUPN = $part1 . '-' . $part2 . '-' . $part3;
+		echo $prettyUPN;
+		unset($part1,$part2,$part3,$prettyUPN);
+	} else {
+		echo $pid;
+	}
 } else{
 	echo 'Unknown';
 }

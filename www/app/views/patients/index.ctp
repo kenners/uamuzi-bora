@@ -40,7 +40,7 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $patient['Patient']['upn']; ?>
+			<?php echo $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])); ?>
 		</td>
 		<td>
 			<?php echo $patient['Patient']['surname']; ?>
@@ -65,7 +65,7 @@ foreach ($patients as $patient):
 			<?php echo $patient['Location']['name']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?> <?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?> <?php echo $html->link(__('Book In', true), array('controller'=>'results','action'=>'add_attendance', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

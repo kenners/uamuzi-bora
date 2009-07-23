@@ -44,15 +44,15 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 
 <div id="tab-set" class="span-22 prepend-top last">
 		<ul class="tabs">
-			<li><a href="#tab1" class="selected">Demographics</a></li>
-			<li><a href="#tab2">Medical Information</a></li>
+			<li><a href="#tab1" class="selected">Patient Profile</a></li>
+			<li><a href="#tab2">ART History</a></li>
 			<li><a href="#tab3">Results</a></li>
 		</ul>
 
 	<div id="tab1">
-		<h2>Demographic Information</h2>
+		<h2>Patient Profile</h2>
 		<div class="tasks span-22 last">
-			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Information</a>
+			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Profile</a>
 				<?php if ($patient['Patient']['status']) { ?>
 			<a class="button negative" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
 				<?php } else { ?>
@@ -110,7 +110,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<?php if(!empty($patient['Patient']['village'])){echo $patient['Patient']['village'];} ?>
 				</div>
 				<div>
-					<strong>Home: </strong>
+					<strong>Postal Address: </strong>
 					<?php if(!empty($patient['Patient']['home'])){echo $patient['Patient']['home'];} ?>
 				</div>
 				<div>
@@ -140,9 +140,9 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		</div>
 	</div>
 	<div id="tab2">
-		<h2>Medical Information</h2>
+		<h2>ART History</h2>
 		<div class="tasks span-22 last">
-			<a class="button" href="/medicalInformations/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Medical Information</a>
+			<a class="button" href="/medicalInformations/edit/<?php echo $patient['Patient']['pid']; ?>">Edit ART History</a>
 		</div>
 		<div class="demographicInformation large span-22 last">
 		<?php $medical_information = $medical_informations[0]; ?>
@@ -156,7 +156,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<?php if(!empty($medical_information['Funding']['name'])){echo $medical_information['Funding']['name'];} ?>
 				</div>	
 				<div>
-					<strong>HIV+ Test Date: </strong>
+					<strong>Date Confirmed HIV +: </strong>
 					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_date']));} ?>
 				</div>	
 				<div>
@@ -164,7 +164,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<?php if(!empty($medical_information['hiv_positive_test_location']['name'])){echo $medical_information['hiv_positive_test_location']['name'];} ?>
 				</div>	
 				<div>
-					<strong>HIV Clinic Start Date: </strong>
+					<strong>Date Enrolled in HIV Care: </strong>
 					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_clinic_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_clinic_start_date']));} ?>
 				</div>	
 				<div>
@@ -174,7 +174,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			</div>
 			<div class="span-11 last">
 				<div>
-					<strong>ART Naive? </strong>
+					<strong>Previously on ARVs? </strong>
 					<?php if(!empty($medical_information['MedicalInformation']['art_naive']))
 						{
 							if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {

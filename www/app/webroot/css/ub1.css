@@ -206,6 +206,23 @@ a.hugebutton:active {
 	color:#fff;
 }
 
+a.smallbutton {
+  display:block;
+  float:left;
+  margin: 0 0.5em 0 0;
+  padding:2px 5px 2px 3px;   /* Links */
+  
+  border:1px solid #dedede;
+  border-top:1px solid #eee;
+  border-left:1px solid #eee;
+
+  background-color:#f5f5f5;
+  text-decoration:none;
+  font-weight:bold;
+  color:#565656;
+  cursor:pointer;
+}
+
 .rim {
 	border-color:#bfbfbf;
 	border-style:dashed;

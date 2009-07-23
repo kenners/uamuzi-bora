@@ -68,7 +68,7 @@ foreach ($patients as $patient):
 			<?php echo $html->link(__($values[$counter]['ResultLookup']['description'], true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid'])); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
 			
 		</td>
 		<td class="actions">
@@ -76,8 +76,8 @@ foreach ($patients as $patient):
 			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
 			// Build the Select box
 			echo $form->input('id',array('type'=>'select',
-												'options'=> $testoptions,
-												'label'=>FALSE));
+										'options'=> $testoptions,
+										'label'=>FALSE));
 			?>
 		</td>
 		<td>
