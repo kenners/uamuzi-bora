@@ -91,7 +91,12 @@ class UsersController extends AppController {
     //allow members to change results
     $group->id = 2;
     $this->Acl->deny($group, 'controllers');
+    $this->Acl->allow($group, 'controllers/Patients');
+    $this->Acl->allow($group, 'controllers/MedicalInformations');
+    $this->Acl->allow($group, 'controllers/Tests', 'view');
+    $this->Acl->allow($group, 'controllers/Jambo');
     $this->Acl->allow($group, 'controllers/Results');
+    $this->Acl->allow($group, 'controllers/ResultLookups', 'view');
     $this->Session->setFlash('Database succesfully initialized'); 
     $this->redirect(array('controller'=>'/'));
     
