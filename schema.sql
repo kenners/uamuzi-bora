@@ -1703,13 +1703,16 @@ COPY groups (id, name, description, created, modified) FROM stdin;
 
 COPY inactive_reasons (id, name, description, comment) FROM stdin;
 0	None	\N	\N
-1	Deceased	\N	\N
-2	PEP End	\N	\N
-3	PMTCT End	\N	\N
-4	Lost to Follow-up	\N	\N
-5	Transfer Out	\N	\N
-6	Stopped by Physician	\N	\N
-7	Stopped as Duplicate Record	\N	\N
+1	Default (1 month)	\N	\N
+2	Lost to Follow Up (3 months)	\N	\N
+3	Stop	\N	\N
+4	Deceased	\N	\N
+5	PEP End	\N	\N
+6	PMTCT End	\N	\N
+7	Lost to Follow-up	\N	\N
+8	Transfer Out	\N	\N
+9	Stopped by Physician	\N	\N
+10	Stopped as Duplicate Record	\N	\N
 \.
 
 
@@ -1827,6 +1830,14 @@ COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of
 --
 
 COPY regimens (id, name, description, comment) FROM stdin;
+1	1A (D4T30/3TC/NVP)	1st Line	\N
+2	2A (D4T30/3TC/EFV)	1st Line	\N
+3	3A (AZT/3TC/EFV)	1st Line	\N
+4	3B (AZT/3TC/NVP)	1st Line	\N
+5	R66 (TDF/3FC/NVP)	2nd Line	\N
+6	R67 (ABC/DDI/LPVR)	2nd Line	\N
+7	PEP1 (AZT/3TC)	PEP	\N
+8	Other	Other	\N
 \.
 
 
