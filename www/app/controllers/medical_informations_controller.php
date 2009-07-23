@@ -46,7 +46,8 @@ class MedicalInformationsController extends AppController {
 		}
 		
 		// Send $pid to the view so that it can create the necesssary links
-		$this->set('pid', $pid);
+		//$this->set('pid', $pid);
+		$this->redirect('/medical_informations/edit/' . $pid);
 	}
 	
 	/**

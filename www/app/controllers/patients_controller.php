@@ -245,9 +245,9 @@ class PatientsController extends AppController {
 			$this->data = $this->__prettyInput($this->data);
 			// Save the new row
 			if ($this->Patient->save($this->data)) {
-				$this->Session->setFlash('<strong>' . Inflector::humanize($this->data['Patient']['forenames']) . ' ' . Inflector::humanize($this->data['Patient']['surname']) . '</strong>'
-					. ' has been added with Patient ID '
-					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>', 'default', array('class' => 'success large text-centre'));
+				//$this->Session->setFlash('<strong>' . Inflector::humanize($this->data['Patient']['forenames']) . ' ' . Inflector::humanize($this->data['Patient']['surname']) . '</strong>'
+			//		. ' has been added with Patient ID '
+			//		. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>', 'default', array('class' => 'success large text-centre'));
 				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
 			} else {
 				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
@@ -320,8 +320,8 @@ class PatientsController extends AppController {
 																			)));
 		}
 		$this->set('values',$attendence);
+		$this->set('tests',$this->Patient->Result->Test->find('all',array('recursive'=>-1,'conditions'=>array('active'=>true))));
 		if(!empty($pids)) {
-			$this->set('tests',$this->Patient->Result->Test->find('all',array('recursive'=>-1,'conditions'=>array('active'=>true))));
 			$this->set('patients',$this->paginate('Patient',array('Patient.pid'=>$pids)));
 		}else{
 			$this->paginate();
