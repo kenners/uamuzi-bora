@@ -36,8 +36,13 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 // <SELECT> elements for our miniform.
 $testoptions=array();
 foreach ($tests as $test) {
-	$testoptions[$test['Test']['id']] = $test['Test']['name'];
+	if($test['Test']['id'] == 1){
+		continue;
+	} else {
+		$testoptions[$test['Test']['id']] = $test['Test']['name'];
+	}
 }
+
 
 $i = 0;
 $counter=0;
@@ -82,8 +87,12 @@ foreach ($patients as $patient):
 		</td>
 		<td>
 			<?php
-			echo $form->end('Add Result');
+			//echo $form->end('Add Result');
 			?>
+		<button type="submit" class="smallbutton positive">
+			<img src="/img/icons/add.png" alt=""/> Add Result
+		</button>
+		</form>
 		</td>
 		
 		<?php
