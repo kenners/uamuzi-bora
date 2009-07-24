@@ -8,7 +8,7 @@ class UsersController extends AppController {
     // Auth magic
   }
   function logout(){
-    $this->Session->setFlash('Good-Bye');
+    $this->Session->setFlash('Goodbye');
     $this->redirect($this->Auth->logout());
   }
   function beforeFilter() {
@@ -82,8 +82,29 @@ class UsersController extends AppController {
 	$this->Session->setFlash('Database succesfully initialized'); 
 	$this->redirect(array('controller'=>'/'));
   }
+  
+  
+  
   function initDB() {// A one time use function to initialze the aros_acos table
     $group =& $this->User->Group;
+    
+    /*$aro =& $this->Acl->Aro;
+    $groups = array(
+    	0 => array(
+    		'alias' => 'admins'
+    	),
+    	1 => array(
+    		'alias' => 'users'
+    	)
+    );
+    
+    foreach ($groups as $data) {
+    	$aro->create();
+    	$aro->save($data);
+    
+    }*/
+    
+    
     //Allow admins to everything
     $group->id = 1;     
     $this->Acl->allow($group, 'controllers');
@@ -95,6 +116,7 @@ class UsersController extends AppController {
     $this->Acl->allow($group, 'controllers/MedicalInformations');
     $this->Acl->allow($group, 'controllers/Tests', 'view');
     $this->Acl->allow($group, 'controllers/Jambo');
+    $this->Acl->deny($group, 'controllers/Jambo', 'admin');
     $this->Acl->allow($group, 'controllers/Results');
     $this->Acl->allow($group, 'controllers/ResultLookups', 'view');
     $this->Session->setFlash('Database succesfully initialized'); 
