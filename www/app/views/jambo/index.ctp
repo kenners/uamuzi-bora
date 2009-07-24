@@ -16,7 +16,13 @@
 			<a href="/patients" class="hugebutton">List All Patients</a>
 		</div>
 		<div class="span-10 last">
-			<a href="/jambo/admin" class="hugebutton">Admin Functions</a>
+			<?php
+				$userinfo = $session->read('Auth.User');
+				if($userinfo['group_id'] == 1) {	
+					echo $html->link(__('Admin Functions', true), array('action'=>'admin'), array('class'=>'hugebutton'));
+				}
+			?>
+			<!--<a href="/jambo/admin" class="hugebutton">Admin Functions</a>-->
 		</div>
 	</div>
 </div>
