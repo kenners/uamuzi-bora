@@ -206,7 +206,7 @@ a.hugebutton:active {
 	color:#fff;
 }
 
-a.smallbutton {
+.smallbutton {
   display:block;
   float:left;
   margin: 0 0.5em 0 0;
