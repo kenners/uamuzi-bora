@@ -22,7 +22,6 @@
 					echo $html->link(__('Admin Functions', true), array('action'=>'admin'), array('class'=>'hugebutton'));
 				}
 			?>
-			<!--<a href="/jambo/admin" class="hugebutton">Admin Functions</a>-->
 		</div>
 	</div>
 </div>
