@@ -15,7 +15,7 @@
 echo $form->create('Patient', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Patient Profile',
 						'upn'=>array('label'=>'Unique Patient Number',
-									'maxLength'=>11),
+									'maxLength'=>20),
 						'forenames'=>array('label'=>'Patient Forenames*'),
 						'surname'=>array('label'=>'Patient Surname*'),
 						'date_of_birth'=>array('label' => 'Date of Birth',
