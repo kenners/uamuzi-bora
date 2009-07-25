@@ -9,7 +9,7 @@
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 ?>
-<div class="span-22 last"><?php echo $html->link('Add New Patient', array('action'=>'add'), array('class'=>'button')); ?></div>
+<div class="span-22 last"><a href="/patients/add" class="button"><img src="/img/icons/application_form_add.png" />Add New Patient</a></div>
 <div class="span-12 append-10 last"><em>Before adding a new patient, please <?php echo $html->link(__('Search', true), array('action'=>'search')); ?> or browse the list of patients in the database below to check that they do not already have a record in this database.</em></div>
  
 <div id="patientIndex" class="patients index span-22 prepend-top last">

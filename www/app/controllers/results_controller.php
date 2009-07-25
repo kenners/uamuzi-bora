@@ -131,17 +131,17 @@ class ResultsController extends AppController {
     $this->set('pid',$pid);
     if(!$this->Result->Patient->exists())
       {
-	$this->Session->setFlash('You tried to add attendence to a Patient that does not exist');
+	$this->Session->setFlash('You tried to book in a patient that does not exist in this database.');
 	$this->redirect($this->referer());
       }
     $data=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1, 'test_performed'=> date('Y-m-d',strtotime('now'))));
     $this->Result->create();
     if ($this->Result->save($data)) 
       {
-	$this->Session->setFlash(__('The Attendence has been saved', true));
+	$this->Session->setFlash(__('Patient booked in.', true));
 	$this->redirect($this->referer());
       } else {
-	$this->Session->setFlash(__('The Attendence could not be saved. Please, try again.', true));
+	$this->Session->setFlash(__('This patient could now be booked in. Please, try again.', true));
       }  
   }
   function ad_attendence($pid=null){

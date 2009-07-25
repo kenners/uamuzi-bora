@@ -61,81 +61,66 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		</div>
 		<div class="demographicInformation large span-22 last">
 
-			<div class="span-11">
-				<div>
-					<strong>Sex: </strong>
-					<?php if(!empty($patient['Patient']['sex'])){echo $patient['Patient']['sex'];} ?>
+			<div class="span-9">
+				<div class="rimmer">
+					<h4>Patient Profile</h4>
+					<div>
+						Sex:
+						<strong><?php if(!empty($patient['Patient']['sex'])){echo $patient['Patient']['sex'];} ?></strong>
+					</div>
+					<div>
+						Marital Status: 
+						<strong><?php if(!empty($patient['MaritalStatus']['name'])){echo $patient['MaritalStatus']['name'];} ?></strong>
+					</div>
+					<div>
+						Telephone Number: 
+						<strong><?php if(!empty($patient['Patient']['telephone_number'])){echo $patient['Patient']['telephone_number'];} ?></strong>
+					</div>
 				</div>
-				<div>
-					<strong>Mother: </strong>
-					<?php if(!empty($patient['Patient']['mother'])){echo $patient['Patient']['mother'];} ?>
+				<div class="rimmer prepend-top">
+					<h4>Status Info</h4>
+					<div>
+						Status: 
+						<strong><?php echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status'])); ?></strong>
+					</div>
+					<div>
+						Status Last Changed: 
+						<strong><?php if(!empty($patient['Patient']['status_timestamp'])){echo $this->element('prettyDate', array('date' => $patient['Patient']['status_timestamp']));} ?></strong>
+					</div>
+					<div>
+						Status Reason: 
+						<strong><?php if(!empty($patient['InactiveReason']['name'])){echo $patient['InactiveReason']['name'];} ?></strong>
+					</div>	
 				</div>
-				<div>
-					<strong>Occupation: </strong>
-					<?php if(!empty($patient['Occupation']['name'])){echo $patient['Occupation']['name'];} ?>
-				</div>
-				<div>
-					<strong>Education: </strong>
-					<?php if(!empty($patient['Education']['name'])){echo $patient['Education']['name'];} ?>
-				</div>
-				<div>
-					<strong>Marital Status: </strong>
-					<?php if(!empty($patient['MaritalStatus']['name'])){echo $patient['MaritalStatus']['name'];} ?>
-				</div>
-				<div class="append-bottom">
-					<strong>Telephone Number: </strong>
-					<?php if(!empty($patient['Patient']['telephone_number'])){echo $patient['Patient']['telephone_number'];} ?>
-				</div>
-				<h4>Status Info</h4>
-				<div>
-					<strong>Status: </strong>
-					<?php echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status'])); ?>
-				</div>
-				<div>
-					<strong>Status Last Changed: </strong>
-					<?php if(!empty($patient['Patient']['status_timestamp'])){echo $this->element('prettyDate', array('date' => $patient['Patient']['status_timestamp']));} ?>
-				</div>
-				<div>
-					<strong>Status Reason: </strong>
-					<?php if(!empty($patient['InactiveReason']['name'])){echo $patient['InactiveReason']['name'];} ?>
-				</div>	
 			</div>
-			<div class="span-11 last">
+
+			<div class="span-10 push-1 last rimmer">
+				<h4>Location Information</h4>
 				<div>
-					<strong>Location: </strong>
-					<?php if(!empty($patient['Location']['name'])){echo $patient['Location']['name'];} ?>
+					Location: 
+					<strong><?php if(!empty($patient['Location']['name'])){echo $patient['Location']['name'];} ?></strong>
 				</div>
 				<div>
-					<strong>Village: </strong>
-					<?php if(!empty($patient['Patient']['village'])){echo $patient['Patient']['village'];} ?>
+					Village: 
+					<strong><?php if(!empty($patient['Patient']['village'])){echo $patient['Patient']['village'];} ?></strong>
 				</div>
 				<div>
-					<strong>Postal Address: </strong>
-					<?php if(!empty($patient['Patient']['home'])){echo $patient['Patient']['home'];} ?>
+					Postal Address: <br/>
+					<strong><?php if(!empty($patient['Patient']['home'])){echo $patient['Patient']['home'];} ?></strong>
 				</div>
 				<div>
-					<strong>Nearest Church: </strong>
-					<?php if(!empty($patient['Patient']['nearest_church'])){echo $patient['Patient']['nearest_church'];} ?>
+					Nearest School: 
+					<strong><?php if(!empty($patient['Patient']['nearest_school'])){echo $patient['Patient']['nearest_school'];} ?></strong>
 				</div>
 				<div>
-					<strong>Nearest School: </strong>
-					<?php if(!empty($patient['Patient']['nearest_school'])){echo $patient['Patient']['nearest_school'];} ?>
-				</div>
-				<div>
-					<strong>Nearest Health Centre: </strong>
-					<?php if(!empty($patient['Patient']['nearest_health_centre'])){echo $patient['Patient']['nearest_health_centre'];} ?>
-				</div>
-				<div>
-					<strong>Nearest Major Landmark: </strong>
-					<?php if(!empty($patient['Patient']['nearest_major_landmark'])){echo $patient['Patient']['nearest_major_landmark'];} ?>
-				</div>
-				<div>
-					<strong>VF Testing Site: </strong>
-					<?php if(!empty($patient['VfTestingSite']['site_name'])){echo $patient['VfTestingSite']['site_name'].' ('.$patient['VfTestingSite']['site_code'].')';} ?>
+					Nearest Health Centre: 
+					<strong><?php if(!empty($patient['Patient']['nearest_health_centre'])){echo $patient['Patient']['nearest_health_centre'];} ?></strong>
 				</div>
 
-				
-
+				<div>
+					VF Testing Site: 
+					<strong><?php if(!empty($patient['VfTestingSite']['site_name'])){echo $patient['VfTestingSite']['site_name'].' ('.$patient['VfTestingSite']['site_code'].')';} ?> </strong>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -146,82 +131,72 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		</div>
 		<div class="demographicInformation large span-22 last">
 		<?php $medical_information = $medical_informations[0]; ?>
-			<div class="span-11">
+			<div class="span-9 rimmer">
+				<h4>Patient Source</h4>
 				<div>
-					<strong>Patient Source: </strong>
-					<?php if(!empty($medical_information['PatientSource']['name'])){echo $medical_information['PatientSource']['name'];} ?>
-				</div>			
+					Entry Point: 
+					<strong><?php if(!empty($medical_information['PatientSource']['name'])){echo $medical_information['PatientSource']['name'];} ?></strong>
+				</div>
 				<div>
-					<strong>Funding: </strong>
-					<?php if(!empty($medical_information['Funding']['name'])){echo $medical_information['Funding']['name'];} ?>
-				</div>	
+					Transfer In Date: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['transfer_in_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['transfer_in_date']));} ?></strong>
+				</div>
 				<div>
-					<strong>Date Confirmed HIV +: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_date']));} ?>
-				</div>	
+					Transfer In District: 
+					<strong><?php if(!empty($medical_information['transfer_in_district']['name'])){echo $medical_information['transfer_in_district']['name'];} ?></strong>
+				</div>
 				<div>
-					<strong>HIV+ Test Location: </strong>
-					<?php if(!empty($medical_information['hiv_positive_test_location']['name'])){echo $medical_information['hiv_positive_test_location']['name'];} ?>
-				</div>	
-				<div>
-					<strong>Date Enrolled in HIV Care: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_clinic_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_clinic_start_date']));} ?>
-				</div>	
-				<div>
-					<strong>WHO Stage on HIV+ Diagnosis: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_who_stage'])){echo $medical_information['MedicalInformation']['hiv_positive_who_stage'];} ?>
-				</div>	
+					Transfer In Facility: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['transfer_in_facility'])){echo $medical_information['MedicalInformation']['transfer_in_facility'];} ?></strong>
+				</div>
 			</div>
-			<div class="span-11 last">
+			<div class="span-10 push-1 last rimmer">
+				<h4>ARV Therapy</h4>
 				<div>
-					<strong>Previously on ARVs? </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['art_naive']))
+					Date Medically Eligible: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['art_eligibility_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['art_eligibility_date']));} ?></strong>
+				</div>				
+				<div>
+					Eligible Thru: 
+					<strong><?php if(!empty($medical_information['ArtIndication']['name'])){echo $medical_information['ArtIndication']['name'];} ?></strong>
+				</div>				
+				<div>
+					Date Started on 1st Line Regimen: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['art_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['art_start_date']));} ?></strong>
+				</div>
+				<div>
+					ART Starting Regimen: 
+					<strong><?php if(!empty($medical_information['art_starting_regimen']['name'])){echo $medical_information['art_starting_regimen']['name'];} ?></strong>
+				</div>
+			</div>
+			<div class="span-9 rimmer">
+				<h4>ART History</h4>	
+				<div>
+					Previously on ARVs (PMCT included)? </strong>
+					<strong><?php if(!empty($medical_information['MedicalInformation']['art_naive']))
 						{
 							if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {
 								echo 'Yes';
 							}} else {
 									echo 'No';
-								} ?>
+								} ?></strong>
 				</div>
 				<div>
-					<strong>ART Service Type: </strong>
-					<?php if(!empty($medical_information['ArtServiceType']['name'])){echo $medical_information['ArtServiceType']['name'];} ?>
-				</div>
+					Date Confirmed HIV +: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['hiv_positive_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_date']));} ?></strong>
+				</div>	
 				<div>
-					<strong>ART Starting Regimen: </strong>
-					<?php if(!empty($medical_information['art_starting_regimen']['name'])){echo $medical_information['art_starting_regimen']['name'];} ?>
-				</div>
+					HIV + Test Location: 
+					<strong><?php if(!empty($medical_information['hiv_positive_test_location']['name'])){echo $medical_information['hiv_positive_test_location']['name'];} ?></strong>
+				</div>	
 				<div>
-					<strong>ART Start Date: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['art_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['art_start_date']));} ?>
-				</div>
+					Date Enrolled in HIV Care: 
+					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_clinic_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_clinic_start_date']));} ?></strong>
+				</div>	
 				<div>
-					<strong>ART Eligibility Date: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['art_eligibility_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['art_eligibility_date']));} ?>
-				</div>
-				<div>
-					<strong>ART Indication: </strong>
-					<?php if(!empty($medical_information['ArtIndication']['name'])){echo $medical_information['ArtIndication']['name'];} ?>
-				</div>
-			</div>
-			<div class="span-11">
-				<div>
-					<strong>Transfer In Date: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['transfer_in_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['transfer_in_date']));} ?>
-				</div>
-				<div>
-					<strong>Transfer In District: </strong>
-					<?php if(!empty($medical_information['transfer_in_district']['name'])){echo $medical_information['transfer_in_district']['name'];} ?>
-				</div>
-				<div>
-					<strong>Transfer In Facility: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['transfer_in_facility'])){echo $medical_information['MedicalInformation']['transfer_in_facility'];} ?>
-				</div>
-				<div>
-					<strong>Transfer Out Date: </strong>
-					<?php if(!empty($medical_information['MedicalInformation']['transfer_out_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['transfer_out_date']));} ?>
-				</div>
-			
+					WHO Stage on HIV+ Diagnosis: 
+					<strong><?php if(!empty($medical_information['MedicalInformation']['hiv_positive_who_stage'])){echo $medical_information['MedicalInformation']['hiv_positive_who_stage'];} ?></strong>
+				</div>	
 			</div>
 		</div>
 	</div>
