@@ -26,6 +26,15 @@
 	overflow:hidden;
 }
 
+.rimmer {
+	border-color:#bfbfbf;
+	border-style:dashed;
+	border-width:.5px;
+	padding: 1.5em;
+}
+
+
+
 .otherIdentifier {
 	padding:1.5em;
 
