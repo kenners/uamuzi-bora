@@ -30,11 +30,11 @@ echo $form->inputs(array(
 
 echo $form->inputs(array(
 	'legend' => 'ART History',
-	'art_naive'=>array('legend'=>FALSE,
+	'art_naive'=>array('type'=>'radio',
+						'legend'=>FALSE,
 						'before'=>'<strong>Previously on ARVs?</strong> ',
-						'type'=>'radio',
-						'options'=>array(0=>'Yes',1=>'No'),
-						'selected'=> FALSE
+						'options'=>array(1=>'Yes',0=>'No'),
+						'selected'=>FALSE
 						),
 	'hiv_positive_date' => array('label'=>'Date Confirmed HIV +',
 								'dateFormat' => 'DMY',

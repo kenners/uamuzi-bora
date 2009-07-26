@@ -173,11 +173,9 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				<h4>ART History</h4>	
 				<div>
 					Previously on ARVs (PMCT included)? </strong>
-					<strong><?php if(!empty($medical_information['MedicalInformation']['art_naive']))
-						{
-							if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {
+					<strong><?php if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {
 								echo 'Yes';
-							}} else {
+							} else {
 									echo 'No';
 								} ?></strong>
 				</div>
@@ -191,7 +189,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				</div>	
 				<div>
 					Date Enrolled in HIV Care: 
-					<?php if(!empty($medical_information['MedicalInformation']['hiv_positive_clinic_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_clinic_start_date']));} ?></strong>
+					<strong><?php if(!empty($medical_information['MedicalInformation']['hiv_positive_clinic_start_date'])){echo $this->element('prettyDate', array('date' => $medical_information['MedicalInformation']['hiv_positive_clinic_start_date']));} ?></strong>
 				</div>	
 				<div>
 					WHO Stage on HIV+ Diagnosis: 
