@@ -288,6 +288,11 @@ class PatientsController extends AppController {
 				$this->Patient->find('all', array(
 					'conditions' => array('Patient.pid'=>$pid),
 					'contain' => array(
+						'Education',
+						'MaritalStatus',
+						'Location',
+						'InactiveReason',
+						'VfTestingSite',
 						'Result' => array(
 							'Test',
 							'ResultLookup',
