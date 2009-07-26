@@ -55,30 +55,30 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])); ?>
+			<?php echo $this->element('prettyUPN', array('pid' => $values[$counter]['Patient']['upn'])); ?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['surname']; ?>
+			<?php echo $values[$counter]['Patient']['surname']; ?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['forenames']; ?>
+			<?php echo $values[$counter]['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth']));?>
+			<?php echo $this->element('prettyDate', array('date' => $values[$counter]['Patient']['date_of_birth']));?>
 		</td>
 		<td>
-			<?php echo $patient['Patient']['sex']; ?>
+			<?php echo $values[$counter]['Patient']['sex']; ?>
 		</td>
 		<td>
 			<?php echo $html->link(__($values[$counter]['ResultLookup']['description'], true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $values[$counter]['Patient']['pid']), array('class'=>'smallbutton')); ?>
 			
 		</td>
 		<td class="actions">
 			<?php
-			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
+			echo $form->create(FALSE, array('url' => '/results/add/'.$values[$counter]['Patient']['pid']));
 			// Build the Select box
 			echo $form->input('id',array('type'=>'select',
 										'options'=> $testoptions,
