@@ -1,6 +1,7 @@
 # Uamuzi Bora
 
 A basic HIV Electronic Medical Record (EMR) system using CakePHP.
+
 http://uamuzibora.com
 
 ## Deploying
@@ -9,14 +10,14 @@ http://uamuzibora.com
 * Copy /www/app into the root directory of your CakePHP installation.
 * Tweak /www/app/config/core.php as required for your environment.
 * Import schema.sql into your database
-** We're using PostgreSQL so you will have to tweak schema.sql accordingly if you're using a different database.
+  We're using PostgreSQL so you will have to tweak schema.sql accordingly if you're using a different database.
 
 ## Contributing/Patches/Bug Fixes
  
 * Fork the project.
 * Make your feature addition or bug fix.
+* Do not change stuff in /www/config directory.
 * Commit.
-** Do not change stuff in /www/config directory.
 * Send us a pull request.
 
 ## Copyright
