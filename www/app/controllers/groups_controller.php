@@ -54,7 +54,7 @@ class GroupsController extends AppController {
 			$this->Session->setFlash(__('Invalid id for Group', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		parent::archvie($id);
+		parent::archive($id);
 		if ($this->Group->del($id)) {
 			$this->Session->setFlash(__('Group deleted', true));
 			$this->redirect(array('action'=>'index'));
