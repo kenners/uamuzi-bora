@@ -2,7 +2,8 @@
 /**
  * Archive model for the MedicalInformation model
  */
-class ArchiveMedicalInformation extends AppModel {
+class ArchiveMedicalInformation extends AppModel
+{
 	var $name = 'ArchiveMedicalInformation';
 }
 ?>

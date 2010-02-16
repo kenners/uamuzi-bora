@@ -34,82 +34,75 @@
  * @package       cake
  * @subpackage    cake.app
  */
-class AppController extends Controller {
-	//Enabling Ajax for all controllers, as we're going to be using it for our Index views
-	var $helpers = array('Javascript','Ajax','Crumb');
+class AppController extends Controller
+{
+	// Enabling Ajax for all controllers, as we're going to be using it for our Index views
+	var $helpers = array('Javascript', 'Ajax', 'Crumb');
 	
-  var $components =array('Acl','Auth');// Components for ACL
-  function beforeFilter() {
-        Security::setHash('sha256');
-        //Configure AuthComponent
-        $this->Auth->authorize = 'actions';
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login'); // The action to login
-        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');// Where we redirect after logout
-        $this->Auth->loginRedirect = array('controller' => 'jambo', 'action' => 'index'); // Where we redirect after login
-  }
-
-  // A function to archive a record given by $id, the function asumes a model
-  // called archive_modelName which has to be included via the var $uses=
-  function archive($id = null){
-    $modelClass=$this->modelClass;//get the name of the current model
-
-    $user_id=$this->Auth->user('id');//get user id from session
-    $archive_model="Archive".$modelClass;
-    //get the record from the database
-    eval('$data=  $this->'.$modelClass.'->read(null, '.$id.');');
-    //Because of the formatting of the return , need this to get the values
-    $data=$data[$modelClass];
-    $data_out=array();
-    
-    //go trough all the records and changing the names so that they get the prefix archive_
-    foreach(array_keys($data) as $keys)
-      {
-	$key='archive_'.$keys;
-	$data_out[$key] = $data[$keys];
-      }
-    $data_out['user_id']=$user_id;//add the user id
-   
-     
-    if(!empty($this->data)){// If edited we want to get the archive reason
-      // Extract the reason field from the $this->data array
-      eval('$reason=Set::extract("/'.$modelClass.'/archive_reason", $this->data);');
-      $data_out['archive_reason']=array_pop($reason);
-      }
-    //Need to format the array we want to save this way
-    $save[$archive_model]=$data_out;
-    //create a new record and save the data
-    eval('$this->'.$archive_model.'->create();');
-    eval('$this->'.$archive_model.'->save($save);');
-    
-  }
-
-    //combine arrays, in the way that multiple search results in different arrays, then we get one array with all search results
-    function __combine_array($arr1,$arr2)
-  {
-
-    $number=count($arr1);//find the first index for the next result
-    
-    foreach($arr2 as $element2)
-      {
-	$test=true;
-	foreach($arr1 as $element1)
-	  {
-	    if($element1==$element2){
-	      $test=false;
-	      break;
-	    }
-	  }
-	if($test)
-	  {
-	    
-	$arr1=Set::insert($arr1,'\\'.$number,$element2);
-	  }
-	$number+=1;
-      }
-    return $arr1;
-  }
+	var $components = array('Acl', 'Auth');  // Components for ACL
+	function beforeFilter()
+	{
+		Security::setHash('sha256');
+		// Configure AuthComponent
+		$this->Auth->authorize = 'actions';
+		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');  // The action to login
+		$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');  // Where we redirect after logout
+		$this->Auth->loginRedirect = array('controller' => 'jambo', 'action' => 'index');  // Where we redirect after login
+	}
 	
+	// A function to archive a record given by $id, the function asumes a model
+	// called archive_modelName which has to be included via the var $uses=
+	function archive($id = null)
+	{
+		$modelClass = $this->modelClass;  // get the name of the current model
+		
+		$user_id = $this->Auth->user('id');  // get user id from session
+		$archive_model = "Archive" . $modelClass;
+		// get the record from the database
+		eval('$data = $this->' . $modelClass . '->read(null, ' . $id . ');');
+		// Because of the formatting of the return , need this to get the values
+		$data = $data[$modelClass];
+		$data_out = array();
+		
+		// go trough all the records and changing the names so that they get the prefix archive_
+		foreach (array_keys($data) as $keys) {
+			$key = 'archive_' . $keys;
+			$data_out[$key] = $data[$keys];
+		}
+		$data_out['user_id'] = $user_id;  // add the user id
+		 
+		 
+		if (!empty($this->data)) {  // If edited we want to get the archive reason
+			// Extract the reason field from the $this->data array
+			eval('$reason = Set::extract("/' . $modelClass . '/archive_reason", $this->data);');
+			$data_out['archive_reason'] = array_pop($reason);
+		}
+		// Need to format the array we want to save this way
+		$save[$archive_model] = $data_out;
+		// create a new record and save the data
+		eval('$this->' . $archive_model . '->create();');
+		eval('$this->' . $archive_model . '->save($save);');
+	}
 	
-      
+	// combine arrays, in the way that multiple search results in different arrays, then we get one array with all search results
+	function __combine_array($arr1, $arr2)
+	{
+		$number = count($arr1);  // find the first index for the next result
+		 
+		foreach ($arr2 as $element2) {
+			$test = true;
+			foreach ($arr1 as $element1) {
+				if ($element1 == $element2) {
+					$test = false;
+					break;
+				}
+			}
+			if ($test) {
+				$arr1 = Set::insert($arr1, '\\' . $number, $element2);
+			}
+			$number += 1;
+		}
+		return $arr1;
+	}
 }
 ?>

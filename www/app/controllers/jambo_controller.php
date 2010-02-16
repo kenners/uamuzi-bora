@@ -1,5 +1,6 @@
 <?php
-class JamboController extends AppController {
+class JamboController extends AppController
+{
 /**
  * Jambo (Swahili for "hello") is the controller for generating the welcome/home screen views
  * according to the privileges of the logged in user.
@@ -15,12 +16,12 @@ class JamboController extends AppController {
 	 * Displays the main home page with different options depending on the group of the
 	 * logged in user.
 	 */
-	function index(){}
+	function index() {}
 	
 	/**
 	 * Displays the admin functions
 	 */	
-	function admin(){}
-
+	function admin() {}
+	
 }
 ?>

@@ -1,5 +1,6 @@
 <?php
-class MedicalInformationsController extends AppController {
+class MedicalInformationsController extends AppController
+{
 	var $name = 'MedicalInformations';
 	var $uses = array(
 		'MedicalInformation',
@@ -11,12 +12,13 @@ class MedicalInformationsController extends AppController {
 		'ArtServiceType',
 		'Regimen',
 		'ArtIndication'
-		);
+	);
 	
 	/**
 	 * index() doesn't make sense from a UI perspective, so just redirect to /
 	 */
-	function index() {
+	function index()
+	{
 		$this->redirect('/');
 	}
 	
@@ -27,7 +29,8 @@ class MedicalInformationsController extends AppController {
 	 * medical_informations table).  It then prompts the user to either
 	 * go to MedicalInformations::edit or Patients::index.
 	 */
-	function add($pid = NULL) {
+	function add($pid = NULL)
+	{
 		// If $pid is mangled, it's likely this action is being accessed via
 		// an astandard route so just redirect to Patients::index.  The same
 		// goes for if it doesn't exist in the `patients' table or if it
@@ -46,14 +49,15 @@ class MedicalInformationsController extends AppController {
 		}
 		
 		// Send $pid to the view so that it can create the necesssary links
-		//$this->set('pid', $pid);
+		// $this->set('pid', $pid);
 		$this->redirect('/medical_informations/edit/' . $pid);
 	}
 	
 	/**
 	 * Edit a row in the MedicalInformation table, with appropriate auditing
 	 */
-	function edit($pid = NULL) {
+	function edit($pid = NULL)
+	{
 		// Check $pid is okay
 		if (empty($pid) || !$this->Patient->isValidPID($pid) || !$this->Patient->valueExists($pid, 'Patient', 'pid')) {
 			$this->redirect(array('controller' => 'patients', 'action' => 'index'));

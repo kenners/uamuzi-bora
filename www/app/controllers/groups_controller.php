@@ -1,24 +1,28 @@
 <?php
-class GroupsController extends AppController {
-
+class GroupsController extends AppController
+{
+	
 	var $name = 'Groups';
 	var $helpers = array('Html', 'Form', 'Crumb');
-  var $uses = array('Group','ArchiveGroup');
-
-	function index() {
+	var $uses = array('Group','ArchiveGroup');
+	
+	function index()
+	{
 		$this->Group->recursive = 0;
 		$this->set('groups', $this->paginate());
 	}
-
-	function view($id = null) {
+	
+	function view($id = null)
+	{
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid Group.', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('group', $this->Group->read(null, $id));
 	}
-
-	function add() {
+	
+	function add()
+	{
 		if (!empty($this->data)) {
 			$this->Group->create();
 			if ($this->Group->save($this->data)) {
@@ -29,8 +33,9 @@ class GroupsController extends AppController {
 			}
 		}
 	}
-
-	function edit($id = null) {
+	
+	function edit($id = null)
+	{
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid Group', true));
 			$this->redirect(array('action'=>'index'));
@@ -48,8 +53,9 @@ class GroupsController extends AppController {
 			$this->data = $this->Group->read(null, $id);
 		}
 	}
-
-	function delete($id = null) {
+	
+	function delete($id = null)
+	{
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Group', true));
 			$this->redirect(array('action'=>'index'));
@@ -60,6 +66,5 @@ class GroupsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 	}
-
 }
 ?>

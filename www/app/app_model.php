@@ -1,5 +1,6 @@
 <?php
-class AppModel extends Model {
+class AppModel extends Model
+{
 	// Allows us to use Contain in all find/paginate queries, helping to improve
 	// query speed and reduce db load.
 	var $actsAs = array('Containable');
@@ -50,7 +51,7 @@ class AppModel extends Model {
 		// Call $this->function() and return the result
 		return call_user_func_array(array(&$this, $function), $params);
 	}
-		
+	
 	/**
 	 * Custom validation function to determine whether or not a value is unique
 	 * in a given field in a case insensitive manner.  Uses $this->find i.e.
@@ -127,7 +128,7 @@ class AppModel extends Model {
 	function valueExists($value, $model, $column = 'id') {
 		// Set the conditions
 		$conditions = array($model . '.' . $column => $value);
-
+		
 		// Set $count, the number of rows with $value in $column, calling
 		// ClassRegistry to access the model
 		$this->$model =& ClassRegistry::init($model);
@@ -168,7 +169,8 @@ class AppModel extends Model {
  * Model for lookup tables, so create models like so:
  *     class Something extends LookupTableModel {...
  */
-class LookupTableModel extends AppModel {
+class LookupTableModel extends AppModel
+{
 	/**
 	 * Validation suite (essentially this is what is checked when save() is
 	 * is called)
@@ -176,23 +178,23 @@ class LookupTableModel extends AppModel {
 	var $validate = array(
 		'id' => array(
 			'positive integer' => array(
-				'rule' => array('customValidationFunction', 'isPositiveInteger'),
+				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
 				'allowEmpty' => TRUE,
-				'message' => 'The ID should be a positive integer'
+				'message'    => 'The ID should be a positive integer'
 			),
 			'unique' => array(
-				'rule' => 'isUnique',
+				'rule'       => 'isUnique',
 				'allowEmpty' => TRUE,
-				'message' => 'This ID is already in use'
+				'message'    => 'This ID is already in use'
 			)
 		),
 		'name' => array(
 			'not null' => array(
-				'rule' => 'notEmpty',
+				'rule'    => 'notEmpty',
 				'message' => 'This field must not be left empty'
 			),
 			'unique' => array(
-				'rule' => array('customValidationFunction', 'isUniqueCaseInsensitive', 'name'),
+				'rule'    => array('customValidationFunction', 'isUniqueCaseInsensitive', 'name'),
 				'message' => 'This value already exists'
 			)
 		)

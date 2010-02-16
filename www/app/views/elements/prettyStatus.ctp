@@ -5,10 +5,10 @@
 if ($status == TRUE || $status == 1) {
 	echo 'Active';
 } else {
-	if ($status == FALSE || $status == 0){
-	echo 'Inactive';
+	if ($status == FALSE || $status == 0) {
+		echo 'Inactive';
 	} else {
-	echo 'Unknown';
+		echo 'Unknown';
 	}
 }
 ?>
