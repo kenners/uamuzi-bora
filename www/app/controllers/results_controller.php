@@ -118,43 +118,43 @@ class ResultsController extends AppController
 			$this->redirect($this->referer());
 		}
 		$batchOfTestIDs = array(2,3,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
-
-		// Is this a new form i.e. is there data in our object?
-		if (empty($this->data)) {
 			// Loop to pull the relevent info for each of our tests and put them in an array	
-			$batchOfTestInfo = array();
-			foreach($batchOfTestIDs as $test) {
-				// Setup a temporary array for this loop
-				$testInfo = array();
-				// Set the Test ID
-				$testInfo['test_id'] = $test;
-				// Find out the Test type
-				
-				$t = $this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
-				$testInfo['name']=$t['Test']['name'];	
-				$testInfo['type']=$t['Test']['type'];
+		$batchOfTestInfo = array();
+		foreach($batchOfTestIDs as $test) {
+			// Setup a temporary array for this loop
+			$testInfo = array();
+			// Set the Test ID
+			$testInfo['test_id'] = $test;
+			// Find out the Test type
+			
+			$t = $this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
+			$testInfo['name']=$t['Test']['name'];	
+			$testInfo['type']=$t['Test']['type'];
 				
 										
-				// Get Test answers/options if required
-				if($testInfo['type'] == 'lookup') {
-					$opt=$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
-					$options=array();
-					foreach($opt as $o){
-						$value=$o['ResultLookup']['value'];
-						$id=$o['ResultLookup']['id'];
-						$desc=$o['ResultLookup']['description'];
-						$r=array_keys($o);
-						$options[]=array('id'=>$id,'value'=>$value,'description'=>$desc);
-					}
-					$testInfo['options']=$options;				
+			// Get Test answers/options if required
+			if($testInfo['type'] == 'lookup') {
+				$opt=$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
+				$options=array();
+				foreach($opt as $o){
+					$value=$o['ResultLookup']['value'];
+					$id=$o['ResultLookup']['id'];
+					$desc=$o['ResultLookup']['description'];
+					$r=array_keys($o);
+					$options[]=array('id'=>$id,'value'=>$value,'description'=>$desc);
 				}
-				// Add this temp array onto the main array we're building
-				$batchOfTestInfo[] = $testInfo;
-				unset($testInfo);
+				$testInfo['options']=$options;				
 			}
+				// Add this temp array onto the main array we're building
+			$batchOfTestInfo[] = $testInfo;
+			unset($testInfo);
+		}
 			// Make our fresh array of test info available to the view
-			$this->set('batchOfTests', $batchOfTestInfo);
-			$this->set('pid', $this->Result->Patient->id=$pid);
+		$this->set('batchOfTests', $batchOfTestInfo);
+		$this->set('pid', $this->Result->Patient->id=$pid);
+		// Is this a new form i.e. is there data in our object?
+		if (empty($this->data)) {
+		
 		}else {
 			//debug($this->data);
 			$tests=array();
@@ -180,11 +180,17 @@ class ResultsController extends AppController
 			unset($data['Result']['requesting_clinician']);
 			
 			// loop through all the results and add any fields that have been filled out
-			$counter=5;
+			$counter=5;//Since The dates are the first 4 fields.
+			$invalidResults=array();
+			$resultArray=array();
+			
 			foreach($data['Result'] as $result){
-				//debug($result);
-				if($result['value']!='' and $result['value']!=0){
-					$value=$result['value'];
+				//find test it by using the fact that there are 5 columns
+				$test_id=$batchOfTestIDs[intval($counter/5) -1];
+				//check that we have a value, so that we only add fields that are filled out
+				if(!empty($result['value_'.$tests[$test_id]])){
+					//get the data to add, $counter%  gives us the right date
+					$value=$result['value_'.$tests[$test_id]];
 					$test_id=$batchOfTestIDs[intval($counter/5) -1];
 					$d=$date[$counter % 5];
 					
@@ -196,15 +202,34 @@ class ResultsController extends AppController
 									'user_id'=>$this->Auth->user('id')
 									));
 					$this->Result->create();
-					if ($this->Result->save($to_add)) {
-						} else {
-						$this->Session->setFlash(__('The Results could not be saved. Please, try again.', true));
+					// Set an validate every field, and keep all validation errors
+				        $this->Result->set($to_add);
+					if($this->Result->validates()){
+						
+						
+					} else {
+						$invalidResults[$counter]=$this->Result->validationErrors;
+						unset($this->Result->validationErrors);
 					}
+					$resultArray[]=$to_add;
 				}
+				
 				$counter++;
-			}	
-			$this->Session->setFlash(__('The Results have been saved', true));
-			$this->redirect(array('controller'=>'patients','action' => 'index'));			
+			}
+			// If no validation problems save
+			
+			if (empty($invalidResults)){
+				foreach($resultArray as $result){
+					$this->Result->create();
+					$this->Result->save($result);
+				}					
+				$this->Session->setFlash(__('The Results have been saved', true));
+				$this->redirect(array('controller'=>'patients','action' => 'index'));	
+			}else{//If validation problems disply them.
+			
+				$this->Result->validationErrors = $invalidResults;
+				$this->Session->setFlash(__('The Results could not be saved', true));
+			}		
 		}
 
 

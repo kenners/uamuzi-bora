@@ -10,8 +10,9 @@
 				echo $html->tableHeaders(
 					array('Title','Set 1','Set 2','Set 3','Set 4','Set 5')
 				);
-				//debug($batchOfTests);
-			        $cells= array();
+				// Setting up $cells to hold all the input fields we want
+				$cells= array();
+				// Adding the dates
 				$cells[]=array('Date',$form->input('0.test_performed', array('dateFormat' => 'DMY',
 								'timeFormat' => 'none',
 								'minYear' => date('Y') - 100,
@@ -45,25 +46,31 @@
 								))
 							);
 
-				$counter=5;		
+				$counter=5;
+				// Adding all the tests 5 times, using a new number for each test.		
 				foreach($batchOfTests as $test){
-					//debug($test);
+					
 					if ($test['type']!='lookup'){
+						// If not a lookup test we put the name and the textboxes into cells
 						$t=array($test['name']);
 						
 						for($i=0;$i<5;$i++){
-						$t[]=$form->input('value',array('label'=>'','name'=>'data[Result]['.$counter.'][value]'));					
+						$t[]=$form->input('Result.'.$counter.'.value_'.$test['type'],array('label'=>'',
+								'name'=>'data[Result]['.$counter.'][value_'.$test['type'].']'));					
 						$counter++;
 						}
 						$cells[]=$t;
 					}else{
+						// If we have a lookup test we add dropdown boxes with the options and a blank options in case 
+						// that result is missing
 						$t=array($test['name']);
 						$opt=array(' ');
 						foreach($test['options'] as $o){
 							$opt[$o['id']]=$o['value'];
 						}
 						for($i=0;$i<5;$i++){
-							$t[]=$form->input('id',array('label'=>'','name'=>'data[Result]['.$counter.'][value]','options'=>$opt));
+							$t[]=$form->input('Result.'.$counter.'.value_lookup',array('label'=>''
+									,'name'=>'data[Result]['.$counter.'][value_lookup]','options'=>$opt));
 						$counter++;
 						}
 						$cells[]=$t;
@@ -75,9 +82,7 @@
 				// Likewise, same again for the contents of the cells
 				echo $html->tableCells($cells);
  
-				// ARRAYS OF FIELDS BY TEST TO GO HERE
- 
-				//));
+				
 			?>
  		</table>
 	</fieldset>
