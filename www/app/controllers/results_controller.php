@@ -110,6 +110,108 @@ class ResultsController extends AppController
 		}
 	}
 	
+	function batch_add($pid){ 
+		$this->Result->Patient->id = $pid;
+		$this->set('pid', $pid);
+		if(!$this->Result->Patient->exists()) {
+			$this->Session->setFlash('You tried to add results to a Patient that does not exist');
+			$this->redirect($this->referer());
+		}
+		$batchOfTestIDs = array(2,3,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
+
+		// Is this a new form i.e. is there data in our object?
+		if (empty($this->data)) {
+			// Loop to pull the relevent info for each of our tests and put them in an array	
+			$batchOfTestInfo = array();
+			foreach($batchOfTestIDs as $test) {
+				// Setup a temporary array for this loop
+				$testInfo = array();
+				// Set the Test ID
+				$testInfo['test_id'] = $test;
+				// Find out the Test type
+				
+				$t = $this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
+				$testInfo['name']=$t['Test']['name'];	
+				$testInfo['type']=$t['Test']['type'];
+				
+										
+				// Get Test answers/options if required
+				if($testInfo['type'] == 'lookup') {
+					$opt=$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
+					$options=array();
+					foreach($opt as $o){
+						$value=$o['ResultLookup']['value'];
+						$id=$o['ResultLookup']['id'];
+						$desc=$o['ResultLookup']['description'];
+						$r=array_keys($o);
+						$options[]=array('id'=>$id,'value'=>$value,'description'=>$desc);
+					}
+					$testInfo['options']=$options;				
+				}
+				// Add this temp array onto the main array we're building
+				$batchOfTestInfo[] = $testInfo;
+				unset($testInfo);
+			}
+			// Make our fresh array of test info available to the view
+			$this->set('batchOfTests', $batchOfTestInfo);
+			$this->set('pid', $this->Result->Patient->id=$pid);
+		}else {
+			//debug($this->data);
+			$tests=array();
+			$data=$this->data;
+			//Create an array with testid and type
+			foreach($batchOfTestIDs as $test) {
+				$t = $this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
+				$tests[$test]=$t['Test']['type'];
+			}
+			//get dates and Requesting Clinician
+			$date=array();
+			$date[]=$data['Result'][0];
+			$date[]=$data['Result'][1];
+			$date[]=$data['Result'][2];
+			$date[]=$data['Result'][3];
+			$date[]=$data['Result'][4];
+			unset($data['Result'][0]);
+			unset($data['Result'][1]);
+			unset($data['Result'][2]);
+			unset($data['Result'][3]);
+			unset($data['Result'][4]);
+			$clin=$data['Result']['requesting_clinician'];
+			unset($data['Result']['requesting_clinician']);
+			
+			// loop through all the results and add any fields that have been filled out
+			$counter=5;
+			foreach($data['Result'] as $result){
+				//debug($result);
+				if($result['value']!='' and $result['value']!=0){
+					$value=$result['value'];
+					$test_id=$batchOfTestIDs[intval($counter/5) -1];
+					$d=$date[$counter % 5];
+					
+					$to_add=array('Result'=>array(  'pid'=>$pid,
+									'test_id'=>$test_id,
+									'value_'.$tests[$test_id]=>$value,
+									'test_performed'=>$d['test_performed'],
+									'requesting_clinician'=>$clin,
+									'user_id'=>$this->Auth->user('id')
+									));
+					$this->Result->create();
+					if ($this->Result->save($to_add)) {
+						} else {
+						$this->Session->setFlash(__('The Results could not be saved. Please, try again.', true));
+					}
+				}
+				$counter++;
+			}	
+			$this->Session->setFlash(__('The Results have been saved', true));
+			$this->redirect(array('controller'=>'patients','action' => 'index'));			
+		}
+
+
+	}
+	
+	
+
 	function edit($id = null)
 	{
 		if (!$id && empty($this->data)) {
@@ -120,7 +222,6 @@ class ResultsController extends AppController
 		if (!empty($this->data)) {
 			parent::archive($id);
 			$pid = array_pop(Set::extract($this->data, '/Result/pid'));
-			if ($this->Result->save($this->data)) {
 				$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
 				$this->Session->setFlash(__('The Result has been saved', true));
 				$this->redirect('/patients/view/' . $pid);
@@ -128,7 +229,7 @@ class ResultsController extends AppController
 				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 				$this->set('pid', $pid);
 			}
-		}
+		
 		
 		if (empty($this->data)) {
 			$this->data = $this->Result->read(null, $id);
