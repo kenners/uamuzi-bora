@@ -17,6 +17,7 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('units');?></th>
 	<th><?php echo $paginator->sort('description');?></th>
 	<th><?php echo $paginator->sort('comment');?></th>
+	<th><?php echo $paginator->sort('multival');?></th>
 	<th><?php echo $paginator->sort('active');?></th>
 	<th><?php echo $paginator->sort('user_id');?></th>
 	<th><?php echo $paginator->sort('modified');?></th>
@@ -52,6 +53,10 @@ foreach ($tests as $test):
 		<td>
 			<?php echo $test['Test']['comment']; ?>
 		</td>
+		<td>
+			<?php echo $this->element('prettyStatus', array('status' =>$test['Test']['multival'])); ?>
+		</td>
+
 		<td>
 			<?php echo $this->element('prettyStatus', array('status' =>$test['Test']['active'])); ?>
 		</td>

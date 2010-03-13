@@ -14,11 +14,11 @@ class Result extends AppModel
 		),
 		'User' => array(
 			'className' => 'User'
-		),
-		'ResultLookup' => array(
-			'className'  => 'ResultLookup',
-//			'conditions' => array('Result.test_id' => 'ResultLookup.test_id')
-			'foreignKey' => 'value_lookup'
+		)
+	);
+	var $hasMany = array(
+		'ResultValue'=>array(
+			'className' => 'ResultValue'
 		)
 	);
 	
@@ -35,20 +35,6 @@ class Result extends AppModel
 				'rule'    => 'notEmpty',
 				'message' => 'The user id can\'t be empty'
 			),
-		),
-		'value_decimal' => array(
-			'decimal'=> array(
-				'rule'       => 'numeric',
-				'allowEmpty' => TRUE,
-				'message'    => 'The value must be a floating point number'
-			)
-		),
-		'value_lookup' => array(
-			'int' => array(
-				'rule'       => 'numeric',
-				'allowEmpty' => TRUE,
-				'message'    => 'The value must be an integer'
-			)
 		),
 		'user_id' => array(
 			'int' => array(

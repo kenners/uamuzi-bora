@@ -1,47 +1,109 @@
-<?php $crumb->addThisPage('View Result', null, 'auto'); ?>
-<h2>Viewing <?php echo $result['Test']['name']; ?> Result </h2>
-<div class="results view span-16 large">
-	<div>
-		<strong>Result ID: </strong>
-		<?php echo $result['Result']['id']; ?>
-	</div>
-	<div>
-		<strong>Patient ID: </strong>
-		<?php echo $this->element('prettyPID', array('pid' =>$result['Result']['pid'])); ?>
-	</div>
-	<div>
-		<strong>Patient Name: </strong>
-		<?php echo $result['Patient']['forenames'] .' '. $result['Patient']['surname']; ?>
-	</div>
-	<div>
-		<strong>Test: </strong>
-		<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
-	</div>
-	<div>
-		<strong>Value: </strong>
-		<?php echo $result['Result']['value_lookup']; ?><?php echo $result['Result']['value_text']; ?><?php echo $result['Result']['value_decimal']; ?>
-	</div>
-	<div>
-		<strong>Test Date: </strong>
-		<?php echo $this->element('prettyDate', array('date' =>$result['Result']['test_performed'])); ?>
-	</div>
-	<div>
-		<strong>Result Added to Database: </strong>
-		<?php echo $this->element('prettyDate', array('date' =>$result['Result']['created'])); ?>
-	</div>
-	<div>
-		<strong>Requesting Clinician: </strong>
-		<?php echo $result['Result']['requesting_clinician']; ?>
-	</div>
-	<div>
-		<strong>Last Edited By: </strong>
-		<?php echo $result['User']['username']; ?>
-	</div>
+<div class="results view">
+<h2><?php  __('User');?></h2>
+	<dl><?php $i = 0; $class = ' class="altrow"';?>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $user['User']['id']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Patient'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $html->link($user['Patient']['pid'], array('controller'=> 'patients', 'action'=>'view', $user['Patient']['pid'])); ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $html->link($user['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $user['Test']['id'])); ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Test Performed'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $user['User']['test_performed']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $user['User']['created']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $user['User']['modified']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Requesting Clinician'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $user['User']['requesting_clinician']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('User'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $html->link($user['User']['name'], array('controller'=> 'users', 'action'=>'view', $user['User']['id'])); ?>
+			&nbsp;
+		</dd>
+	</dl>
 </div>
-<div class="actions span-5 last">
-	<h3>Actions</h3>
+<div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Edit Result', true), array('action'=>'edit', $result['Result']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete Result', true), array('action'=>'delete', $result['Result']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['Result']['id'])); ?> </li>
+		<li><?php echo $html->link(__('Edit User', true), array('action'=>'edit', $user['User']['id'])); ?> </li>
+		<li><?php echo $html->link(__('Delete User', true), array('action'=>'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
+		<li><?php echo $html->link(__('List Results', true), array('action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New User', true), array('action'=>'add')); ?> </li>
+		<li><?php echo $html->link(__('List Tests', true), array('controller'=> 'tests', 'action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New Test', true), array('controller'=> 'tests', 'action'=>'add')); ?> </li>
+		<li><?php echo $html->link(__('List Patients', true), array('controller'=> 'patients', 'action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New Patient', true), array('controller'=> 'patients', 'action'=>'add')); ?> </li>
+		<li><?php echo $html->link(__('List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
+		<li><?php echo $html->link(__('List Result Values', true), array('controller'=> 'result_values', 'action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New Result Value', true), array('controller'=> 'result_values', 'action'=>'add')); ?> </li>
 	</ul>
+</div>
+<div class="related">
+	<h3><?php __('Related Result Values');?></h3>
+	<?php if (!empty($user['ResultValue'])):?>
+	<table cellpadding = "0" cellspacing = "0">
+	<tr>
+		<th><?php __('Id'); ?></th>
+		<th><?php __('Result Id'); ?></th>
+		<th><?php __('Value Decimal'); ?></th>
+		<th><?php __('Value Text'); ?></th>
+		<th><?php __('Value Lookup'); ?></th>
+		<th><?php __('User Id'); ?></th>
+		<th><?php __('Created'); ?></th>
+		<th><?php __('Modified'); ?></th>
+		<th class="actions"><?php __('Actions');?></th>
+	</tr>
+	<?php
+		$i = 0;
+		foreach ($user['ResultValue'] as $resultValue):
+			$class = null;
+			if ($i++ % 2 == 0) {
+				$class = ' class="altrow"';
+			}
+		?>
+		<tr<?php echo $class;?>>
+			<td><?php echo $resultValue['id'];?></td>
+			<td><?php echo $resultValue['result_id'];?></td>
+			<td><?php echo $resultValue['value_decimal'];?></td>
+			<td><?php echo $resultValue['value_text'];?></td>
+			<td><?php echo $resultValue['value_lookup'];?></td>
+			<td><?php echo $resultValue['user_id'];?></td>
+			<td><?php echo $resultValue['created'];?></td>
+			<td><?php echo $resultValue['modified'];?></td>
+			<td class="actions">
+				<?php echo $html->link(__('View', true), array('controller'=> 'result_values', 'action'=>'view', $resultValue['id'])); ?>
+				<?php echo $html->link(__('Edit', true), array('controller'=> 'result_values', 'action'=>'edit', $resultValue['id'])); ?>
+				<?php echo $html->link(__('Delete', true), array('controller'=> 'result_values', 'action'=>'delete', $resultValue['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $resultValue['id'])); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $html->link(__('New Result Value', true), array('controller'=> 'result_values', 'action'=>'add'));?> </li>
+		</ul>
+	</div>
 </div>

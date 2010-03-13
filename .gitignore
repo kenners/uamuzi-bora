@@ -6,3 +6,4 @@ www/app/tmp/*
 www/app/tmp/**/*
 www/app/webroot/foo.html
 www/info.php
+.bugflow.yml
