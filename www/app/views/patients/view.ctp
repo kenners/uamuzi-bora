@@ -41,6 +41,14 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 	</div>
 
 </div>
+<!-- Button toolbar -->
+<div class="span-22 prepend-top last">
+	<div class="span-5 last">
+		<a href="/results/batch_add/<?php echo $patient['Patient']['pid']; ?>" class="button positive">
+			<img src="/img/icons/add.png" alt=""/> Batch Add Results
+		</a>
+	</div>
+</div>
 
 <div id="tab-set" class="span-22 prepend-top last">
 		<ul class="tabs">
@@ -50,14 +58,20 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		</ul>
 
 	<div id="tab1">
-		<h2>Patient Profile</h2>
+		
 		<div class="tasks span-22 last">
-			<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Profile</a>
+			<div class="span-6">
+				<h2>Patient Profile</h2>
+			</div>
+			<div class="span-10 last">
+				<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Profile</a>
 				<?php if ($patient['Patient']['status']) { ?>
 			<a class="button negative" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Inactive</a>
 				<?php } else { ?>
-			<a class="button positive" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
+				<a class="button positive" href="/patients/toggleStatus/<?php echo $patient['Patient']['pid']; ?>">Change Status to Active</a>
 				<?php } ?>
+		
+			</div>
 		</div>
 		<div class="demographicInformation large span-22 last">
 
@@ -125,9 +139,13 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		</div>
 	</div>
 	<div id="tab2">
-		<h2>ART History</h2>
 		<div class="tasks span-22 last">
-			<a class="button" href="/medicalInformations/edit/<?php echo $patient['Patient']['pid']; ?>">Edit ART History</a>
+			<div class="span-6">
+				<h2>ART History</h2>
+			</div>
+			<div class="span-10 last">
+				<a class="button" href="/medicalInformations/edit/<?php echo $patient['Patient']['pid']; ?>">Edit ART History</a>
+			</div>
 		</div>
 		<div class="demographicInformation large span-22 last">
 		<?php $medical_information = $medical_informations[0]; ?>
