@@ -20,6 +20,9 @@ echo $form->inputs(array('legend' => 'Add Test',
 						'active'=>array('label' => 'Active?',
 										'checked'=> TRUE,
 										'after'=> '<br/><em>Should this test be available for users to use?</em>'),
+						'multival'=>array('label'=> 'Multiple test results',
+										'checked' => FALSE,
+										'after'=> '<br /> <em> Does this test take multiple result values for a result'),
 						));
 						//echo $form->end('Submit');
 						?>

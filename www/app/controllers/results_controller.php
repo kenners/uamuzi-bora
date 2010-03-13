@@ -1,36 +1,29 @@
 <?php
-class ResultsController extends AppController
-{
+class ResultsController extends AppController {
 
 	var $name = 'Results';
-	var $helpers = array('Html', 'Form', 'Crumb');
-	var $uses = array('Result', 'ArchiveResult', 'User');
-	
-	/**
-	 * index() doesn't make sense from a UI perspective, so just redirect to /
-	 */
-	function index()
-	{
-		$this->redirect('/');
+	var $helpers = array('Html', 'Form');
+
+	function index() {
+		$this->Result->recursive = 0;
+		$this->set('results', $this->paginate());
 	}
-	
-	function view($id = null)
-	{
+
+	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid Result.', true));
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(array('action'=>'index'));
 		}
-		$result = $this->Result->find('first', array(
-			'conditions' => array('Result.id' => $id),
-			'recursive'  => 1
-		));
-		$this->set('result', $result);
+		$this->set('result', $this->Result->read(null, $id));
 	}
+
+
 	
 	function add($pid = null)
 	{
 		$this->Result->Patient->id = $pid;
 		$this->set('pid', $pid);
+		
 		if(!$this->Result->Patient->exists()) {
 			$this->Session->setFlash('You tried to add a result to a Patient that does not exist');
 			$this->redirect($this->referer());
@@ -42,26 +35,56 @@ class ResultsController extends AppController
 			// But which form are we coming from?
 			if (array_key_exists('Result', $this->data)) {
 			// So this method has been called by the view, with the new result form data having been submitted.
+				// need to get the id of the result we are about to add
+				$result_id=$this->Result->find('all',array('order'=>' Result.id DESC','recursive'=>0,
+									'fields'=>array('id')));
+				if(empty($result_id)){
+					$result_id=1;
+				}else{
+					$result_id=$result_id[0]['Result']['id']+1;
+				}
 				
-				// Let's save it.
-				$this->Result->create();
-				
-				// IN case we nedd to reload the form, we set the test_id and type
-				$test_id = Set::extract('\Result\test_id', $this->data);
-				
-				// Let's find out what Type (decimal,lookup,text etc) of test it is
-				$this->set('type', $this->Result->Test->find('first', array(
-					'conditions' => array('Test.id' => $test_id),
-					'recursive'  => -1
-				)));
-				
+								// IN case we nedd to reload the form, we set the test_id and type
+								
+
+				//insert pid, user and test id
 				$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
 				$this->data = Set::insert($this->data, 'Result.pid', $pid);
 				
-				if ($this->Result->save($this->data)) {
+				$invalid=array();
+				
+				
+				$i=0;
+				while( $i < count($this->data['ResultValue']) ){
+					
+					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
+					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
+					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue'][$i]));
+					if(!$this->Result->ResultValue->validates()){
+						$invalid[$i]=$this->Result->ResultValue->validationErrors;
+						unset($this->Result->ResultValue->validationErrors);
+						}
+					$i++;
+				
+				}
+// validate both inputs
+				$this->Result->set($this->data);
+				if(!$this->Result->validates()){
+					$invalid[]=$this->Result->validationErrors;
+				}
+
+				if (empty($invalid)){
+					//save
+					foreach($this->data['ResultValue'] as $val){
+						$this->Result->ResultValue->create();
+						$this->Result->ResultValue->save(array('ResultValue'=>$val));
+						}
+						
+					$this->Result->save($this->data);
 					$this->Session->setFlash(__('The Result has been saved', true));
 					$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
-				} else {
+				}else{
+					$this->Result->ResultValue->validationErrors=$invalid;
 					$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 					// Set up the form variables again for the reloaded view, as we've probably failed validation
 					$test_id = $this->data['Result']['test_id'];
@@ -71,6 +94,9 @@ class ResultsController extends AppController
 						'recursive'  => -1
 					)));
 				}
+				
+	
+			
 			} else {
 			// So we're coming from the miniform
 				
@@ -89,13 +115,14 @@ class ResultsController extends AppController
 					)));
 					
 					// Get all the options :
-					$this->set('options', $this->Result->ResultLookup->find('all', array('conditions' => array('Test.id' => $test_id))));
+					$this->set('options', $this->Result->ResultValue->ResultLookup->find('all',
+											 array('conditions' => array('Test.id' => $test_id))));
 					
 					// Now get the data to send to the view to build the add results form
 					$tests = $this->Result->Test->find('list');
 					$patients = $this->Result->Patient->find('list');
 					$users = $this->Result->User->find('list');
-					$resultLookups = $this->Result->ResultLookup->find('list');
+					$resultLookups = $this->Result->ResultValue->ResultLookup->find('list');
 					
 					$this->set(compact('tests', 'patients', 'users', 'resultLookups'));
 				} else {
@@ -109,6 +136,92 @@ class ResultsController extends AppController
 			$this->redirect('/');
 		}
 	}
+
+
+
+
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid Result', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		if (!empty($this->data)) {
+				//insert pid, user and test id
+			$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
+			$i=0;
+			$invalid=array();
+			while($i<count($this->data['ResultValue'])){
+				$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
+				$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue'][$i]));
+				if(!$this->Result->ResultValue->validates()){
+					$invalid[$i]=$this->Result->ResultValue->validationErrors;
+					unset($this->Result->ResultValue->validationErrors);
+	
+				}
+				$i++;
+			}
+			// validate both inputs
+
+			
+
+		
+			if (empty($invalid)){
+				//save
+				$this->Result->save($this->data);
+				
+				foreach($this->data['ResultValue'] as $val){
+					$this->Result->ResultValue->save(array('ResultValue'=>$val));
+				}
+				$this->Session->setFlash(__('The Result has been saved', true));
+				
+				$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $this->data['Result']['pid']));
+			}else{
+				
+				$this->Result->ResultValue->validationErrors=$invalid;
+				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
+				// Set up the form variables again for the reloaded view, as we've probably failed validation
+				$test_id = $this->data['Result']['test_id'];
+				$this->set('test_id', $test_id);
+				$this->set('type', $this->Result->Test->find('first', array(
+					'conditions' => array('Test.id' => $test_id),
+					'recursive'  => -1
+				)));
+			}
+
+
+	}
+		
+	$resultValues=$this->Result->ResultValue->find('all',array('conditions'=>array('ResultValue.result_id'=>$id)));
+	$results=$this->Result->read(null,$id);
+	$tests = $this->Result->Test->find('list');
+	$patients = $this->Result->Patient->find('list');
+	$users = $this->Result->User->find('list');
+	$this->set(compact('tests','patients','users'));
+	$this->set('resultValues',$resultValues);
+	$this->set('results',$results);
+	
+	$this->set('options', $this->Result->ResultValue->ResultLookup->find('all',
+							 array('conditions' => array('Test.id' => $results['Result']['test_id']))));
+
+
+	}
+
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for Result', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		if ($this->Result->del($id)) {
+			$resultValues=$this->Result->ResultValue->find('all',array('fields'=>'ResultValue.id',
+										'conditions'=>array('ResultValue.result_id'=>$id)));
+			foreach($resultValues as $val){
+					$this->Result->ResultValue->del($val['ResultValue']['id']);
+			}
+			$this->Session->setFlash(__('Result deleted', true));
+			$this->redirect('/');
+		}
+	}
+
 	
 	function batch_add($pid){ 
 		$this->Result->Patient->id = $pid;
@@ -134,7 +247,7 @@ class ResultsController extends AppController
 										
 			// Get Test answers/options if required
 			if($testInfo['type'] == 'lookup') {
-				$opt=$this->Result->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
+				$opt=$this->Result->ResultValue->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
 				$options=array();
 				foreach($opt as $o){
 					$value=$o['ResultLookup']['value'];
@@ -179,12 +292,18 @@ class ResultsController extends AppController
 			$clin=$data['Result']['requesting_clinician'];
 			unset($data['Result']['requesting_clinician']);
 			
+			$result_id=$this->Result->find('all',array('order'=>' Result.id DESC','recursive'=>0,
+									'fields'=>array('id')));
+			$result_id=$result_id[0]['Result']['id']+1;
+
 			// loop through all the results and add any fields that have been filled out
 			$counter=5;//Since The dates are the first 4 fields.
 			$invalidResults=array();
+			$invalidResultValues=array();
 			$resultArray=array();
-			
-			foreach($data['Result'] as $result){
+			$resultValueArray=array();
+				
+			foreach($data['ResultValue'] as $result){
 				//find test it by using the fact that there are 5 columns
 				$test_id=$batchOfTestIDs[intval($counter/5) -1];
 				//check that we have a value, so that we only add fields that are filled out
@@ -194,16 +313,22 @@ class ResultsController extends AppController
 					$test_id=$batchOfTestIDs[intval($counter/5) -1];
 					$d=$date[$counter % 5];
 					
-					$to_add=array('Result'=>array(  'pid'=>$pid,
+					$to_addRes=array('Result'=>array('pid'=>$pid,
 									'test_id'=>$test_id,
-									'value_'.$tests[$test_id]=>$value,
 									'test_performed'=>$d['test_performed'],
 									'requesting_clinician'=>$clin,
 									'user_id'=>$this->Auth->user('id')
 									));
+					$to_addResVal=array('ResultValue'=> array(
+										'value_'.$tests[$test_id]=>$value,
+										'user_id'=>$this->Auth->user('id'),
+										'result_id'=>$result_id
+										));
+					$result_id++;
+
 					$this->Result->create();
 					// Set an validate every field, and keep all validation errors
-				        $this->Result->set($to_add);
+				        $this->Result->set($to_addRes);
 					if($this->Result->validates()){
 						
 						
@@ -211,129 +336,52 @@ class ResultsController extends AppController
 						$invalidResults[$counter]=$this->Result->validationErrors;
 						unset($this->Result->validationErrors);
 					}
-					$resultArray[]=$to_add;
+				
+					$resultArray[]=$to_addRes;
+
+
+					
+					// Set an validate every field, and keep all validation errors
+				        $this->Result->ResultValue->set($to_addResVal);
+					if($this->Result->ResultValue->validates()){
+						
+						
+					} else {
+						$invalidResultValues[$counter]=$this->Result->ResultValue->validationErrors;
+						unset($this->Result->ResultValue->validationErrors);
+					}
+				
+					$resultValueArray[]=$to_addResVal;
+
 				}
 				
 				$counter++;
 			}
 			// If no validation problems save
 			
-			if (empty($invalidResults)){
+			if (empty($invalidResults) and empty($invalidResultValues)){
 				foreach($resultArray as $result){
 					$this->Result->create();
 					$this->Result->save($result);
-				}					
+				}
+				foreach($resultValueArray as $val){
+					$this->Result->ResultValue->create();
+					$this->Result->ResultValue->save($val);
+				}
+	
 				$this->Session->setFlash(__('The Results have been saved', true));
 				$this->redirect(array('controller'=>'patients','action' => 'index'));	
 			}else{//If validation problems disply them.
 			
 				$this->Result->validationErrors = $invalidResults;
+				$this->Result->ResultValue->validationErrors=$invalidResultValues;
 				$this->Session->setFlash(__('The Results could not be saved', true));
 			}		
 		}
 
 
 	}
-	
-	
 
-	function edit($id = null)
-	{
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid Result', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		
-		if (!empty($this->data)) {
-			parent::archive($id);
-			$pid = array_pop(Set::extract($this->data, '/Result/pid'));
-				$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
-				$this->Session->setFlash(__('The Result has been saved', true));
-				$this->redirect('/patients/view/' . $pid);
-			} else {
-				$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
-				$this->set('pid', $pid);
-			}
-		
-		
-		if (empty($this->data)) {
-			$this->data = $this->Result->read(null, $id);
-			$pid = array_pop(Set::extract($this->data, '/Result/pid'));
-			$this->set('pid', $pid);
-		}
-		
-		$this->set('result_id', $id);
-		$tests = $this->Result->Test->find('list');
-		$type = $this->Result->find('first', array('conditions' => array('Result.id' => $id)));
-		$test_id = array_pop(Set::extract('/Result/test_id', $type));
-		$this->set('type', $type);
-		$this->set(compact('tests'));
-		// Get all the options :
-		$this->set('options', $this->Result->ResultLookup->find('all', array('conditions' => array('Test.id' => $test_id))));
-	}
-	
-	function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for Result', true));
-			$this->redirect($this->referer());
-		}
-		parent::archive($id);
-		if ($this->Result->del($id)) {
-			$this->Session->setFlash(__('Result deleted', true));
-			$this->redirect($this->referer());
-		}
-	}
-	function add_attendance($pid = null)
-	{
-		$this->Result->Patient->id = $pid;
-		$this->set('pid', $pid);
-		if (!$this->Result->Patient->exists()) {
-			$this->Session->setFlash('You tried to book in a patient that does not exist in this database.');
-			$this->redirect($this->referer());
-		}
-		
-		$data = array(
-			'Result' => array(
-				'pid'            => $pid,
-				'test_id'        => 1,
-				'user_id'        => $this->Auth->user('id'),
-				'value_lookup'   => 1,
-				'test_performed' => date('Y-m-d',strtotime('now'))
-			)
-		);
-		$this->Result->create();
-		if ($this->Result->save($data)) {
-			$this->Session->setFlash(__('Patient booked in.', true));
-			$this->redirect($this->referer());
-		} else {
-			$this->Session->setFlash(__('This patient could now be booked in. Please, try again.', true));
-		}  
-	}
-	
-	function ad_attendence($pid = null)
-	{
-		$this->Result->Patient->id = $pid;
-		$this->set('pid', $pid);
-		if (!$this->Result->Patient->exists()) {
-			$this->Session->setFlash('You tried to add attendence to a Patient that does not exist');
-			$this->redirect($this->referer());
-		}
-		
-		$data = array(
-			'Result' => array(
-				'pid'          => $pid,
-				'test_id'      => 1,
-				'user_id'      => $this->Auth->user('id'),
-				'value_lookup' => 2
-			)
-		);
-		$this->Result->create();
-		if ($this->Result->save($data)) {
-			$this->Session->setFlash(__('The Attendence has been saved', true));
-			$this->redirect(array('controller' => 'patients', 'action' => 'search'));
-		} else {
-			$this->Session->setFlash(__('The Attendence could not be saved. Please, try again.', true));
-		}  
-	}
+
 }
 ?>

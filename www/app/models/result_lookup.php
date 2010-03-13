@@ -10,8 +10,8 @@ class ResultLookup extends appModel
 	);
 	
 	var $hasMany = array(
-		'Result' => array(
-			'className'  => 'Result',
+		'ResultValue' => array(
+			'className'  => 'ResultValue',
 			'foreignKey' => 'value_lookup'
 //			'condition'  => array('ResultLookup.test_id =' => 'Result.test_id')
 		)

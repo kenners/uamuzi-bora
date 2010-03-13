@@ -1,6 +1,6 @@
 <?php $crumb->addThisPage('Batch Add Result', null, 'auto'); ?>
 <div class="results form span-16">
-<?php echo $form->create(null, array('action'=>'batch_add/'.$pid));?>
+<?php echo $form->create('Result', array('action'=>'batch_add/'.$pid));?>
 	<fieldset>
  		<legend><?php __('Batch Add Results');?></legend>
  		<table>
@@ -55,7 +55,8 @@
 						$t=array($test['name']);
 						
 						for($i=0;$i<5;$i++){
-						$t[]=$form->input('ResultValue.'.$counter.'.value_'.$test['type'],array('label'=>''));					
+						$t[]=$form->input('Result.'.$counter.'.value_'.$test['type'],array('label'=>'',
+								'name'=>'data[Result]['.$counter.'][value_'.$test['type'].']'));					
 						$counter++;
 						}
 						$cells[]=$t;
@@ -68,7 +69,8 @@
 							$opt[$o['id']]=$o['value'];
 						}
 						for($i=0;$i<5;$i++){
-							$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt));
+							$t[]=$form->input('Result.'.$counter.'.value_lookup',array('label'=>''
+									,'name'=>'data[Result]['.$counter.'][value_lookup]','options'=>$opt));
 						$counter++;
 						}
 						$cells[]=$t;

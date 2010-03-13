@@ -64,7 +64,14 @@ class Test extends appModel
 				'rule'    => 'notEmpty',
 				'message' => 'The user id can\'t be empty'
 			)
+		),
+		'multival' =>array(
+			'not null'=>array(
+				'rule'=>'notEmpty',
+				'message'=>' Multiple result values must be either enabled or disabled'
+			)
 		)
+		
 	);
 	
 	// A function to check that we only have the desiganted values for the type

@@ -298,7 +298,7 @@ class PatientsController extends AppController
 				'VfTestingSite',
 				'Result' => array(
 					'Test',
-					'ResultLookup',
+					'ResultValue'=> array('ResultLookup'),
 					'User'  => array('fields' => 'username'),
 					'order' => 'test_performed DESC'
 				)

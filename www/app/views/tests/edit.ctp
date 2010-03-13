@@ -11,6 +11,7 @@
 		echo $form->input('description');
 		echo $form->input('comment');
 		echo $form->input('active');
+		echo $form->input('multival');
 		echo $form->input('archive_reason');
 	?>
 	</fieldset>

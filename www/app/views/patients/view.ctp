@@ -224,6 +224,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 				}
 
 				// Build the Select box
+				
 				echo $form->input('id',array('type'=>'select',
 												'options'=> $testoptions,
 												'label'=>'Create Result for Test:'));
@@ -257,6 +258,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 						$class = null;
 						if ($i++ % 2 == 0) {
 							$class = ' class="even"';
+						
 						}
 				?>
 				<tr<?php echo $class;?>>
@@ -268,12 +270,19 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
 					</td>
 					<td>
-						<?php echo $result['value_decimal']; ?> <?php echo $result['Test']['units']; ?><?php echo $result['value_text']; ?><?php if(!empty($result['ResultLookup']['description'])){
-										echo $result['ResultLookup']['description'];
-										}?> 
-						<?php if(!empty($result['ResultLookup']['value'])){?>
-						[<?php echo $result['ResultLookup']['value']; ?>]
-						<?php } ?>
+					
+						<?php
+						 foreach($result['ResultValue'] as $value){
+						
+						 echo $value['value_decimal']; 
+						 echo $result['Test']['units']; 
+						 echo $value['value_text']; 
+						 if(!empty($value['ResultLookup']['description'])){
+										echo $value['ResultLookup']['description'];
+										}
+						if(!empty($value['ResultLookup']['value'])){
+						 echo $value['ResultLookup']['value']; 
+						 } }?>
 					</td>
 					<td>
 						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
