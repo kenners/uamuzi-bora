@@ -2,6 +2,7 @@
 -- PostgreSQL database dump
 --
 
+SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -12,7 +13,6 @@ SET search_path = public, pg_catalog;
 
 ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_location_id_fkey;
 ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_user_id_fkey;
-ALTER TABLE ONLY public.results DROP CONSTRAINT results_user_id_fkey;
 ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_user_id_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vf_testing_site_fkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_occupation_id_fkey;
@@ -50,6 +50,7 @@ ALTER TABLE ONLY public.vf_testing_sites DROP CONSTRAINT vf_testing_sites_pkey;
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
 ALTER TABLE ONLY public.tests DROP CONSTRAINT tests_pkey;
 ALTER TABLE ONLY public.results DROP CONSTRAINT results_pkey;
+ALTER TABLE ONLY public.result_values DROP CONSTRAINT result_values_pkey;
 ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_pkey;
 ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_pkey;
 ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_name_key;
@@ -81,6 +82,7 @@ ALTER TABLE ONLY public.aros_acos DROP CONSTRAINT aros_acos_pkey;
 ALTER TABLE ONLY public.archive_users DROP CONSTRAINT archive_users_pkey;
 ALTER TABLE ONLY public.archive_tests DROP CONSTRAINT archive_tests_pkey;
 ALTER TABLE ONLY public.archive_results DROP CONSTRAINT archive_results_pkey;
+ALTER TABLE ONLY public.archive_result_values DROP CONSTRAINT archive_result_values_pkey;
 ALTER TABLE ONLY public.archive_result_lookups DROP CONSTRAINT archive_result_lookups_pkey;
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_pkey;
 ALTER TABLE ONLY public.archive_medical_informations DROP CONSTRAINT archive_medical_informations_pkey;
@@ -90,6 +92,7 @@ ALTER TABLE public.vf_testing_sites ALTER COLUMN site_code DROP DEFAULT;
 ALTER TABLE public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.result_values ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.regimens ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.patient_sources ALTER COLUMN id DROP DEFAULT;
@@ -107,6 +110,7 @@ ALTER TABLE public.aros ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_tests ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_results ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.archive_result_values ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_result_lookups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_patients ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.archive_medical_informations ALTER COLUMN id DROP DEFAULT;
@@ -121,6 +125,8 @@ DROP SEQUENCE public.tests_id_seq;
 DROP TABLE public.tests;
 DROP SEQUENCE public.results_id_seq;
 DROP TABLE public.results;
+DROP SEQUENCE public.result_values_id_seq;
+DROP TABLE public.result_values;
 DROP SEQUENCE public.result_lookups_id_seq;
 DROP TABLE public.result_lookups;
 DROP SEQUENCE public.regimens_id_seq;
@@ -157,6 +163,8 @@ DROP SEQUENCE public.archive_tests_id_seq;
 DROP TABLE public.archive_tests;
 DROP SEQUENCE public.archive_results_id_seq;
 DROP TABLE public.archive_results;
+DROP SEQUENCE public.archive_result_values_id_seq;
+DROP TABLE public.archive_result_values;
 DROP SEQUENCE public.archive_result_lookups_id_seq;
 DROP TABLE public.archive_result_lookups;
 DROP SEQUENCE public.archive_patients_id_seq;
@@ -445,6 +453,52 @@ SELECT pg_catalog.setval('archive_result_lookups_id_seq', 1, false);
 
 
 --
+-- Name: archive_result_values; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE archive_result_values (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    created timestamp without time zone,
+    archive_reason character varying,
+    archive_id integer NOT NULL,
+    archive_result_id integer NOT NULL,
+    archive_value_decimal double precision,
+    archive_value_text character varying,
+    archive_value_lookup character varying,
+    archive_user_id integer NOT NULL,
+    archive_created timestamp without time zone NOT NULL,
+    archive_modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: archive_result_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE archive_result_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: archive_result_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE archive_result_values_id_seq OWNED BY archive_result_values.id;
+
+
+--
+-- Name: archive_result_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('archive_result_values_id_seq', 1, false);
+
+
+--
 -- Name: archive_results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -456,11 +510,9 @@ CREATE TABLE archive_results (
     archive_id integer NOT NULL,
     archive_pid integer NOT NULL,
     archive_test_id integer NOT NULL,
-    archive_value_decimal double precision,
-    archive_value_text character varying,
-    archive_value_lookup character varying,
     archive_test_performed timestamp without time zone,
-    archive_created timestamp without time zone,
+    archive_created timestamp without time zone NOT NULL,
+    archive_modified timestamp without time zone NOT NULL,
     archive_requesting_clinician character varying,
     archive_user_id integer NOT NULL
 );
@@ -685,6 +737,7 @@ CREATE TABLE art_indications (
 --
 
 CREATE SEQUENCE art_indications_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -722,6 +775,7 @@ CREATE TABLE art_service_types (
 --
 
 CREATE SEQUENCE art_service_types_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -759,6 +813,7 @@ CREATE TABLE educations (
 --
 
 CREATE SEQUENCE educations_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -796,6 +851,7 @@ CREATE TABLE fundings (
 --
 
 CREATE SEQUENCE fundings_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -872,6 +928,7 @@ CREATE TABLE inactive_reasons (
 --
 
 CREATE SEQUENCE inactive_reasons_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -915,6 +972,7 @@ CREATE TABLE locations (
 --
 
 CREATE SEQUENCE locations_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -952,6 +1010,7 @@ CREATE TABLE marital_statuses (
 --
 
 CREATE SEQUENCE marital_statuses_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1015,6 +1074,7 @@ CREATE TABLE occupations (
 --
 
 CREATE SEQUENCE occupations_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1052,6 +1112,7 @@ CREATE TABLE patient_sources (
 --
 
 CREATE SEQUENCE patient_sources_id_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1186,6 +1247,48 @@ SELECT pg_catalog.setval('result_lookups_id_seq', 1, false);
 
 
 --
+-- Name: result_values; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE result_values (
+    id integer NOT NULL,
+    result_id integer NOT NULL,
+    value_decimal double precision,
+    value_text character varying,
+    value_lookup integer,
+    user_id integer NOT NULL,
+    created timestamp without time zone NOT NULL,
+    modified timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: result_values_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE result_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: result_values_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE result_values_id_seq OWNED BY result_values.id;
+
+
+--
+-- Name: result_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('result_values_id_seq', 1, false);
+
+
+--
 -- Name: results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1193,11 +1296,9 @@ CREATE TABLE results (
     id integer NOT NULL,
     pid integer NOT NULL,
     test_id integer NOT NULL,
-    value_decimal double precision,
-    value_text character varying,
-    value_lookup integer,
     test_performed timestamp without time zone,
-    created timestamp without time zone,
+    created timestamp without time zone NOT NULL,
+    modified timestamp without time zone NOT NULL,
     requesting_clinician character varying,
     user_id integer NOT NULL
 );
@@ -1245,7 +1346,8 @@ CREATE TABLE tests (
     active boolean DEFAULT true,
     user_id integer NOT NULL,
     modified timestamp without time zone NOT NULL,
-    units character varying
+    units character varying,
+    multival boolean
 );
 
 
@@ -1354,6 +1456,7 @@ CREATE TABLE vf_testing_sites (
 --
 
 CREATE SEQUENCE vf_testing_sites_site_code_seq
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1407,6 +1510,13 @@ ALTER TABLE archive_patients ALTER COLUMN id SET DEFAULT nextval('archive_patien
 --
 
 ALTER TABLE archive_result_lookups ALTER COLUMN id SET DEFAULT nextval('archive_result_lookups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE archive_result_values ALTER COLUMN id SET DEFAULT nextval('archive_result_values_id_seq'::regclass);
 
 
 --
@@ -1532,6 +1642,13 @@ ALTER TABLE result_lookups ALTER COLUMN id SET DEFAULT nextval('result_lookups_i
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE result_values ALTER COLUMN id SET DEFAULT nextval('result_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE results ALTER COLUMN id SET DEFAULT nextval('results_id_seq'::regclass);
 
 
@@ -1597,10 +1714,18 @@ COPY archive_result_lookups (id, user_id, created, archive_reason, archive_id, a
 
 
 --
+-- Data for Name: archive_result_values; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY archive_result_values (id, user_id, created, archive_reason, archive_id, archive_result_id, archive_value_decimal, archive_value_text, archive_value_lookup, archive_user_id, archive_created, archive_modified) FROM stdin;
+\.
+
+
+--
 -- Data for Name: archive_results; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY archive_results (id, user_id, created, archive_reason, archive_id, archive_pid, archive_test_id, archive_value_decimal, archive_value_text, archive_value_lookup, archive_test_performed, archive_created, archive_requesting_clinician, archive_user_id) FROM stdin;
+COPY archive_results (id, user_id, created, archive_reason, archive_id, archive_pid, archive_test_id, archive_test_performed, archive_created, archive_modified, archive_requesting_clinician, archive_user_id) FROM stdin;
 \.
 
 
@@ -1850,10 +1975,18 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 
 
 --
+-- Data for Name: result_values; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY result_values (id, result_id, value_decimal, value_text, value_lookup, user_id, created, modified) FROM stdin;
+\.
+
+
+--
 -- Data for Name: results; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY results (id, pid, test_id, value_decimal, value_text, value_lookup, test_performed, created, requesting_clinician, user_id) FROM stdin;
+COPY results (id, pid, test_id, test_performed, created, modified, requesting_clinician, user_id) FROM stdin;
 \.
 
 
@@ -1861,7 +1994,7 @@ COPY results (id, pid, test_id, value_decimal, value_text, value_lookup, test_pe
 -- Data for Name: tests; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description, comment, active, user_id, modified, units) FROM stdin;
+COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description, comment, active, user_id, modified, units, multival) FROM stdin;
 \.
 
 
@@ -1952,6 +2085,14 @@ ALTER TABLE ONLY archive_patients
 
 ALTER TABLE ONLY archive_result_lookups
     ADD CONSTRAINT archive_result_lookups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: archive_result_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY archive_result_values
+    ADD CONSTRAINT archive_result_values_pkey PRIMARY KEY (id);
 
 
 --
@@ -2200,6 +2341,14 @@ ALTER TABLE ONLY regimens
 
 ALTER TABLE ONLY result_lookups
     ADD CONSTRAINT result_lookups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: result_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY result_values
+    ADD CONSTRAINT result_values_pkey PRIMARY KEY (id);
 
 
 --
@@ -2495,14 +2644,6 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY result_lookups
     ADD CONSTRAINT result_lookups_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: results_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY results
-    ADD CONSTRAINT results_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
