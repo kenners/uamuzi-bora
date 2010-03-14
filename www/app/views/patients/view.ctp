@@ -264,9 +264,6 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<th><?php echo $paginator->sort('Test','test_id');?></th>
 					<th>Result</th>
 					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
-					<th><?php echo $paginator->sort('Requested By','requesting_clinician');?></th>
-					<th><?php echo $paginator->sort('Added On','created');?></th>
-					<th><?php echo $paginator->sort('Added By','user_id');?></th>
 					<th class="actions"><?php __('Actions');?></th>
 				</tr>
 				<?php
@@ -290,29 +287,22 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<td>
 					
 						<?php
-						 foreach($result['ResultValue'] as $value){
-						
-						 echo $value['value_decimal']; 
-						 echo $result['Test']['units']; 
-						 echo $value['value_text']; 
-						 if(!empty($value['ResultLookup']['description'])){
-										echo $value['ResultLookup']['description'];
-										}
-						if(!empty($value['ResultLookup']['value'])){
-						 echo $value['ResultLookup']['value']; 
-						 } }?>
+						$i=0;
+						foreach($result['ResultValue'] as $value){
+							if($i>0){
+								echo ' | ';
+							}
+							echo $value['value_decimal']; 
+							echo $result['Test']['units']; 
+							echo $value['value_text']; 
+							if(!empty($value['ResultLookup']['description'])){
+								echo $value['ResultLookup']['description'];
+							}
+							$i++;
+						}?>
 					</td>
 					<td>
 						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
-					</td>
-					<td>
-						<?php echo $result['requesting_clinician']; ?>
-					</td>
-					<td>
-						<?php echo $this->element('prettyDate', array('date' => $result['created'])); ?>
-					</td>
-					<td>
-						<?php echo $result['User']['username']; ?>
 					</td>
 					<td class="actions">
 						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->

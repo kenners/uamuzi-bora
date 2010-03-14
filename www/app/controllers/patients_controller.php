@@ -300,7 +300,7 @@ class PatientsController extends AppController
 					'Test',
 					'ResultValue'=> array('ResultLookup'),
 					'User'  => array('fields' => 'username'),
-					'order' => 'test_performed DESC'
+					'order' => 'id ASC'
 				)
 			)
 		)));

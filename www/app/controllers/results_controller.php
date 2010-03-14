@@ -2,7 +2,7 @@
 class ResultsController extends AppController {
 
 	var $name = 'Results';
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form', 'Multiselect');
 
 	function index() {
 		$this->Result->recursive = 0;
@@ -16,6 +16,19 @@ class ResultsController extends AppController {
 		}
 		$this->set('result', $this->Result->read(null, $id));
 	}
+	
+	function autoComplete()
+	{
+		//Partial strings will come from the autocomplete field as
+		//$this->data['Post']['subject'] 
+		$this->set('posts', $this->Post->find('all', array(
+			'conditions' => array(
+				'Post.subject LIKE' => $this->data['ResultValue'].'%'
+				),
+			'fields' => array('subject')
+		)));
+	$this->layout = 'ajax';
+	}
 
 
 	
@@ -23,7 +36,6 @@ class ResultsController extends AppController {
 	{
 		$this->Result->Patient->id = $pid;
 		$this->set('pid', $pid);
-		
 		if(!$this->Result->Patient->exists()) {
 			$this->Session->setFlash('You tried to add a result to a Patient that does not exist');
 			$this->redirect($this->referer());
@@ -53,21 +65,34 @@ class ResultsController extends AppController {
 				
 				$invalid=array();
 				
-				
-				$i=0;
-				while( $i < count($this->data['ResultValue']) ){
-					
-					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
-					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
-					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue'][$i]));
+				$multi = $this->Result->Test->find('first',
+						array('conditions' => array('Test.id' => $this->data['Result']['test_id']), 'recursive' => -1, 'fields' => array('Test.multival')));
+				if($multi['Test']['multival']==TRUE){
+					$i=0;
+					while( $i < count($this->data['Result']['value_lookup']) ){
+						// Reprocess submitted data into an array structure suitable for insertion into the db
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['Result']['value_lookup'][$i]);
+						// Check all of the multiple fields validate
+						$this->Result->ResultValue->set(array('ResultValue'=>$this->data['Result']['value_lookup'][$i]));
+						if(!$this->Result->ResultValue->validates()){
+							$invalid[$i]=$this->Result->ResultValue->validationErrors;
+							unset($this->Result->ResultValue->validationErrors);
+							}
+						$i++;
+					}
+				}else{
+					$this->data = Set::insert($this->data, 'ResultValue.0.user_id', $this->Auth->user('id'));
+					$this->data = Set::insert($this->data, 'ResultValue.0.result_id', $result_id);
+					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']));
 					if(!$this->Result->ResultValue->validates()){
 						$invalid[$i]=$this->Result->ResultValue->validationErrors;
 						unset($this->Result->ResultValue->validationErrors);
-						}
-					$i++;
-				
+					}
 				}
-// validate both inputs
+				
+				// validate both inputs
 				$this->Result->set($this->data);
 				if(!$this->Result->validates()){
 					$invalid[]=$this->Result->validationErrors;
@@ -84,7 +109,7 @@ class ResultsController extends AppController {
 					$this->Session->setFlash(__('The Result has been saved', true));
 					$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
 				}else{
-					$this->Result->ResultValue->validationErrors=$invalid;
+					$this->Result->value_lookup->validationErrors=$invalid;
 					$this->Session->setFlash(__('The Result could not be saved. Please, try again.', true));
 					// Set up the form variables again for the reloaded view, as we've probably failed validation
 					$test_id = $this->data['Result']['test_id'];
@@ -107,7 +132,13 @@ class ResultsController extends AppController {
 				if ($this->Result->Test->exists()) {
 					// Yes, it appears that the Test does exist
 					$this->set('test_id', $test_id);
-					
+					$multi = $this->Result->Test->find('first',
+						array('conditions' => array('Test.id' => $test_id), 'recursive' => -1, 'fields' => array('Test.multival')));
+					$this->set('testMultival',$multi);
+
+						
+						
+						
 					// Let's find out what Type (decimal,lookup,text etc) of test it is
 					$this->set('type', $this->Result->Test->find('first', array(
 						'conditions' => array('Test.id' => $test_id),
@@ -116,15 +147,15 @@ class ResultsController extends AppController {
 					
 					// Get all the options :
 					$this->set('options', $this->Result->ResultValue->ResultLookup->find('all',
-											 array('conditions' => array('Test.id' => $test_id))));
+						array('conditions' => array('Test.id' => $test_id))));
 					
 					// Now get the data to send to the view to build the add results form
-					$tests = $this->Result->Test->find('list');
-					$patients = $this->Result->Patient->find('list');
-					$users = $this->Result->User->find('list');
-					$resultLookups = $this->Result->ResultValue->ResultLookup->find('list');
+					//$tests = $this->Result->Test->find('list');
+					//$patients = $this->Result->Patient->find('list');
+					//$users = $this->Result->User->find('list');
+					//$resultLookups = $this->Result->ResultValue->ResultLookup->find('list');
 					
-					$this->set(compact('tests', 'patients', 'users', 'resultLookups'));
+					//$this->set(compact('tests', 'patients', 'users', 'resultLookups'));
 				} else {
 					// Nope, the Test ID is not valid.
 					$this->Session->setFlash('Not a valid test');
@@ -147,18 +178,36 @@ class ResultsController extends AppController {
 		}
 		if (!empty($this->data)) {
 				//insert pid, user and test id
+			
 			$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
-			$i=0;
-			$invalid=array();
-			while($i<count($this->data['ResultValue'])){
-				$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
-				$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue'][$i]));
+	
+			$multi = $this->Result->Test->find('first',
+				array('conditions' => array('Test.id' => $this->data['Result']['test_id']), 'recursive' => -1, 'fields' => array('Test.multival')));
+			
+			$result_id = $this->data['Result']['id'];
+				
+			if($multi['Test']['multival']==TRUE){
+				$i=0;
+				$invalid=array();
+				while($i<count($this->data['Result']['value_lookup'])){
+					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
+					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
+					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['Result']['value_lookup'][$i]);
+					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['Result']['value_lookup'][$i]));
+					if(!$this->Result->ResultValue->validates()){
+						$invalid[$i]=$this->Result->ResultValue->validationErrors;
+						unset($this->Result->ResultValue->validationErrors);
+					}
+					$i++;
+				}
+			}else{
+				$this->data = Set::insert($this->data, 'ResultValue.0.user_id', $this->Auth->user('id'));
+				$this->data = Set::insert($this->data, 'ResultValue.0.result_id', $result_id);
+				$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']));
 				if(!$this->Result->ResultValue->validates()){
 					$invalid[$i]=$this->Result->ResultValue->validationErrors;
 					unset($this->Result->ResultValue->validationErrors);
-	
 				}
-				$i++;
 			}
 			// validate both inputs
 
@@ -190,7 +239,6 @@ class ResultsController extends AppController {
 
 
 	}
-		
 	$resultValues=$this->Result->ResultValue->find('all',array('conditions'=>array('ResultValue.result_id'=>$id)));
 	$results=$this->Result->read(null,$id);
 	$tests = $this->Result->Test->find('list');
@@ -199,6 +247,9 @@ class ResultsController extends AppController {
 	$this->set(compact('tests','patients','users'));
 	$this->set('resultValues',$resultValues);
 	$this->set('results',$results);
+	$multi = $this->Result->Test->find('first',
+						array('conditions' => array('Test.id' => $results['Result']['test_id']), 'recursive' => -1, 'fields' => array('Test.multival')));
+	$this->set('testMultival',$multi);
 	
 	$this->set('options', $this->Result->ResultValue->ResultLookup->find('all',
 							 array('conditions' => array('Test.id' => $results['Result']['test_id']))));
