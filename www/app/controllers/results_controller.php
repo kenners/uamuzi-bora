@@ -294,7 +294,7 @@ class ResultsController extends AppController {
 			$t = $this->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
 			$testInfo['name']=$t['Test']['name'];	
 			$testInfo['type']=$t['Test']['type'];
-				
+			$testInfo['multival']=$t['Test']['multival'];
 										
 			// Get Test answers/options if required
 			if($testInfo['type'] == 'lookup') {

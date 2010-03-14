@@ -47,10 +47,10 @@
 							);
 
 				$counter=5;
-				// Adding all the tests 5 times, using a new number for each test.		
+				// Adding all the tests 5 times, using a new number for each test.	
 				foreach($batchOfTests as $test){
 					
-					if ($test['type']!='lookup'){
+					if($test['type']!='lookup'){
 						// If not a lookup test we put the name and the textboxes into cells
 						$t=array($test['name']);
 						
@@ -65,12 +65,22 @@
 						$t=array($test['name']);
 						$opt=array(' ');
 						foreach($test['options'] as $o){
-							$opt[$o['id']]=$o['value'];
+							$opt[$o['id']]=$o['description'];
 						}
 						for($i=0;$i<5;$i++){
-							$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt));
-						$counter++;
+							if($test['multival']==TRUE){
+								$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt,'multiple'=>true));
+							}else{
+								$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt));
+							}
+							$counter++;
 						}
+						/*
+						//for($i=0;$i<5;$i++){
+						//	$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt));
+						//$counter++;
+						}
+						*/
 						$cells[]=$t;
 					}
 
