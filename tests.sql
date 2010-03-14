@@ -20,12 +20,12 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 15	11	1	Herpes Zoster		1	2009-07-19 22:48:32
 16	11	2	Pneumonia		1	2009-07-19 22:48:41
 17	11	3	Dementia/Encephalitis		1	2009-07-19 22:48:55
-18	11	4	Thrush - Oral/Vaginal		1	2009-07-19 22:49:36
-19	11	5	Ulcers - Mouth, etc.		1	2009-07-19 22:51:10
+18	11	4	Thrush		1	2009-07-19 22:49:36
+19	11	5	Ulcers		1	2009-07-19 22:51:10
 20	11	6	Fever		1	2009-07-19 22:51:20
 21	11	7	Cough		1	2009-07-19 22:51:28
 22	11	8	Difficulty Breathing		1	2009-07-19 22:51:39
-23	11	9	IRIS (Immune Reconstitution Inflammatory Syndrome)		1	2009-07-19 22:52:00
+23	11	9	IRIS		1	2009-07-19 22:52:00
 24	11	10	Weight Loss		1	2009-07-19 22:52:10
 25	11	11	Urethral Discharge		1	2009-07-19 22:52:19
 26	11	12	PID (Pelvic Inflammatory Disease)		1	2009-07-19 22:52:32
