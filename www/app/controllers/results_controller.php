@@ -366,7 +366,8 @@ class ResultsController extends AppController {
 		}
 			// Make our fresh array of test info available to the view
 		$this->set('batchOfTests', $batchOfTestInfo);
-		$this->set('pid', $this->Result->Patient->id=$pid);
+		$this->set('Patient',$this->Result->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid),'recurcive'=>-2,'fields'=>array('pid','surname','forenames'))));
+		
 		// Is this a new form i.e. is there data in our object?
 		if (empty($this->data)) {
 		
