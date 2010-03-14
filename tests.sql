@@ -19,7 +19,7 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 14	10	3	Receiving TB Treatment		1	2009-07-19 22:46:45
 15	11	1	Herpes Zoster		1	2009-07-19 22:48:32
 16	11	2	Pneumonia		1	2009-07-19 22:48:41
-17	11	3	Dementia/Encephalitis		1	2009-07-19 22:48:55
+17	11	3	Dementia / Encephalitis		1	2009-07-19 22:48:55
 18	11	4	Thrush		1	2009-07-19 22:49:36
 19	11	5	Ulcers		1	2009-07-19 22:51:10
 20	11	6	Fever		1	2009-07-19 22:51:20

@@ -52,6 +52,11 @@
 	background:#E5ECF9;
 }
 
+.bluebox {
+	padding:1.5em;
+	background:#E5ECF9;
+}
+
 .message {
 
 	
@@ -277,5 +282,5 @@ h2 {
 	margin-right:9px;
 	padding:3px;
 	text-align:center;
-	width:50px;
+	width:70px;
 }

@@ -43,12 +43,12 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 </div>
 <!-- Button toolbar -->
 <div class="span-21 prepend-1 shove-top last">
-	<div class="span-14">
-		<div class="span-9">
+	<div class="span-15">
+		<div class="span-10">
 			<div class="span-4 shove-top2">
 				<h4>Create Result for Test:</h4>
 			</div>
-			<div class="span-5 shove-top last">
+			<div class="span-6 shove-top last">
 			<?php
 				// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
 				echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
@@ -66,7 +66,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			?>
 			</div>
 		</div>
-		<div class="span-5 last">
+		<div class="span-5 pull-1 last">
 			<button type="submit" class="button positive">
 				<img src="/img/icons/add.png" alt=""/> Add New Result
 			</button>

@@ -1,14 +1,11 @@
 <?php $crumb->addThisPage('Batch Add Result', null, 'auto'); ?>
 <div class="results form span-16">
 <?php echo $form->create(null, array('action'=>'batch_add/'.$pid));?>
-	<div id="vitalInfo" class="vitalInfo span-22 last">
+	<div class="bluebox span-22 last">
 		<?php
-		/*
-		$patient=$patients[0];
-		// Patient Name
-		echo $html->tag('span', $patient['Patient']['forenames'] . ' ' . $patient['Patient']['surname'], array('class' => 'patientName'));
-		echo $html->div('patientId span-14 last', $html->tag('span', 'UPN: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])), array('class'=>'patientIdValue')));
-		*/
+		echo $html->tag('span', $Patient['Patient']['forenames'] . ' ' . $Patient['Patient']['surname'], array('class' => 'patientName'));
+		echo $html->div('patientId', $html->tag('span', 'UPN: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyUPN', array('pid' => $Patient['Patient']['upn'])), array('class'=>'patientIdValue')));
+		echo $html->div('patientIdentifier span-6', $html->tag('span', 'PID: ', array('class'=>'patientIdentiferLabel')) . $html->tag('span', $this->element('prettyPID', array('pid' => $Patient['Patient']['pid'])), array('class'=>'patientIdentifierValue')));
 		?>
 	</div>
 	<div class="span-22 last">
@@ -16,7 +13,6 @@
  		<legend><?php __('Batch Add Results');?></legend>
  		<table>
 			<?php
-				//debug($batchOfTests);
 				// Let Cake build the table headers for us
 				echo $html->tableHeaders(
 					array('Title','Batch 1','Batch 2','Batch 3','Batch 4')
