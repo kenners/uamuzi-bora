@@ -8,10 +8,10 @@
 			echo $form->input('Result.test_id',array('type'=>'hidden','value'=>$test_id));
 			switch($type['Test']['type']) {
   				case "decimal":
-					echo $form->input('ResultValue.0.value_decimal', array('label'=>'Value','after'=>$type['Test']['units']));
+					echo $form->input('ResultValue.value_decimal', array('label'=>'Value','after'=>$type['Test']['units']));
         			break;
     			case "text":
-        			echo $form->textarea('ResultValue.0.value_text');
+        			echo $form->textarea('ResultValue.value_text');
 	        		break;
     			case "lookup":
 				$valueoptions=array();
@@ -25,9 +25,9 @@
 						//echo $multiselect->display('value_lookup', array('label' => 'Value:', 'options' => $valueoptions));
 						//echo $javascript->link(array('multiselect'));
 						
-						echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>'checkbox','label'=>'Value:'));
+						echo $form->input('ResultValue.value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>'checkbox','label'=>'Value:'));
 					}else{
-						echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>false,'label'=>'Value:'));
+						echo $form->input('ResultValue.value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>false,'label'=>'Value:'));
 					}
         			break;
        			}

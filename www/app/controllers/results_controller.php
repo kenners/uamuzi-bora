@@ -44,17 +44,12 @@ class ResultsController extends AppController {
 		// Check that we are dealing with data from a form, either from the miniform in the Patients::View view or
 		// from an earlier submission of this controller's form.
 		if (!empty($this->data)) {
+		
 			// But which form are we coming from?
 			if (array_key_exists('Result', $this->data)) {
 			// So this method has been called by the view, with the new result form data having been submitted.
 				// need to get the id of the result we are about to add
-				$result_id=$this->Result->find('all',array('order'=>' Result.id DESC','recursive'=>0,
-									'fields'=>array('id')));
-				if(empty($result_id)){
-					$result_id=1;
-				}else{
-					$result_id=$result_id[0]['Result']['id']+1;
-				}
+
 				
 								// IN case we nedd to reload the form, we set the test_id and type
 								
@@ -69,22 +64,25 @@ class ResultsController extends AppController {
 						array('conditions' => array('Test.id' => $this->data['Result']['test_id']), 'recursive' => -1, 'fields' => array('Test.multival')));
 				if($multi['Test']['multival']==TRUE){
 					$i=0;
-					while( $i < count($this->data['Result']['value_lookup']) ){
+					while( $i < count($this->data['ResultValue']['value_lookup']) ){
 						// Reprocess submitted data into an array structure suitable for insertion into the db
 						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
-						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
-						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['Result']['value_lookup'][$i]);
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['ResultValue']['value_lookup'][$i]);
 						// Check all of the multiple fields validate
-						$this->Result->ResultValue->set(array('ResultValue'=>$this->data['Result']['value_lookup'][$i]));
+						$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']['value_lookup'][$i]));
 						if(!$this->Result->ResultValue->validates()){
 							$invalid[$i]=$this->Result->ResultValue->validationErrors;
 							unset($this->Result->ResultValue->validationErrors);
 							}
 						$i++;
 					}
+					unset($this->data['ResultValue']['value_lookup']);
 				}else{
-					$this->data = Set::insert($this->data, 'ResultValue.0.user_id', $this->Auth->user('id'));
-					$this->data = Set::insert($this->data, 'ResultValue.0.result_id', $result_id);
+					$this->data = Set::insert($this->data, 'ResultValue.user_id', $this->Auth->user('id'));
+				
+					if(!empty($this->data['ResultValue']['value_lookup'])){
+						$this->data = Set::insert($this->data, 'ResultValue.value_lookup', $this->data['ResultValue']['value_lookup'][0]);
+						}
 					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']));
 					if(!$this->Result->ResultValue->validates()){
 						$invalid[$i]=$this->Result->ResultValue->validationErrors;
@@ -93,6 +91,7 @@ class ResultsController extends AppController {
 				}
 				
 				// validate both inputs
+				//debug($this->data);	
 				$this->Result->set($this->data);
 				if(!$this->Result->validates()){
 					$invalid[]=$this->Result->validationErrors;
@@ -100,12 +99,26 @@ class ResultsController extends AppController {
 
 				if (empty($invalid)){
 					//save
-					foreach($this->data['ResultValue'] as $val){
-						$this->Result->ResultValue->create();
-						$this->Result->ResultValue->save(array('ResultValue'=>$val));
-						}
-						
+					$this->Result->create();		
 					$this->Result->save($this->data);
+					$result_id=$this->Result->id;
+
+					if(array_key_exists(0,$this->data['ResultValue'])){//If we have multiple values to store!
+
+						foreach($this->data['ResultValue'] as $val){
+							$val= Set::insert($val,'result_id', $result_id);
+							//debug($val);
+							$this->Result->ResultValue->create();
+							$this->Result->ResultValue->save(array('ResultValue'=>$val));
+							}
+					}else{
+						$this->data = Set::insert($this->data, 'ResultValue.result_id', $result_id);
+
+						$this->Result->ResultValue->create();
+						$this->Result->ResultValue->save(array('ResultValue'=>$this->data['ResultValue']));
+					}
+
+
 					$this->Session->setFlash(__('The Result has been saved', true));
 					$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
 				}else{
@@ -178,49 +191,87 @@ class ResultsController extends AppController {
 		}
 		if (!empty($this->data)) {
 				//insert pid, user and test id
-			
+			//debug($this->data);
 			$this->data = Set::insert($this->data, 'Result.user_id', $this->Auth->user('id'));
 	
 			$multi = $this->Result->Test->find('first',
 				array('conditions' => array('Test.id' => $this->data['Result']['test_id']), 'recursive' => -1, 'fields' => array('Test.multival')));
 			
 			$result_id = $this->data['Result']['id'];
-				
+
 			if($multi['Test']['multival']==TRUE){
 				$i=0;
 				$invalid=array();
-				while($i<count($this->data['Result']['value_lookup'])){
-					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
-					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
-					$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['Result']['value_lookup'][$i]);
-					$this->Result->ResultValue->set(array('ResultValue'=>$this->data['Result']['value_lookup'][$i]));
-					if(!$this->Result->ResultValue->validates()){
-						$invalid[$i]=$this->Result->ResultValue->validationErrors;
-						unset($this->Result->ResultValue->validationErrors);
+				//debug($this->data);
+				if(!empty($this->data['ResultValue']['value_lookup'])){
+					while($i<count($this->data['ResultValue']['value_lookup'])){
+						if(!empty($this->data['ResultValue'][$i])){
+							$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.id',$this->data['ResultValue'][$i]['id'] );
+
+						}
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.user_id', $this->Auth->user('id'));
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.result_id', $result_id);
+						$this->data = Set::insert($this->data, 'ResultValue.'.$i.'.value_lookup', $this->data['ResultValue']['value_lookup'][$i]);
+						$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']['value_lookup'][$i]));
+						if(!$this->Result->ResultValue->validates()){
+							$invalid[$i]=$this->Result->ResultValue->validationErrors;
+							unset($this->Result->ResultValue->validationErrors);
+						}
+						$i++;
 					}
-					$i++;
+					while(!empty($this->data['ResultValue'][$i]['id'])){
+						$this->Result->ResultValue->del($this->data['ResultValue'][$i]['id']);
+						unset($this->data['ResultValue'][$i]);
+
+						$i++;	
+					}
+				
+					unset($this->data['ResultValue']['value_lookup']);
+				}else{
+					unset($this->data['ResultValue']['value_lookup']);
+
+				//All result values have been deselected so we delete the result.
+				
+					$this->Result->del($result_id);
+					
+					foreach( $this->data['ResultValue'] as $id){
+						$this->Result->ResultValue->del($id['id']);
+					}
+					$this->Session->setFlash(__('All values deselected so result deleted', true));
+					$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $this->data['Result']['pid']));
 				}
+						
 			}else{
-				$this->data = Set::insert($this->data, 'ResultValue.0.user_id', $this->Auth->user('id'));
-				$this->data = Set::insert($this->data, 'ResultValue.0.result_id', $result_id);
+				$this->data = Set::insert($this->data, 'ResultValue.user_id', $this->Auth->user('id'));
+				$this->data = Set::insert($this->data, 'ResultValue.result_id', $result_id);
+				if(!empty($this->data['ResultValue']['value_lookup'])){
+					$this->data = Set::insert($this->data, 'ResultValue.value_lookup', $this->data['ResultValue']['value_lookup'][0]);
+				}
 				$this->Result->ResultValue->set(array('ResultValue'=>$this->data['ResultValue']));
+			
 				if(!$this->Result->ResultValue->validates()){
-					$invalid[$i]=$this->Result->ResultValue->validationErrors;
+					$invalid=$this->Result->ResultValue->validationErrors;
 					unset($this->Result->ResultValue->validationErrors);
 				}
 			}
+			//debug($this->data);	
 			// validate both inputs
 
-			
 
-		
 			if (empty($invalid)){
 				//save
 				$this->Result->save($this->data);
-				
-				foreach($this->data['ResultValue'] as $val){
-					$this->Result->ResultValue->save(array('ResultValue'=>$val));
+				if(array_key_exists(0,$this->data['ResultValue'])){//If we have multiple values to store!
+					foreach($this->data['ResultValue'] as $val){
+						if(!array_key_exists('id',$val)){
+							$this->Result->ResultValue->create();
+						}
+						$this->Result->ResultValue->save(array('ResultValue'=>$val));
+					}
+				}else{
+					$this->Result->ResultValue->save(array('ResultValue'=>$this->data['ResultValue']));
 				}
+
 				$this->Session->setFlash(__('The Result has been saved', true));
 				
 				$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $this->data['Result']['pid']));

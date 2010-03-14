@@ -10,15 +10,20 @@
 		echo $form->input('Result.id',array('type'=>'hidden','default'=>$results['Result']['id']));
 			switch($results['Test']['type']) {
   				case "decimal":
-					echo $form->input('ResultValue.0.value_decimal', array('label'=>'Value',
+					echo $form->input('ResultValue.id',array('type'=>'hidden','value'=>$results['ResultValue'][0]['id']));
+					echo $form->input('ResultValue.value_decimal', array('label'=>'Value',
 													'after'=>$results['Test']['units'],
 													'default'=>$resultValues[0]['ResultValue']['value_decimal']));
         			break;
     			case "text":
-        			echo $form->textarea('ResultValue.0.value_text',array('default'=>$resultValues[0]['ResultValue']['value_text']));
+				echo $form->input('ResultValue.id',array('type'=>'hidden','value'=>$results['ResultValue'][0]['id']));
+
+        			echo $form->textarea('ResultValue.value_text',array('default'=>$resultValues[0]['ResultValue']['value_text']));
 
 	        		break;
     			case "lookup":
+			
+				
 				$valueoptions=array();
 					foreach ($options as $option)
 					{
@@ -26,14 +31,20 @@
 											                        
 					}
 
-						// Build the Select box						
+						// Build the Select box	
+					$counter=0;					
 					if($testMultival['Test']['multival'] == TRUE){
 						foreach($results['ResultValue'] as $resultid){
 							$selectedOptions[] = $resultid['value_lookup'];
-						}
-					echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>'checkbox', 'selected' => $selectedOptions, 'label'=>'Value:'));
+						echo $form->input('ResultValue.'.$counter.'.id',array('type'=>'hidden','value'=>$results['ResultValue'][$counter]['id']));
+						
+					$counter++;}
+
+				
+					echo $form->input('ResultValue.value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>'checkbox', 'selected' => $selectedOptions, 'label'=>'Value:'));
 						}else{
-						echo $form->input('value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>false,'label'=>'Value:', 'selected'=>$results['Result']['id']));
+						echo $form->input('ResultValue.id',array('type'=>'hidden','value'=>$results['ResultValue'][0]['id']));
+						echo $form->input('ResultValue.value_lookup',array('type'=>'select','options'=>$valueoptions, 'multiple'=>false,'label'=>'Value:', 'selected'=>$results['ResultValue'][0]['value_lookup']));
 					}					
 								
         		
