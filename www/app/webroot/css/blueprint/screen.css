@@ -25,7 +25,7 @@ a img {border:none;}
 body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
-h2 {font-size:2em;margin-bottom:0.75em;}
+h2 {font-size:2em;margin-bottom:0.5em;}
 h3 {font-size:1.5em;line-height:1;margin-bottom:0.5em;}
 /*h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}*/
 h4 {font-size:1.2em;line-height:1.25;margin-bottom:0.5em;}
@@ -251,6 +251,9 @@ div.colborder {padding-right:24px;margin-right:25px;border-right:1px solid #eee;
 .push-1, .push-2, .push-3, .push-4, .push-5, .push-6, .push-7, .push-8, .push-9, .push-10, .push-11, .push-12, .push-13, .push-14, .push-15, .push-16, .push-17, .push-18, .push-19, .push-20, .push-21, .push-22, .push-23, .push-24 {float:right;position:relative;}
 .prepend-top {margin-top:1.5em;}
 .append-bottom {margin-bottom:1.5em;}
+.shove-top {margin-top:0.7em;}
+.shove-top2 {margin-top:1.1em;}
+.push-bottom {margin-bottom:0.5em;}
 .box {padding:1.5em;margin-bottom:1.5em;background:#E5ECF9;}
 .beigebox {padding:1.5em;margin-bottom:1.5em;background:#FFF6BF;}
 hr {background:#ddd;color:#ddd;clear:both;float:none;width:100%;height:.1em;margin:0 0 1.45em;border:none;}

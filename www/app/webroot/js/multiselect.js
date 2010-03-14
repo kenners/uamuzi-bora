@@ -10,6 +10,6 @@ function previewSelectedOptionsText(object, preview){
 	selected = getSelectedOptionsText(object);
 	label = "";
 	for (var i = 0; i < selected.length; i++)
-		label += "<input type = 'checkbox' disabled checked/>" + selected[i] + "<br/>";
+		label += "<span class='multival'>" + selected[i] + "</span>";
 	document.getElementById(preview.id).innerHTML = label;
 }

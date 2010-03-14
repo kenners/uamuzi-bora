@@ -42,23 +42,116 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 
 </div>
 <!-- Button toolbar -->
-<div class="span-22 prepend-top last">
-	<div class="span-5 last">
+<div class="span-21 prepend-1 shove-top last">
+	<div class="span-14">
+		<div class="span-9">
+			<div class="span-4 shove-top2">
+				<h4>Create Result for Test:</h4>
+			</div>
+			<div class="span-5 shove-top last">
+			<?php
+				// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
+				echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
+				// Parse the array of Test & Test IDs sent by the controller into an array we can use to make
+				// <SELECT> elements for our miniform.	
+				$testoptions=array();
+				foreach ($tests as $test)
+				{
+					$testoptions[$test['Test']['id']] = $test['Test']['name'];
+				}
+				// Build the Select box
+				echo $form->input('id',array('type'=>'select',
+					'options'=> $testoptions,
+					'label'=>''));
+			?>
+			</div>
+		</div>
+		<div class="span-5 last">
+			<button type="submit" class="button positive">
+				<img src="/img/icons/add.png" alt=""/> Add New Result
+			</button>
+		</div>
+	</div>
+	<div class="span-5 pull-1 last">
 		<a href="/results/batch_add/<?php echo $patient['Patient']['pid']; ?>" class="button positive">
-			<img src="/img/icons/add.png" alt=""/> Batch Add Results
-		</a>
+			<img src="/img/icons/add.png" alt=""/> Batch Add Results</a>
 	</div>
 </div>
 
 <div id="tab-set" class="span-22 prepend-top last">
 		<ul class="tabs">
-			<li><a href="#tab1" class="selected">Patient Profile</a></li>
-			<li><a href="#tab2">ART History</a></li>
-			<li><a href="#tab3">Results</a></li>
+			<li><a href="#tab1" class="selected">Results</a></li>
+			<li><a href="#tab2">Patient Profile</a></li>
+			<li><a href="#tab3">ART History</a></li>
 		</ul>
-
+	
 	<div id="tab1">
-		
+		<?php
+		//Sets the update and indicator elements by DOM ID for AJAX pagination
+		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
+		?>
+		<div id="results" class="span-22 prepend-top last">
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<th><?php echo $paginator->sort('Result ID','id');?></th>
+					<th><?php echo $paginator->sort('Test','test_id');?></th>
+					<th>Result</th>
+					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
+					<th class="actions"><?php __('Actions');?></th>
+				</tr>
+				<?php
+					$i = 0;
+					$results=$patient['Result'];
+					foreach ($results as $result):
+						$class = null;
+						if ($i++ % 2 == 0) {
+							$class = ' class="even"';
+						
+						}
+				?>
+				<tr<?php echo $class;?>>
+					<td>
+						<?php echo $result['id']; ?>
+				
+					</td>
+					<td>
+						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
+					</td>
+					<td>
+					
+						<?php
+						$i=0;
+						foreach($result['ResultValue'] as $value){
+							echo $value['value_decimal']; 
+							echo $result['Test']['units']; 
+							echo $value['value_text']; 
+							if(!empty($value['ResultLookup']['description'])){
+								echo '<span class="multival">'.$value['ResultLookup']['description'].'</span>';
+							}
+							$i++;
+						}?>
+					</td>
+					<td>
+						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
+					</td>
+					<td class="actions">
+						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
+						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
+						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+		<!-- Paginator links -->
+		<div class="paging span-22 last">
+			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
+			 | 	<?php echo $paginator->numbers(); ?>
+			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
+		</div>
+	</div>
+
+	<div id="tab2">	
 		<div class="tasks span-22 last">
 			<div class="span-6">
 				<h2>Patient Profile</h2>
@@ -138,7 +231,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			</div>
 		</div>
 	</div>
-	<div id="tab2">
+	<div id="tab3">
 		<div class="tasks span-22 last">
 			<div class="span-6">
 				<h2>ART History</h2>
@@ -216,110 +309,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			</div>
 		</div>
 	</div>
-	
-	<div id="tab3">
-		<?php
-		//Sets the update and indicator elements by DOM ID for AJAX pagination
-		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
-		?>
-		<h2>Results</h2></h2>
-		
-		<!-- Miniform for adding results -->
-		<div class="addresult box span-20 rim last">
-			<div class="span-5"><p class="large"><strong>Add New Test Result:</strong></p></div>
-			<?php
-			// Start the form ('FALSE' simply tells the controller that this form is not associated with any model)
-			echo $form->create(FALSE, array('url' => '/results/add/'.$patient['Patient']['pid']));
-			?>
-			<div class="span-8">
-				<?php
-				// Parse the array of Test & Test IDs sent by the controller into an array we can use to make
-				// <SELECT> elements for our miniform.
-				$testoptions=array();
-				foreach ($tests as $test)
-				{
-					$testoptions[$test['Test']['id']] = $test['Test']['name'];
-				}
 
-				// Build the Select box
-				
-				echo $form->input('id',array('type'=>'select',
-												'options'=> $testoptions,
-												'label'=>'Create Result for Test:'));
-				//echo $form->end('Add New Result');
-				?>
-			</div>
-			<div class="prepend-2 span-5 last">
-				<button type="submit" class="button positive">
-					<img src="/img/icons/add.png" alt=""/> Add New Result
-				</button>
-			</div>
-			</form>
-		</div>
-		<!-- End of Miniform -->
-		<div id="results" class="span-22 prepend-top last">
-			<table cellpadding="0" cellspacing="0">
-				<tr>
-					<th><?php echo $paginator->sort('Result ID','id');?></th>
-					<th><?php echo $paginator->sort('Test','test_id');?></th>
-					<th>Result</th>
-					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
-					<th class="actions"><?php __('Actions');?></th>
-				</tr>
-				<?php
-					$i = 0;
-					$results=$patient['Result'];
-					foreach ($results as $result):
-						$class = null;
-						if ($i++ % 2 == 0) {
-							$class = ' class="even"';
-						
-						}
-				?>
-				<tr<?php echo $class;?>>
-					<td>
-						<?php echo $result['id']; ?>
-				
-					</td>
-					<td>
-						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
-					</td>
-					<td>
-					
-						<?php
-						$i=0;
-						foreach($result['ResultValue'] as $value){
-							if($i>0){
-								echo ' | ';
-							}
-							echo $value['value_decimal']; 
-							echo $result['Test']['units']; 
-							echo $value['value_text']; 
-							if(!empty($value['ResultLookup']['description'])){
-								echo $value['ResultLookup']['description'];
-							}
-							$i++;
-						}?>
-					</td>
-					<td>
-						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
-					</td>
-					<td class="actions">
-						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
-						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
-						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
-					</td>
-				</tr>
-				<?php endforeach; ?>
-			</table>
-		</div>
-		<!-- Paginator links -->
-		<div class="paging span-22 last">
-			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
-			 | 	<?php echo $paginator->numbers(); ?>
-			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
-		</div>
-	</div>
 </div>
 <script type="text/javascript">
 	$("ul.tabs li.label").hide(); 

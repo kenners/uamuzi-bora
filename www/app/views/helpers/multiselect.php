@@ -29,7 +29,7 @@ class MultiselectHelper extends AppHelper {
 		$items = MultiselectHelper::getSelectedItems($this->Form->input($fieldName, $options));
 		$label = '';
 		foreach($items as $item)
-			$label .= '<input type="checkbox" disabled checked/>'.$item.'<br/>';
+			$label .= '<span class="multival">'.$item.'</span>';
 		$options['type'] = 'select';
 		$options['multiple'] = 'multiple';
 		$options['between'] = $this->Form->label($fieldName.'.Preview', $label, array('id' => $fieldName.'.Preview'));
