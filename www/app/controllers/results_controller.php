@@ -107,7 +107,7 @@ class ResultsController extends AppController {
 
 						foreach($this->data['ResultValue'] as $val){
 							$val= Set::insert($val,'result_id', $result_id);
-							this->Result->ResultValue->create();
+							$this->Result->ResultValue->create();
 							$this->Result->ResultValue->save(array('ResultValue'=>$val));
 							}
 					}else{//Only one ResultValue to store
@@ -374,7 +374,7 @@ class ResultsController extends AppController {
 		$this->set('Patient',$this->Result->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid),'recurcive'=>-2,'fields'=>array('pid','surname','forenames','upn'))));
 		
 		// Is this a new form i.e. is there data in our object?
-		if (!empty($this->data)) 
+		if (!empty($this->data)){ 
 			$tests=array();
 			$data=$this->data;
 			//Create an array with testid and type
