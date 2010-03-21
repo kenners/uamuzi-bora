@@ -320,6 +320,15 @@ class PatientsController extends AppController
 		foreach ($results as $result) {
 			array_push($pids, array_pop(Set::extract('/Result/pid', $result)));
 		}
+		$patients=array();
+		foreach($pids as $pid){
+			$patients[]=$this->Patient->find('first',array(
+				'conditions'=>array(
+					'Patient.pid'=>$pid
+				),
+				'recursive'=>-1
+			));
+		}
 		$attendence = array();
 		foreach ($pids as $pid) {
 			array_push($attendence, $this->Patient->Result->find('first', array(
@@ -327,10 +336,22 @@ class PatientsController extends AppController
 				'conditions' => array(
 					'Result.test_id' => 1,
 					'Result.pid'     => $pid
-				)
+				),
+				'recursive'=>-1
 			)));
 		}
-		$this->set('values', $attendence);
+		$values=array();
+		foreach ($attendence as $id){
+			$values[]=$this->Patient->Result->ResultValue->find('first',array(
+				'conditions'=>array(
+					'ResultValue.result_id'=>$id['Result']['id']
+					),
+				'recursive'=>0
+				
+				));
+			}
+		$this->set('patients',$patients);
+		$this->set('values', $values);
 		$this->set('tests', $this->Patient->Result->Test->find('all', array(
 			'recursive'  => -1,
 			'conditions' => array('active' => true)

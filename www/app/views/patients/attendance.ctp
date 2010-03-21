@@ -32,6 +32,7 @@ $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
 	<th class="actions"></th>
 </tr>
 <?php
+//debug($values);
 // Parse the array of Test & Test IDs sent by the controller into an array we can use to make
 // <SELECT> elements for our miniform.
 $testoptions=array();
@@ -55,30 +56,30 @@ foreach ($patients as $patient):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->element('prettyUPN', array('pid' => $values[$counter]['Patient']['upn'])); ?>
+			<?php echo $this->element('prettyUPN', array('pid' => $patients[$counter]['Patient']['upn'])); ?>
 		</td>
 		<td>
-			<?php echo $values[$counter]['Patient']['surname']; ?>
+			<?php echo $patients[$counter]['Patient']['surname']; ?>
 		</td>
 		<td>
-			<?php echo $values[$counter]['Patient']['forenames']; ?>
+			<?php echo $patients[$counter]['Patient']['forenames']; ?>
 		</td>
 		<td>
-			<?php echo $this->element('prettyDate', array('date' => $values[$counter]['Patient']['date_of_birth']));?>
+			<?php echo $this->element('prettyDate', array('date' => $patients[$counter]['Patient']['date_of_birth']));?>
 		</td>
 		<td>
-			<?php echo $values[$counter]['Patient']['sex']; ?>
+			<?php echo $patients[$counter]['Patient']['sex']; ?>
 		</td>
 		<td>
 			<?php echo $html->link(__($values[$counter]['ResultLookup']['description'], true), array('controller'=>'results', 'action'=>'edit', $values[$counter]['Result']['id'])); ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $values[$counter]['Patient']['pid']), array('class'=>'smallbutton')); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $patients[$counter]['Patient']['pid']), array('class'=>'smallbutton')); ?>
 			
 		</td>
 		<td class="actions">
 			<?php
-			echo $form->create(FALSE, array('url' => '/results/add/'.$values[$counter]['Patient']['pid']));
+			echo $form->create(FALSE, array('url' => '/results/add/'.$patients[$counter]['Patient']['pid']));
 			// Build the Select box
 			echo $form->input('id',array('type'=>'select',
 										'options'=> $testoptions,
