@@ -510,6 +510,34 @@ class ResultsController extends AppController {
 
 
 	}
+	function add_attendance($pid=null){
+    
+   		$this->Result->Patient->id=$pid;
+   		$this->set('pid',$pid);
+    		if(!$this->Result->Patient->exists())
+   		{
+			$this->Session->setFlash('You tried to book in a patient that does not exist in this database.');
+			$this->redirect($this->referer());
+		}
+   		$Result=array('Result'=>array('pid'=>$pid,'test_id'=>1,'user_id'=>$this->Auth->user('id'),'test_performed'=> date('Y-m-d',strtotime('now'))));
+		
+    		$this->Result->create();
+   		if ($this->Result->save($Result)) 
+    		{
+			$result_id=$this->Result->id;
+			$ResultValue=array('ResultValue'=>array('result_id'=>$result_id,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1));
+			$this->Result->ResultValue->create();
+		
+			if($this->Result->ResultValue->save($ResultValue)){
+			
+
+				$this->Session->setFlash(__('Patient booked in.', true));
+				$this->redirect($this->referer());
+			}
+     		} else {
+			$this->Session->setFlash(__('This patient could now be booked in. Please, try again.', true));
+      		}  
+	}
 
 
 }

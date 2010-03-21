@@ -24,7 +24,7 @@ else:
         if len(s)>3:
             
             
-            if s[3]=='$default':
+            if s[1]=='$default':
                 break
         
     f.next()
