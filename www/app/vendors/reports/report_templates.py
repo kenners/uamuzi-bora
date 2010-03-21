@@ -35,6 +35,16 @@ else:
     password=f.next().split(' ')[2].split(',')[0]
     database=f.next().split(' ')[2].split(',')[0]
     
+    if host=='NULL':
+        host='None'
+    if login=='NULL':
+        login='None'
+    if password=='NULL':
+        password='None'
+    if database=='NULL':
+        database='None'
+
+   
     f.close()
     f=open('dbConfig/dbConfig.py','w')
     f.write('host = '+host+'\n')
