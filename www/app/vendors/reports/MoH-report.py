@@ -291,10 +291,10 @@ pylab.savefig('month.png')
 
 
 # Generate latex-file.
+filename='MoH-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
+output=Pdf(filename+'.tex')
 
-output=Pdf('MoH-report.tex')
-
-output.titleMoh('MoH 255 health facility reporting form for the period '+str(startDay)+' '+monthsArray[startMonth-1]+' '+str(startYear)+' - '+str(endDay)+' '+monthsArray[endMonth-1]+' '+str(endYear))
+output.titleMoh('MoH 255 health facility reporting form for the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' - '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
 
 output.mohWhoTable(maleU14Who,maleO14Who,femaleU14Who,femaleO14Who)
 
@@ -303,11 +303,11 @@ output.mohPlots()
 
 output.close()
 
-os.system('pdflatex MoH-report.tex')
+os.system('pdflatex '+filename+'.tex')
 os.remove('year.png')
 os.remove('month.png')
 os.remove('who.png')
 os.remove('src.png')
-os.remove('MoH-report.tex')
-os.remove('MoH-report.aux')
-os.remove('MoH-report.log')
+os.remove(filename+'.tex')
+os.remove(filename+'.aux')
+os.remove(filename+'.log')

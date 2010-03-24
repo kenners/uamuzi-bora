@@ -25,7 +25,9 @@ class ReportsController extends AppController {
 	    #debug('python '.$filename.'.py '.$start.' '.$end);
 	    shell_exec('python '.$filename.'.py '.$start.' '.$end);
 	    //your file to upload
-	    $fullPath ='output/'.$filename.'.pdf';
+	    $fullPath ='output/'.$filename.$this->data['start']['day'].$this->data['start']['month'].$this->data['start']['year'].'-'.$this->data['Patient']['end']['day'].$this->data['Patient']['end']['month'].$this->data['Patient']['end']['year'].'.pdf';
+
+
 	    $content = fopen ($fullPath,'r'); 
 
 

@@ -70,12 +70,14 @@ else:
     end=date.today()
 startYear,startMonth,startDay=start.split('-')
 endYear,endMonth,endDay=end.split('-')
-startDay=int(startDay)
-startMonth=int(startMonth)
-startYear=int(startYear)
-endDay=int(endDay)
-endMonth=int(endMonth)
-endYear=int(endYear)
+#Format days,months for nice output
+startYearI=int(startYear)
+startMonthI=int(startMonth)
+startDayI=int(startDay)
+endDayI=int(endDay)
+endMonthI=int(endMonth)
+endYearI=int(endYear)
+
 transDate="transfer_in_date > TIMESTAMP '"+start+" 00:00:00 ' AND transfer_in_date < TIMESTAMP '"+end+" 00:00:00'"
 createdCond='created > '+start+' AND created < '+end
 

@@ -189,7 +189,7 @@ monthsPretty=[]
 lastMonth=0;
 for month in months:
     year,m=month.split('-')
-    if m<=startMonth and year<=startYear:
+    if m<=startMonthI and year<=startYearI:
         lastMonth+=1
     monthsPretty.append(monthsArray[int(m)-1]+' '+year)
 #Find last month to display. It should be the month of the start point for the period
@@ -225,11 +225,11 @@ pylab.savefig('month.png')
 
 
 # Generate latex-file.
+filename='VF-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
+output=Pdf(filename+'.tex')
 
-output=Pdf('VF-report.tex')
 
-print startMonth
-output.titleVf('VF reporting form from the period '+str(startDay)+' '+monthsArray[startMonth-1]+' '+str(startYear)+' - '+str(endDay)+' '+monthsArray[endMonth-1]+' '+str(endYear))
+output.titleVf('VF reporting form from the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+'-'+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
 vf=numpy.zeros(6,int)
 other=numpy.zeros(6,int)
 vf[0]=vfNumber
@@ -239,16 +239,16 @@ other[1]=otherArv
 vf[2:]=vfWho
 other[2:]=otherWho
 output.vfWhoTable(vf,other,missing)
-
+print filename
 output.vfPlots()
 output.ptable(meanVf,meanOther,p_value)
 output.close()
 
-os.system('pdflatex VF-report.tex')
+os.system('pdflatex '+filename+'.tex')
 os.remove('year.png')
 os.remove('month.png')
 os.remove('who.png')
 os.remove('src.png')
-os.remove('VF-report.tex')
-os.remove('VF-report.aux')
-os.remove('VF-report.log')
+os.remove(filename+'.tex')
+os.remove(filename+'.aux')
+os.remove(filename+'.log')

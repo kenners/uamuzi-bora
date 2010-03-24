@@ -37,7 +37,7 @@
 		
 	</fieldset>
 <?php echo $form->end('Download file');?>
-	<p> Please note that it can take some time to generat the report</p>
+	<p> Please note that it can take some time to generate the report</p>
 
 
 				
