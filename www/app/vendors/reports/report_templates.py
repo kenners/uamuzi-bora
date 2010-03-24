@@ -58,6 +58,30 @@ db=pg.connect(database,host,-1,None,None,login,password)
 
 os.chdir(outputFolder)
 
+#Access the command line arguments to determine the period for which to generate the report.
+if len(sys.argv)>1:
+    start=sys.argv[1]
+else:
+    #set the start point befor
+    start=None
+if len(sys.argv)>2:
+    end=sys.argv[2]
+else:
+    end=date.today()
+startYear,startMonth,startDay=start.split('-')
+endYear,endMonth,endDay=end.split('-')
+startDay=int(startDay)
+startMonth=int(startMonth)
+startYear=int(startYear)
+endDay=int(endDay)
+endMonth=int(endMonth)
+endYear=int(endYear)
+transDate="transfer_in_date > TIMESTAMP '"+start+" 00:00:00 ' AND transfer_in_date < TIMESTAMP '"+end+" 00:00:00'"
+createdCond='created > '+start+' AND created < '+end
+
+
+#LATEX-stuff
+
 header='''
 \documentclass[twocolumn]{revtex4}
 \usepackage{graphics,graphicx}
@@ -217,7 +241,7 @@ CD4 count &
         self.file.write('''
 \\begin{table}[p!]
 \caption{Numbers enrolled in HIV care, by WHO stage, by Age and Sex}
-\\begin{tabular}{l l l l l l}
+\\begin{tabular}{p{1 cm} l l l l l}
 \hline
 WHO stage  &Male $ <$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14& Total\\\\ [0.5 ex]
 \hline
@@ -225,7 +249,7 @@ WHO stage  &Male $ <$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14& Total\\\\
                         )
 
         for i in range(0,4):
-            self.file.write(str(i)+'&'+str(mu14[i])+'&'+str(mo14[i])+'&'+str(fu14[i])+'&'+str(fo14[i])+'&'+str(total[i])+'\\\\ \n')
+            self.file.write(str(i+1)+'&'+str(mu14[i])+'&'+str(mo14[i])+'&'+str(fu14[i])+'&'+str(fo14[i])+'&'+str(total[i])+'\\\\ \n')
         self.file.write('''
 \\botrule
 \label{tab:1}

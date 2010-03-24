@@ -2,29 +2,32 @@
 
 
 from report_templates import *
+print start,end
 monthsArray=['Jan','Feb','March','April','May','June','Juli','Aug','Sept','Okt','Nov','Des']
 #Connect to the database
 
 # get data
-vfNumber=len(db.query('select pid from medical_informations where patient_source_id=6').getresult())
+vfNumber=len(db.query('SELECT pid FROM medical_informations WHERE patient_source_id=6 AND '+transDate).getresult())
 
-all=db.query('select * from medical_informations').getresult()
-allLen=len(all)
+#allPeriod=db.query('SELECT * FROM medical_informations WHERE 'transDate).getresult()
+all=db.query('SELECT * FROM medical_informations').getresult()
+allPeriod=db.query('SELECT * FROM medical_informations WHERE '+transDate).getresult()
+allLen=len(allPeriod)
 otherNumber=allLen-vfNumber
-Vct=len(db.query('select pid from medical_informations where patient_source_id=3').getresult())
-inPatient=len(db.query('select pid from medical_informations where patient_source_id=2').getresult())
+Vct=len(db.query('SELECT pid FROM medical_informations WHERE patient_source_id=3 AND '+transDate).getresult())
+inPatient=len(db.query('SELECT pid FROM medical_informations WHERE patient_source_id=2 AND '+transDate).getresult())
 OtherMoreGroups=allLen-vfNumber-Vct-inPatient
 
     
 
-vfArv=len(db.query('select pid from medical_informations where patient_source_id=6 AND art_indication_id!=0 ').getresult())
-allArv=len(db.query('select pid from medical_informations where art_indication_id!=0 ').getresult())
+vfArv=len(db.query('SELECT pid FROM medical_informations WHERE patient_source_id=6 AND art_indication_id!=0 AND '+transDate).getresult())
+allArv=len(db.query('SELECT pid FROM medical_informations WHERE art_indication_id!=0 AND '+transDate).getresult())
 otherArv=allArv-vfArv
 vfWho=[]
 otherWho=[]
 for i in range(1,5):
-    Vf=len(db.query('select pid from medical_informations where patient_source_id=6 AND hiv_positive_who_stage = '+str(i)).getresult())
-    a=len(db.query('select pid from medical_informations where hiv_positive_who_stage ='+str(i)).getresult())
+    Vf=len(db.query('SELECT pid FROM medical_informations WHERE patient_source_id=6 AND hiv_positive_who_stage = '+str(i)+' AND ' +transDate).getresult())
+    a=len(db.query('SELECT pid FROM medical_informations WHERE hiv_positive_who_stage ='+str(i)+' AND '+transDate).getresult())
     other=a-Vf
     vfWho.append(Vf)
     otherWho.append(other)
@@ -34,18 +37,6 @@ otherWho=numpy.array(otherWho)
 missingVf=vfNumber-numpy.sum(vfWho)
 missingOther=otherNumber-numpy.sum(otherWho)
 missing=[missingVf,missingOther]
-sites=db.query('select * from VF_testing_sites').getresult()
-
-testingSites={}
-siteNames=[]
-for i in sites:
-    testingSites[i[1]]=i[0]
-    siteNames.append(i[1])
-numberPerSite={} 
-for i in testingSites.values():
-    number=len(db.query('select * from patients where vf_testing_site=%d'%i).getresult())
-    numberPerSite[i]=number
-
 
 
 yearsVf={}
@@ -93,20 +84,20 @@ vfCd4=[]
 otherCd4=[]
 for i in all:
     if i[1]==6:
-        res=db.query('Select id from results where pid='+str(i[0])+' and test_id=19 order by test_performed Asc').getresult()
+        res=db.query('SELECT id FROM results WHERE pid='+str(i[0])+' AND test_id=19 ORDER BY test_performed Asc').getresult()
         if res:
             if res[0][0]:
-                count=db.query('Select value_decimal from result_values where result_id='+str(res[0][0])).getresult()
+                count=db.query('SELECT value_decimal FROM result_values WHERE result_id='+str(res[0][0])).getresult()
                 
                 if count[0][0]:
                 
                     vfCd4.append(count[0][0])
     else:
-        res=db.query('Select id from results where pid='+str(i[0])+' and test_id=19 order by test_performed asc').getresult()
+        res=db.query('Select id FROM results WHERE pid='+str(i[0])+' AND test_id=19 ORDER BY test_performed asc').getresult()
         if res:
             if res[0][0]:
 
-                count=db.query('Select value_decimal from result_values where result_id='+str(res[0][0])).getresult()
+                count=db.query('SELECT value_decimal FROM result_values WHERE result_id='+str(res[0][0])).getresult()
                 
                 if count[0][0]:
                     otherCd4.append(count[0][0])
@@ -193,11 +184,15 @@ numb_months=8 # Number of months displayed
 months=monthsVf.keys()
 months.sort()
 monthsPretty=[]
+#Start day, month and year
+
+lastMonth=0;
 for month in months:
     year,m=month.split('-')
-    
+    if m<=startMonth and year<=startYear:
+        lastMonth+=1
     monthsPretty.append(monthsArray[int(m)-1]+' '+year)
-
+#Find last month to display. It should be the month of the start point for the period
 
 vfMonths=[]
 otherMonths=[]
@@ -221,7 +216,7 @@ p1=pylab.bar(x,vfMonths[-numb_months:],width,color='orange',align='center')
 
 
 
-pylab.xticks(x, monthsPretty[-8:],rotation=20)
+pylab.xticks(x, monthsPretty[lastMonth-8:lastMonth],rotation=20)
 
 pylab.legend( (p1[0], p2[0]), ('VF', 'other') )
 #Decorating the plot
@@ -232,8 +227,9 @@ pylab.savefig('month.png')
 # Generate latex-file.
 
 output=Pdf('VF-report.tex')
-today=date.today()
-output.titleVf('VF reporting form from the period '+monthsPretty[0]+' - '+monthsArray[today.month-1]+' '+str(today.year))
+
+print startMonth
+output.titleVf('VF reporting form from the period '+str(startDay)+' '+monthsArray[startMonth-1]+' '+str(startYear)+' - '+str(endDay)+' '+monthsArray[endMonth-1]+' '+str(endYear))
 vf=numpy.zeros(6,int)
 other=numpy.zeros(6,int)
 vf[0]=vfNumber

@@ -14,6 +14,7 @@ femaleU14 =db.query("select pid from patients where sex='Female' and year_of_bir
 maleO14=db.query("select pid from patients where sex='Male' and year_of_birth <"+str(year-14)).getresult()
 femaleO14=db.query("select pid from patients where sex='Female' and year_of_birth <"+str(year-14)).getresult()
 
+
 #ARRAYS OF FIELDS BY TEST TO GO HERE
 
 
@@ -31,58 +32,66 @@ maleO14Yr=[]
 femaleO14Yr=[]
 for i in maleU14:
     
-    res=db.query("SELECT hiv_positive_who_stage, patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
-    who=res[0][0]
-    src=res[0][1]
-    yr=res[0][2]
+    res=db.query("SELECT hiv_positive_who_stage, patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
+    print res
+    if res!= []:
+        who=res[0][0]
+        src=res[0][1]
+        yr=res[0][2]
     
-    
-    if who!= None:
-        maleU14Who[who-1]+=1
-    if src != None:
-        maleU14Src[src-1]+=1
-    if yr != None:
-        maleU14Yr.append(yr[0:7])
+        print res
+        if who!= None:
+            maleU14Who[who-1]+=1
+        if src != None:
+            maleU14Src[src-1]+=1
+        if yr != None:
+            maleU14Yr.append(yr[0:7])
         
 for i in femaleU14:
     
-    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
-    who=res[0][0]
-    src=res[0][1]
-    yr=res[0][2]
+    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
+    if res!=[]:
     
-    if who!= None:
-        femaleU14Who[who-1]+=1
-    if src != None:
-       femaleU14Src[src-1]+=1
-    if yr != None:
-        femaleU14Yr.append(yr[0:7])
+        who=res[0][0]
+        src=res[0][1]
+        yr=res[0][2]
+
+        if who!= None:
+            femaleU14Who[who-1]+=1
+        if src != None:
+           femaleU14Src[src-1]+=1
+        if yr != None:
+            femaleU14Yr.append(yr[0:7])
 for i in maleO14:
 
-    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
-    who=res[0][0]
-    src=res[0][1]
-    yr=res[0][2]
-    if who!= None:
-        maleO14Who[who-1]+=1
-    if src != None:
-        maleO14Src[src-1]+=1
-    if yr != None:
-        
-        maleO14Yr.append(yr[0:7])
+    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
+
+    if res!=[]:
+        who=res[0][0]
+        src=res[0][1]
+        yr=res[0][2]
+        if who!= None:
+            maleO14Who[who-1]+=1
+        if src != None:
+            maleO14Src[src-1]+=1
+        if yr != None:
+
+            maleO14Yr.append(yr[0:7])
         
 for i in femaleO14:
     
-    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
-    who=res[0][0]
-    src=res[0][1]
-    yr=res[0][2]
-    if who!= None:
-        femaleO14Who[who-1]+=1
-    if src != None:
-        femaleO14Src[src-1]+=1
-    if yr != None:
-        femaleO14Yr.append(yr[0:7])
+    res=db.query("SELECT hiv_positive_who_stage,patient_source_id,art_start_date FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
+
+    if res != []:
+        who=res[0][0]
+        src=res[0][1]
+        yr=res[0][2]
+        if who!= None:
+            femaleO14Who[who-1]+=1
+        if src != None:
+            femaleO14Src[src-1]+=1
+        if yr != None:
+            femaleO14Yr.append(yr[0:7])
         
 maleU14SrcPlot=[maleU14Src[1],maleU14Src[2],maleU14Src[5],0]
 maleU14SrcPlot[3]=sum(maleU14Src)-sum(maleU14SrcPlot)
@@ -246,12 +255,15 @@ pylab.savefig('year.png')
 
 #Months
 monthsPretty=[]
+numberMonth=8 # Number of months to display
+lastMonth=0
 for month in months:
     year,m=month.split('-')
-    
+    if m<=startMonth and year<=startYear:
+        lastMonth+=1
     monthsPretty.append(monthsArray[int(m)-1]+' '+year)
 pylab.figure()
-x=numpy.arange(len(months[-9:]))
+x=numpy.arange(numberMonth)
 if len(years)==0:
     x=numpy.arange(1)
     maleU14MPlot=[0]
@@ -259,12 +271,12 @@ if len(years)==0:
     maleO14MPlot=[0]
     femaleO14MPlot=[0]
     monthsPretty=['No data']
-pylab.bar(x+0.1,maleU14MPlot[-9:],width=0.2, color='orange',label= "Male U14")
-pylab.bar(x+0.3,femaleU14MPlot[-9:],width=0.2, color='green',label= "Female U14")
-pylab.bar(x+0.5,maleO14MPlot[-9:],width=0.2, color='blue',label= "Male O14")
-pylab.bar(x+0.7,femaleO14MPlot[-9:],width=0.2, color='gray',label= "Female O14")
+pylab.bar(x+0.1,maleU14MPlot[lastMonth-numberMonth:numberMonth],width=0.2, color='orange',label= "Male U14")
+pylab.bar(x+0.3,femaleU14MPlot[lastMonth-numberMonth:numberMonth],width=0.2, color='green',label= "Female U14")
+pylab.bar(x+0.5,maleO14MPlot[lastMonth-numberMonth:numberMonth],width=0.2, color='blue',label= "Male O14")
+pylab.bar(x+0.7,femaleO14MPlot[lastMonth-numberMonth:numberMonth],width=0.2, color='gray',label= "Female O14")
 pylab.legend(loc=0)
-pylab.xticks(x+0.5, monthsPretty[-9:] ,rotation=20)
+pylab.xticks(x+0.5, monthsPretty[lastMonth-numberMonth:numberMonth] ,rotation=20)
 
 v=list(pylab.axis())
   
@@ -282,7 +294,7 @@ pylab.savefig('month.png')
 
 output=Pdf('MoH-report.tex')
 
-output.titleMoh('MoH 255 health facility reporting form for the period  '+monthsPretty[0]+' to '+monthsArray[today.month-1]+' '+str(today.year))
+output.titleMoh('MoH 255 health facility reporting form for the period '+str(startDay)+' '+monthsArray[startMonth-1]+' '+str(startYear)+' - '+str(endDay)+' '+monthsArray[endMonth-1]+' '+str(endYear))
 
 output.mohWhoTable(maleU14Who,maleO14Who,femaleU14Who,femaleO14Who)
 

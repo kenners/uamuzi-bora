@@ -6,9 +6,35 @@
 	<fieldset>
  		<legend><?php __('Download report');?></legend>
 	<?php
-		echo $form->input('Reports',array('options'=>$reports));
+		echo $form->input('Report',array('options'=>$reports));
+	?><p><strong> Choose the time period to generate a report for:</strong> </p>
+	<p><strong> Start </strong></p>
+<?php
 		
+		echo $form->dateTime('start', 'DMY',null,$date, array(
+						 'timeFormat' => 'none',
+					         'monthNames' => false,
+					 	 'minYear' => date('Y') - 100,
+						 'maxYear' => date('Y'))
+						);
+?><p><strong> End </strong></p>
+<?php
+		echo $form->dateTime('end',
+								'DMY',
+								'none',
+								null,
+								array(
+									'minYear' => date('Y') - 100,
+									'maxYear' => date('Y'),
+									'label'=>'',
+									'monthNames' => false
+									),
+									false
+							);
+		
+
 	?>
+		
 	</fieldset>
 <?php echo $form->end('Download file');?>
 	<p> Please note that it can take some time to generat the report</p>
