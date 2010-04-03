@@ -2,8 +2,8 @@
 
 
 from report_templates import *
-print start,end
-monthsArray=['Jan','Feb','March','April','May','June','Juli','Aug','Sept','Okt','Nov','Des']
+
+
 #Connect to the database
 
 # get data
@@ -180,7 +180,7 @@ pylab.savefig('year.png')
 #Month
 
 pylab.figure()
-numb_months=8 # Number of months displayed
+numberMonth=8 # Number of months displayed
 months=monthsVf.keys()
 months.sort()
 monthsPretty=[]
@@ -189,11 +189,19 @@ monthsPretty=[]
 lastMonth=0;
 for month in months:
     year,m=month.split('-')
-    if m<=startMonthI and year<=startYearI:
+    if  year<endYear:
         lastMonth+=1
+    elif year==endYear and m<endMonth:
+        lastMonth+=1
+
+
     monthsPretty.append(monthsArray[int(m)-1]+' '+year)
 #Find last month to display. It should be the month of the start point for the period
-
+start=lastMonth-numberMonth
+if lastMonth<numberMonth:
+    start=0
+    lastMonth=None
+    numberMonth=len(months)
 vfMonths=[]
 otherMonths=[]
 for m in months:
@@ -210,13 +218,13 @@ if len(monthsVf)==0:
 
 otherMonths=numpy.array(otherMonths)+vfMonths
 
-x=numpy.arange(numb_months)
-p2=pylab.bar(x,otherMonths[-numb_months:],width,color='green',align='center')
-p1=pylab.bar(x,vfMonths[-numb_months:],width,color='orange',align='center')
+x=numpy.arange(numberMonth)
+p2=pylab.bar(x,otherMonths[start:lastMonth],width,color='green',align='center')
+p1=pylab.bar(x,vfMonths[start:lastMonth],width,color='orange',align='center')
 
+print monthsPretty[start:lastMonth]
 
-
-pylab.xticks(x, monthsPretty[lastMonth-8:lastMonth],rotation=20)
+pylab.xticks(x,monthsPretty[start:lastMonth],rotation=20)
 
 pylab.legend( (p1[0], p2[0]), ('VF', 'other') )
 #Decorating the plot

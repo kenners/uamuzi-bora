@@ -10,7 +10,7 @@ from datetime import date
 import sys
 sys.path.append('dbConfig' )
 outputFolder='output'
-
+monthsArray=['Jan','Feb','March','April','May','June','Juli','Aug','Sept','Okt','Nov','Des']
 pathDbConfig='../../config/database.php'
 if os.path.isfile('dbConfig/dbConfig.py'):
     
@@ -78,7 +78,7 @@ endDayI=int(endDay)
 endMonthI=int(endMonth)
 endYearI=int(endYear)
 
-transDate="transfer_in_date > TIMESTAMP '"+start+" 00:00:00 ' AND transfer_in_date < TIMESTAMP '"+end+" 00:00:00'"
+transDate="art_start_date > TIMESTAMP '"+start+" 00:00:00 ' AND art_start_date < TIMESTAMP '"+end+" 00:00:00'"
 createdCond='created > '+start+' AND created < '+end
 
 
@@ -263,7 +263,7 @@ WHO stage  &Male $ <$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14& Total\\\\
         src=['Inpatient','VCT','VF','Other']
         self.file.write('''
 \\begin{table}[p!]
-\caption{Numbers enrolled in HIV care, by WHO stage, by Age and Sex}
+\caption{Numbers enrolled in HIV care, by Patient Source , by Age and Sex}
 \\begin{tabular}{p {1.5 cm} l l l l l}
 \hline
 Patient Source  &Male $<$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14 & Total\\\\ [0.5 ex]
