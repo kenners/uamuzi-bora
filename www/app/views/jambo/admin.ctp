@@ -10,6 +10,10 @@
 		<div class="prepend-2 span-7 append-2">
 			<a href="/tests/add" class="hugebutton">Add New Test</a>
 		</div>
+		<h2>Report generation</h2>
+		<div class="prepend-2 span-7 append-2 last">
+			<a href="/reports/download" class="hugebutton">Download Reports</a>
+		</div>
 	</div>
 	
 	<div class="massivebuttons span-11 text-center last">
