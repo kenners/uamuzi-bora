@@ -210,10 +210,10 @@ for m in months:
     
 vfMonths=numpy.array(vfMonths)
 if len(monthsVf)==0:
-	x=numpy.arange(1)
+	
 	otherMonths=[0]
 	vfMonths=[0]
-	numb_months=1
+	numberMonth=1
 	monthsPretty=['No data']
 
 otherMonths=numpy.array(otherMonths)+vfMonths

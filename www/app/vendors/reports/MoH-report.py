@@ -279,20 +279,22 @@ for month in months:
     monthsPretty.append(monthsArray[int(m)-1]+' '+year)
 pylab.figure()
 
-if len(years)==0:
-    x=numpy.arange(1)
-    maleU14MPlot=[0]
-    femaleU14MPlot=[0]
-    maleO14MPlot=[0]
-    femaleO14MPlot=[0]
-    monthsPretty=['No data']
+
 
 start=lastMonth-numberMonth
 if lastMonth<numberMonth:
     start=0
     lastMonth=None
     numberMonth=len(months)
+if len(months)==0:
+    maleU14MPlot=[0]
+    femaleU14Mplot=[0]
+    maleO14Mplot=[0]
+    femaleO14Mplot=[0]
+    numberMonth=1
+    monthsPretty=['No data']
 x=numpy.arange(numberMonth)
+
 pylab.bar(x+0.1,maleU14MPlot[start:lastMonth],width=0.2, color='orange',label= "Male U14")
 pylab.bar(x+0.3,femaleU14MPlot[start:lastMonth],width=0.2, color='green',label= "Female U14")
 pylab.bar(x+0.5,maleO14MPlot[start:lastMonth],width=0.2, color='blue',label= "Male O14")
