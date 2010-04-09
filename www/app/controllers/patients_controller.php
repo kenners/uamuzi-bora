@@ -7,7 +7,9 @@ class PatientsController extends AppController
 	var $helpers = array('Html', 'Javascript', 'Ajax', 'Crumb');
 	
 	// Setting the limit for paginator
-	var $paginate = array('limit' => 25);
+	var $paginate = array(
+			'limit' => 25
+			);
 	
 	/**
 	 * Tell the controller about the lookup table models
@@ -21,7 +23,8 @@ class PatientsController extends AppController
 		'MedicalInformation',
 		'ArchivePatient',
 		'InactiveReason',
-		'VfTestingSite'
+		'VfTestingSite',
+		'Result'
 	);
 	
 	/**
@@ -285,8 +288,55 @@ class PatientsController extends AppController
 			$this->MedicalInformation->save(array('MedicalInformation' => array('pid' => $pid)));
 		}
 		
-		$this->set('tests', $this->Patient->Result->Test->find('all', array('recursive' => -1, 'conditions' => array('active' => true))));
+		$tests=$this->Patient->Result->Test->find('all', array('recursive' => -1, 'conditions' => array('active' => true)));
+		//set all test info to build adding form
+		$batchOfTestInfo=array();
+		foreach(array_keys($tests) as $test) {
+			// Setup a temporary array for this loop
+			$testInfo = array();
+			// Set the Test ID
+			$testInfo['test_id'] = $test;
+			// Find out the Test type
+			
+			$t = $this->Patient->Result->Test->find('first',array('conditions'=>array('Test.id'=>$test),'recursive'=>-1));
+			$testInfo['name']=$t['Test']['name'];	
+			$testInfo['type']=$t['Test']['type'];
+			$testInfo['multival']=$t['Test']['multival'];
+			$testInfo['units']=$t['Test']['units'];
+										
+			// Get Test answers/options if required
+			if($testInfo['type'] == 'lookup') {
+				$opt=$this->Patient->Result->ResultValue->ResultLookup->find('all',array('conditions'=>array('Test.id'=>$test),'recursive'=>0));
+				$options=array();
+				foreach($opt as $o){
+					$value=$o['ResultLookup']['value'];
+					$id=$o['ResultLookup']['id'];
+					$desc=$o['ResultLookup']['description'];
+					$r=array_keys($o);
+					$options[]=array('id'=>$id,'value'=>$value,'description'=>$desc);
+				}
+				$testInfo['options']=$options;				
+			}
+				// Add this temp array onto the main array we're building
+			$batchOfTestInfo[] = $testInfo;
+			unset($testInfo);
+		}
+
+		$this->set('tests',$batchOfTestInfo);
+
+
+		//Find all the results, and put them into format of array(date=>results_for_that_date)
+		$results=$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'contain'=>array('ResultValue'),'order'=>array('Result.test_performed'=>'desc')));
+		$this->set('lookup',$this->Patient->Result->ResultValue->ResultLookup->find('all',array('recursive'=>-1)));
+
+		$result_dates=array();
+		foreach($results as $result)
+		{
+			$date=$result['Result']['test_performed'];
 		
+			$result_dates[$date][$result['Result']['test_id']]=$result['ResultValue'];
+		}
+		$this->set('results',$result_dates);
 		// Super-duper containable to the rescue of database recursion hell!
 		$this->set('patients', $this->Patient->find('all', array(
 			'conditions' => array('Patient.pid' => $pid),

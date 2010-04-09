@@ -85,7 +85,7 @@ createdCond='created > '+start+' AND created < '+end
 #LATEX-stuff
 
 header='''
-\documentclass[twocolumn]{revtex4}
+\documentclass[twocolumn]
 \usepackage{graphics,graphicx}
 
 \\begin{document}

@@ -328,16 +328,27 @@ class ResultsController extends AppController {
 	}
 
 	
-	function batch_add($pid){ 
+	function batch_add($pid){
 		$this->Result->Patient->id = $pid;
 		$this->set('pid', $pid);
 		if(!$this->Result->Patient->exists()) {//Checking that patient exists
 			$this->Session->setFlash('You tried to add results to a Patient that does not exist');
 			$this->redirect($this->referer());
 		}
+
+		$patient=$this->Result->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid),'recurcive'=>-2,'fields'=>array('pid','surname','forenames','upn','sex')));
+		$this->set('Patient',$patient);
+
+
 		//The tests with the following ids are in the form
-		$batchOfTestIDs = array(2,3,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
-			// Loop to pull the relevent info for each of our tests and put them in an array	
+		$batchOfTestIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
+			// Loop to pull the relevent info for each of our tests and put them in an array
+		//If we have a mail patient we don't ask about pregnacy etc.	
+		if($patient['Patient']['sex']=='Male'){
+			unset($batchOfTestIDs[5],$batchOfTestIDs[6],$batchOfTestIDs[7]);
+			$batchOfTestIDs=array_values($batchOfTestIDs);
+
+		}
 		$batchOfTestInfo = array();
 		foreach($batchOfTestIDs as $test) {
 			// Setup a temporary array for this loop
@@ -371,10 +382,13 @@ class ResultsController extends AppController {
 		}
 			// Make our fresh array of test info available to the view
 		$this->set('batchOfTests', $batchOfTestInfo);
-		$this->set('Patient',$this->Result->Patient->find('first',array('conditions'=>array('Patient.pid'=>$pid),'recurcive'=>-2,'fields'=>array('pid','surname','forenames','upn'))));
+				// Is this a new form i.e. is there data in our object?
+		if (!empty($this->data)){
+			//$contr used to determine if we are coming from the patients or results views
+			list($i,$contr,$action,$pid)=explode('/',$this->referer());
+			
 		
-		// Is this a new form i.e. is there data in our object?
-		if (!empty($this->data)){ 
+				
 			$tests=array();
 			$data=$this->data;
 			//Create an array with testid and type
@@ -385,29 +399,29 @@ class ResultsController extends AppController {
 			//get dates 
 			$date=array();
 			$date[]=$data['Result'][0];
-			$date[]=$data['Result'][1];
-			$date[]=$data['Result'][2];
-			$date[]=$data['Result'][3];
+			if(count($data['Result'])>1){// If we are coming from the batch_add view , in the patient view only one date
+				$date[]=$data['Result'][1];
+				$date[]=$data['Result'][2];
+				$date[]=$data['Result'][3];
 			
+						unset($data['Result'][1]);
+				unset($data['Result'][2]);
+				unset($data['Result'][3]);
+			}
 			unset($data['Result'][0]);
-			unset($data['Result'][1]);
-			unset($data['Result'][2]);
-			unset($data['Result'][3]);
-			
-		//	$clin=$data['Result']['requesting_clinician'];
-		//	unset($data['Result']['requesting_clinician']);
 			
 			$result_id=0;
 
 			// loop through all the results and add any fields that have been filled out
-			$counter=4;//Since The dates are the first 4 fields.
+		//	$counter=4;//Since The dates are the first 4 fields.
 			//Arrays to store the data to be added and the validation errors
 			$invalidResults=array();
 			$invalidResultValues=array();
 			$resultArray=array();
 			$resultValueArray=array();//This will be an array of arrays
 				
-			foreach($data['ResultValue'] as $result){
+			foreach(array_keys($data['ResultValue']) as $counter){
+				$result=$data['ResultValue'][$counter];
 				//find test it by using the fact that there are 4 columns
 				$test_id=$batchOfTestIDs[intval($counter/4) -1];
 				//check that we have a value, so that we only add fields that are filled out
@@ -478,14 +492,44 @@ class ResultsController extends AppController {
 					
 				}
 				
-				$counter++;
+				//$counter++;
 			}
 			// If no validation problems save
 			
 			if (empty($invalidResults) and empty($invalidResultValues)){
 				$counter=0;
+				//If we are coming from the patients view we want to delete all the results from the same day
+				//So if we already have a weight for a day and try to add another one we will just delete the old one
+				if($contr=='patients'){
+				
+					$date=$date[0]['test_performed']['year'].'-'.$date[0]['test_performed']['month'].'-'.$date[0]['test_performed']['day'];
+					$existing=$this->Result->find('all',array('fields'=>array('id','test_id'),
+										'recursive'=>-1,
+
+									'conditions'=>array('Result.test_performed'=>$date,'pid'=>$pid))); 
+					}
+
 				// Run through all the results we need to add
 				while ($counter<count($resultValueArray)){
+					if($contr=='patients'){//Deleting the values we don't want if coming from patients
+
+						$testId=$resultArray[$counter]['Result']['test_id'];
+						
+						foreach($existing as $e){
+							if($e['Result']['test_id']==$testId){
+								$id=$e['Result']['id'];
+								if ($this->Result->del($id)) {
+									$resultValues=$this->Result->ResultValue->find('all',array('fields'=>'ResultValue.id',
+										'conditions'=>array('ResultValue.result_id'=>$id)));
+									foreach($resultValues as $val){
+									$this->Result->ResultValue->del($val['ResultValue']['id']);
+									}
+								}
+
+							}
+						}
+
+					}
 					$this->Result->create();
 					$this->Result->save($resultArray[$counter]);
 					// Need the result_id so we can add the ResultValue to the correct result
@@ -505,6 +549,7 @@ class ResultsController extends AppController {
 				$this->Result->validationErrors = $invalidResults;
 				$this->Result->ResultValue->validationErrors=$invalidResultValues;
 				$this->Session->setFlash(__('The Results could not be saved', true));
+				
 			}		
 		}
 
@@ -527,7 +572,7 @@ class ResultsController extends AppController {
 			$result_id=$this->Result->id;
 			$ResultValue=array('ResultValue'=>array('result_id'=>$result_id,'user_id'=>$this->Auth->user('id'),'value_lookup'=>1));
 			$this->Result->ResultValue->create();
-		
+			
 			if($this->Result->ResultValue->save($ResultValue)){
 			
 
