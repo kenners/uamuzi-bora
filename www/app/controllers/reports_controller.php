@@ -1,14 +1,14 @@
 <?php
 class ReportsController extends AppController {
         
-    var $name = 'Reports';
+	var $name = 'Reports';
 	// Stuff to make javascript work
     var $helpers = array('Html','Javascript','Ajax', 'Crumb');
     var $uses = array('Patient');// No model for this controller
 	// Setting the limit for paginator
     var $paginate = array('limit' => 25);
     var $reports = array('VF-report','MoH-report');
-    
+ 
     function download(){
 	$path='../vendors/reports/';
         if(!empty($this->data)) {
@@ -64,10 +64,14 @@ class ReportsController extends AppController {
 	}
 	else{
 	    //find and set earliest transfer in date.
-	    $date=$this->Patient->MedicalInformation->find('first',array('fields'=>array('transfer_in_date'),'order'=>array('transfer_in_date ASC')));
-	    $date=explode('-',$date['MedicalInformation']['transfer_in_date']);
+	    $date=$this->Patient->MedicalInformation->find('first',array('fields'=>array('hiv_positive_clinic_start_date'),'order'=>array('hiv_positive_clinic_start_date ASC')));
+	    $date=explode('-',$date['MedicalInformation']['hiv_positive_clinic_start_date']);
 	    
+	    if(!empty($date[0])){
 	    $date=array('day'=>$date[2]-1,'month'=>$date[1],'year'=>$date[0]);
+	    }else{
+		  $date=array('day'=>1,'month'=>1,'year'=>1978);
+	    }
 	    $this->set('date',$date);
 	    $this->set('reports',$this->reports);
 	}

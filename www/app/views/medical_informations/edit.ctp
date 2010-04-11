@@ -1,18 +1,12 @@
-<div id="viewTitle" class="text-left">
-</div>
-<div class="span-19">
-	<h3 class="text-center">COMPREHENSIVE CLINIC PATIENT CARD</h3>
 
-</div>
-<div class="span-3 last text-right"><h3>MOH 257</h3></div>
-<div>
-<h4><strong>Patient:</strong> <?php echo $fullname;?></h4>
-</div>
+<div id="viewTitle" class="text-left span-16 push-1" >
+<h2 style="margin-top:10px">COMPREHENSIVE CLINIC PATIENT CARD</h2>
 <?php echo $form->create('MedicalInformation', array('controller' => 'MedicalInformation', 'action' => 'edit'));?>
-<div class="span-11 text-left">
+</div>
+<div class="span-21 pull-6" style="margin-top:30px">
+<div class="span-10 text-left">
 
 <?php
-$crumb->addThisPage('Edit Patient Medical Information', null, 'auto');
 echo $form->hidden('pid');
 echo $form->inputs(array(
 	'legend' => 'Patient Source',
@@ -81,4 +75,6 @@ echo $form->inputs(array(
 	</button>
 </div>
 </form>
+</div>
+</div>
 </div>

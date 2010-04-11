@@ -39,8 +39,10 @@ class PatientsController extends AppController
 	
 	function search()
 	{
+		//$this->Patient->recursive = 0;
+		//$this->set('patients', $this->paginate());
+		$this->paginate();
 		$paginate = array('recursive' => -1);
-		$this->set(array('locations' => $this->Location->generatetreelist(null, null, null, '-')));
 		if (!empty($this->data)) {
 			$active_key = 'status';
 			$location_key = 'Patient.location_id';
@@ -48,117 +50,11 @@ class PatientsController extends AppController
 			// extract data from form
 			$search_key_1 = array_pop(Set::extract('/Patient/search_key_1', $this->data));
 			$search_value_1 = array_pop(Set::extract('/Patient/search_value_1', $this->data));
-			$search_key_2 = array_pop(Set::extract('/Patient/search_key_2', $this->data));
-			$search_value_2 = array_pop(Set::extract('/Patient/search_value_2', $this->data));
-			$search_key_3 = array_pop(Set::extract('/Patient/search_key_3', $this->data));
-			$search_value_3 = array_pop(Set::extract('/Patient/search_value_3', $this->data));
 			$active = array_pop(Set::extract('/Patient/status', $this->data));
-			$location = array_pop(Set::extract('/Patient/location_id', $this->data));
 			
-			// If we have a test field want to use LIKE
-			switch ($search_key_1) {
-				case 'pid':
-					$search_key_1 = $search_key_1 . ' =';
-					$search_value_1 = $search_value_1;
-					break;
-				case 'age':
-					$search_key_1 = $search_key_1 . ' =';
-					$search_value_1 = $search_value_1; 
-					break;
-				case 'surname':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-				case 'forenames':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-				case 'telephone_number':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-				case 'upn':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-				case 'arvid':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-				case 'vfcc':
-					$search_key_1 = $search_key_1 . ' ~~*';
-					$search_value_1 = " '%" . $search_value_1 . "%'";
-					break;
-			}
-			switch ($search_key_2) {
-				case 'pid':
-					$search_key_2 = $search_key_2 . ' =';
-					$search_value_2 = $search_value_2;
-					break;
-				case 'age':
-					$search_key_2 = $search_key_2 . ' =';
-					$search_value_2 = $search_value_2; 
-					break;
-				case 'surname':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-				case 'forenames':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-				case 'telephone_number':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-				case 'upn':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-				case 'arvid':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-				case 'vfcc':
-					$search_key_2 = $search_key_2 . ' ~~*';
-					$search_value_2 = " '%" . $search_value_2 . "%'";
-					break;
-			}
-			switch ($search_key_3) {
-				case 'surname':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-				case 'pid':
-					$search_key_3 = $search_key_3 . ' =';
-					$search_value_3 = $search_value_3;
-					break;
-				case 'age':
-					$search_key_3 = $search_key_3 . ' =';
-					$search_value_3 = $search_value_3; 
-					break;
-				case '.forenames':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-				case 'telephone_number':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-				case 'upn':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-				case 'arvid':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-				case 'vfcc':
-					$search_key_3 = $search_key_3 . ' ~~*';
-					$search_value_3 = " '%" . $search_value_3 . "%'";
-					break;
-			}
-			 
+			
+			$search_key_1 = $search_key_1 . ' ~~*';
+			$search_value_1 = " '%" . $search_value_1 . "%'";
 			// fix active value
 			if (strcmp($active, '2') == 0) {
 				$active = false;
@@ -168,71 +64,21 @@ class PatientsController extends AppController
 				$active = array(true, false);
 			}
 			
-			// Get all the sublocations so we can include alle of them
-			$location_arr = $this->Patient->Location->children($location);
-			$locations = array();
-			foreach ($location_arr as $loc) {
-				array_push($locations, $loc['Location']['id']);
-			}
-			 
-			array_push($locations, $location);
-			$result = array();
+				 
+			
 			// Check how many $search_keys we have, and the call with 1,2 or 3 conditions
-			if ($search_key_1 != null) {
-				if ($search_key_2 != null) {
-					if ($search_key_3 != null) {
-						$result = $this->paginate('Patient', array(
-							'Patient.' . $search_key_1 . $search_value_1,
-							'Patient.' . $search_key_2 . $search_value_2,
-							'Patient.' . $search_key_3 . $search_value_3,
-							$active_key   => $active,
-							$location_key => $locations
-						));
-					} else {
-						$result = $this->paginate('Patient', array(
-							'Patient.' . $search_key_1 . $search_value_1,
-							'Patient.' . $search_key_2 . $search_value_2,
-							$active_key   => $active,
-							$location_key => $locations
-						));
-					}
-				}
-				// Add results with just one of the conditions to the bottom
-				$result = parent::__combine_array($result, $this->paginate('Patient', array(
-					'Patient.' . $search_key_1 . $search_value_1,
-					$active_key   => $active,
-					$location_key => $locations
-				)));
-				
-				// Want to add results where just one of the conditions was fullfilled
-				if ($search_key_2 != null) {
-					$result = parent::__combine_array($result, $this->paginate('Patient', array(
-						'Patient.' . $search_key_2 . $search_value_2,
-						$active_key   => $active,
-						$location_key => $locations
-					)));
-				}
-				if ($search_key_3 != null) {
-					$result = parent::__combine_array($result, $this->paginate('Patient', array(
-						'Patient.' . $search_key_3 . $search_value_3,
-						$active_key   => $active,
-						$location_key => $locations
-					)));
-				}
-				
+					// Add results with just one of the conditions to the bottom
+				$result = $this->paginate('Patient', array(
+					'Patient.' . $search_key_1.$search_value_1,
+					$active_key   => $active));
 				$this->set('patients', $result);
 				
 				if(count($result) == 0) {
-					$this->Session->setFlash('Couldn\'t find any patients fullfilling those conditions');
+					$this->Session->setFlash('Cannot find patients');
 				}
-			} else {
-				$result = parent::__combine_array($result, $this->paginate('Patient', array(
-					$location_key => $locations
-				)));
-				$this->set('patients', $result);
-			}
+			
 		}
-		$this->paginate('Patient');
+		//$this->paginate('Patient');
 	}
 	
 	/**
@@ -240,6 +86,7 @@ class PatientsController extends AppController
 	 */
 	function add()
 	{
+		
 		// What to do if we have been sent data (i.e. the form has been filled
 		// out)
 		if (!empty($this->data)) {
@@ -255,7 +102,7 @@ class PatientsController extends AppController
 //					. '<strong>' . chunk_split(str_pad($this->data['Patient']['pid'], 9, '0', STR_PAD_LEFT), 3, ' ') . '</strong>', 'default', array('class' => 'success large text-centre'));
 				$this->redirect('/medical_informations/add/' . $this->data['Patient']['pid']);
 			} else {
-				$this->Session->setFlash('There was a problem adding this patient.  Please try again');
+				$this->Session->setFlash('Please try again');
 //				$this->redirect(array('controller' => 'patients', 'action' => 'add'));
 			}
 		}
@@ -303,6 +150,7 @@ class PatientsController extends AppController
 			$testInfo['type']=$t['Test']['type'];
 			$testInfo['multival']=$t['Test']['multival'];
 			$testInfo['units']=$t['Test']['units'];
+			$testInfo['abbreviation']=$t['Test']['abbreiviation'];
 										
 			// Get Test answers/options if required
 			if($testInfo['type'] == 'lookup') {
@@ -438,7 +286,7 @@ class PatientsController extends AppController
 			// Update the row
 			parent::archive($pid);
 			if ($this->Patient->save($data)) {
-				$this->Session->setFlash('The patient details were successfully updated');
+				$this->Session->setFlash('Record Updated');
 				$this->redirect('/patients/view/' . $this->data['Patient']['pid']);
 			}
 		}

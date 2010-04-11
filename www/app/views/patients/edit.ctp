@@ -1,13 +1,10 @@
 <?php $crumb->addThisPage('Edit Patient Details', null, 'auto'); ?>
-<div id="viewTitle" class="text-left">
-</div>		
-<div class="span-19">
-	<h3 class="text-center">COMPREHENSIVE CLINIC PATIENT CARD</h3>
 
+<div id="viewTitle" class="text-left span-16 push-1" >
+<h2 style="margin-top:10px">COMPREHENSIVE CLINIC PATIENT CARD</h2>
 </div>
-<div class="span-3 last text-right"><h3>MOH 257</h3></div>
-<h4><strong>Patient:</strong> <?php echo $fullname;?></h4>
-<div class="span-11 text-left">
+<div class="span-21 pull-6" style="margin-top:30px">
+<div class="span-10 text-left">
 <?php
 echo $form->create('Patient', array('controller' => 'Patient', 'action' => 'edit'));
 echo $form->hidden('pid');
@@ -54,9 +51,10 @@ echo $form->inputs(array('legend' => 'VF Information',
 <!-- Pretty Blueprint submit button -->
 <div class="span-5 prepend-3 append-3">
 	<button type="submit" class="button positive">
-		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Modify Patient Details
+		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Update Record
 	</button>
 </div>
 </form>
 </div>
-
+</div>
+</div>

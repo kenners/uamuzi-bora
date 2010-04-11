@@ -20,6 +20,7 @@ class UsersController extends AppController
 	{
 		parent::beforeFilter();
 		$this->Auth->allowedActions = array('buildAcl', 'initDB', 'logout', 'login');
+		$this->layout='admin';
 	}
 	
 	// A function to initialize the Acl table, for use one time only.
@@ -130,7 +131,20 @@ class UsersController extends AppController
 		$this->Acl->deny($group, 'controllers/Jambo', 'admin');
 		$this->Acl->allow($group, 'controllers/Results');
 		$this->Acl->allow($group, 'controllers/ResultLookups', 'view');
-		
+		$this->ACl->allow($group, 'controllers/Reports');
+		$group->id = 3;
+		$this->Acl->deny($group, 'controllers');
+		$this->Acl->allow($group, 'controllers/Patients');
+		$this->Acl->allow($group, 'controllers/MedicalInformations');
+		$this->Acl->allow($group, 'controllers/Tests', 'view');
+		$this->Acl->allow($group, 'controllers/Jambo');
+		$this->Acl->deny($group, 'controllers/Jambo', 'admin');
+		$this->Acl->allow($group, 'controllers/Results');
+		$this->Acl->allow($group, 'controllers/ResultLookups', 'view');
+		$this->ACl->allow($group, 'controllers/Reports');
+
+
+
 		$this->Session->setFlash('Database succesfully initialized'); 
 		$this->redirect(array('controller' => '/'));
 	}

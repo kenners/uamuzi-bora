@@ -242,7 +242,7 @@ ALTER SEQUENCE acos_id_seq OWNED BY acos.id;
 -- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('acos_id_seq', 1, false);
+SELECT pg_catalog.setval('acos_id_seq', 132, true);
 
 
 --
@@ -590,7 +590,7 @@ ALTER SEQUENCE archive_tests_id_seq OWNED BY archive_tests.id;
 -- Name: archive_tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_tests_id_seq', 1, false);
+SELECT pg_catalog.setval('archive_tests_id_seq', 4, true);
 
 
 --
@@ -691,7 +691,7 @@ ALTER SEQUENCE aros_acos_id_seq OWNED BY aros_acos.id;
 -- Name: aros_acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_acos_id_seq', 1, false);
+SELECT pg_catalog.setval('aros_acos_id_seq', 25, true);
 
 
 --
@@ -717,7 +717,7 @@ ALTER SEQUENCE aros_id_seq OWNED BY aros.id;
 -- Name: aros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_id_seq', 5, false);
+SELECT pg_catalog.setval('aros_id_seq', 6, true);
 
 
 --
@@ -890,7 +890,7 @@ CREATE TABLE groups (
 --
 
 CREATE SEQUENCE groups_id_seq
-    START WITH 3
+    START WITH 2
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -908,7 +908,7 @@ ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 -- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('groups_id_seq', 3, false);
+SELECT pg_catalog.setval('groups_id_seq', 3, true);
 
 
 --
@@ -1434,7 +1434,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('users_id_seq', 3, false);
+SELECT pg_catalog.setval('users_id_seq', 3, true);
 
 
 --
@@ -1754,6 +1754,8 @@ COPY aros (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
 3	1	User	1	\N	2	3
 2	\N	Group	2	\N	5	8
 4	2	User	2	\N	6	7
+5	\N	Group	3	\N	9	12
+6	5	User	3	\N	10	11
 \.
 
 
@@ -1819,6 +1821,7 @@ COPY fundings (id, name, description, comment) FROM stdin;
 COPY groups (id, name, description, created, modified) FROM stdin;
 1	admin		2009-07-10 21:35:23	2009-07-10 21:35:23
 2	user		2009-07-10 21:35:27	2009-07-10 21:35:27
+3	data	Group for mass data entry	2010-04-11 21:37:20	2010-04-11 21:37:20
 \.
 
 
@@ -2093,14 +2096,10 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 6	WHO Stage		lookup	\N	\N	The patient's current WHO Stage (1-4)		t	1	2009-07-19 22:41:10		\N
 7	Pregnant		lookup	\N	\N	Is the patient currently pregnant?		t	1	2009-07-19 22:41:32		\N
 8	Last Menstrual Period	LMP	text	\N	\N	Date of the patient's last menstrual period in the format DD-MM-YYYY		t	1	2009-07-19 22:43:46		\N
-9	Family Planning Status		lookup	\N	\N	Is the patient using any form of contraception?		t	1	2009-07-19 22:44:36		\N
 10	TB Status		lookup	\N	\N	The current TB status of the patient.		t	1	2009-07-19 22:46:10		\N
-11	Opportunistic Infection	NewOI	lookup	\N	\N	Does the patient have a new opportunistic infection?		t	1	2009-07-19 22:48:23		1
 12	Other Medical Conditions		text	\N	\N	Does the patient have any new other medical condition?		t	1	2009-07-19 22:48:23		\N
-13	ART Side Effects	ART SE	lookup	\N	\N	Is the patient currently experiencing any side-effects of ARTs?		t	1	2009-07-19 22:53:32		1
 14	Cotrimoxazole Status		lookup	\N	\N	Is the patient taking cotrimoxazole?		t	1	2009-07-19 22:56:15		\N
 15	Fluconazole Status		lookup	\N	\N	Is the patient taking fluconazole?		t	1	2009-07-19 22:57:27		\N
-16	Other Medications Dispensed		text	\N	\N	Have any other medications been dispensed to the patient?		t	1	2009-07-19 22:58:40		\N
 17	ARV Drug Adherence		lookup	\N	\N			t	1	2009-07-19 23:00:28		\N
 18	ARV Drug Regimen		lookup	\N	\N			t	1	2009-07-19 22:59:43		\N
 19	CD4 Count	CD4	decimal	\N	\N	The patient's current CD4 count.		t	1	2009-07-19 23:01:45	%	\N
@@ -2112,8 +2111,11 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 25	Counselling		lookup	\N	\N	Has the patient received any form of counselling?		t	1	2009-07-19 23:04:24		\N
 26	Clinical Note		text	\N	\N			t	1	2009-07-19 23:05:44		\N
 27	Examination Findings		text	\N	\N			t	1	2009-07-19 23:05:58		\N
+9	Family Planning Status	FP Status	lookup	\N	\N	Is the patient using any form of contraception?		t	1	2009-07-19 22:44:36		f
+11	Opportunistic Infection	Opportunistic Infection	lookup	\N	\N	Does the patient have a new opportunistic infection?		t	1	2009-07-19 22:48:23		t
+13	ART Side Effects	ART Side Effects	lookup	\N	\N	Is the patient currently experiencing any side-effects of ARTs?		t	1	2009-07-19 22:53:32		t
+16	Other Medications Dispensed	Other Medications	text	\N	\N	Have any other medications been dispensed to the patient?		t	1	2009-07-19 22:58:40		f
 \.
-
 
 
 --
@@ -2123,6 +2125,7 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 COPY users (id, username, password, group_id, name, created, modified) FROM stdin;
 1	admin	82bf611c53901f13c54e59f032a4d4714168c505075f7010d05ff2d8062a8c9e	1		2009-07-10 21:35:38	2009-07-10 21:35:38
 2	user	89ef4f9d082dad635f13d9aab392a2ce41f47dbfd28d783e023ccfd5213a1a67	2		2009-07-10 21:35:59	2009-07-10 21:35:59
+3	data	78732071c8fa23f1587f71b1bd7169b3e186c978e2cc1cf281580b9a9cad31d7	3	\N	2010-04-11 23:29:55	2010-04-11 23:29:55
 \.
 
 

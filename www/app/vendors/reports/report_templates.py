@@ -10,7 +10,7 @@ from datetime import date
 import sys
 sys.path.append('dbConfig' )
 outputFolder='output'
-monthsArray=['Jan','Feb','March','April','May','June','Juli','Aug','Sept','Okt','Nov','Des']
+monthsArray=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 pathDbConfig='../../config/database.php'
 if os.path.isfile('dbConfig/dbConfig.py'):
     
@@ -78,14 +78,14 @@ endDayI=int(endDay)
 endMonthI=int(endMonth)
 endYearI=int(endYear)
 
-transDate="art_start_date > TIMESTAMP '"+start+" 00:00:00 ' AND art_start_date < TIMESTAMP '"+end+" 00:00:00'"
-createdCond='created > '+start+' AND created < '+end
+transDate="hiv_positive_clinic_start_date > TIMESTAMP '"+start+" 00:00:00 ' AND hiv_positive_clinic_start_date < TIMESTAMP '"+end+" 00:00:00'"
+
 
 
 #LATEX-stuff
 
 header='''
-\documentclass[twocolumn]
+\documentclass[twocolumn]{revtex4}
 \usepackage{graphics,graphicx}
 
 \\begin{document}
@@ -108,9 +108,8 @@ class Pdf:
         self.file=open(filename,'w')
         self.file.write(header)
     def titleVf(self,title):
-        self.file.write('\\title{\\includegraphics[width=3cm]{ubbanner.png}'+title+'\\includegraphics[width=3cm]{vf.png}}\n ')
+        self.file.write('\\title{\\includegraphics[width=3cm]{ubbanner.png}'+title+'}\n ')
         
-        self.file.write('\date{\\today}\n')
         self.file.write('\\maketitle\n')
 
     def titleMoh(self,title):
@@ -217,7 +216,7 @@ VF site &Numbers enrolled\\\\ [0.5 ex]
     def ptable(self,mean1,mean2,p_value):
         self.file.write('''
 \\begin{table}[p!]
-\caption{Mean CD4 count of patients, by paitent source, with t-test for significance}
+\caption{Mean CD4 count of patients, by Patient Source, with t-test for significance}
 \\begin{tabular}{l l l}
 \hline
 Patient Source & VF & Other\\\\ [0.5 ex]

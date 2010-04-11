@@ -4,7 +4,12 @@ class ResultLookupsController extends AppController
 	var $name = 'ResultLookups';
 	var $helpers = array('Html', 'Form', 'Crumb');
 	var $uses = array('ResultLookup', 'ArchiveResultLookup', 'User');
-	
+
+	function beforeFilter()
+	{	
+		parent::beforeFilter();
+		$this->layout='admin';
+	}	
 	function index()
 	{
 		$this->redirect(array('controller' => 'tests', 'action' => 'index'));

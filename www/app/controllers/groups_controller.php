@@ -6,14 +6,22 @@ class GroupsController extends AppController
 	var $helpers = array('Html', 'Form', 'Crumb');
 	var $uses = array('Group','ArchiveGroup');
 	
+
+	function beforeFilter()
+	{	
+		parent::beforeFilter();
+		$this->layout='admin';
+	}
 	function index()
 	{
+		
 		$this->Group->recursive = 0;
 		$this->set('groups', $this->paginate());
 	}
 	
 	function view($id = null)
 	{
+		
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid Group.', true));
 			$this->redirect(array('action' => 'index'));
@@ -23,6 +31,7 @@ class GroupsController extends AppController
 	
 	function add()
 	{
+		
 		if (!empty($this->data)) {
 			$this->Group->create();
 			if ($this->Group->save($this->data)) {
@@ -56,6 +65,7 @@ class GroupsController extends AppController
 	
 	function delete($id = null)
 	{
+			
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Group', true));
 			$this->redirect(array('action'=>'index'));

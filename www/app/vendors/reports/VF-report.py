@@ -46,15 +46,15 @@ monthsOther={}
 for i in all:
     if i[1]==6:
         
-        if i[10]:
-            year= i[10][0:4]
+        if i[5]:
+            year= i[5][0:4]
             if year in yearsVf:
                 yearsVf[year]+=1
             else:
                 yearsVf[year]=1
             if not year in yearsOther:
                 yearsOther[year]=0
-            month=i[10][0:7]
+            month=i[5][0:7]
             if month in monthsVf:
                 monthsVf[month]+=1
             else:
@@ -62,15 +62,15 @@ for i in all:
             if not month in monthsOther:
                 monthsOther[month]=0
     else:
-        if i[10]:
-            year= i[10][0:4]
+        if i[5]:
+            year= i[5][0:4]
             if year in yearsOther:
                 yearsOther[year]+=1
             else:
                 yearsOther[year]=1
             if not year in yearsVf:
                     yearsVf[year]=0
-            month=i[10][0:7]
+            month=i[5][0:7]
             if month in monthsVf:
                 monthsOther[month]+=1
             else:
@@ -237,7 +237,7 @@ filename='VF-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
 output=Pdf(filename+'.tex')
 
 
-output.titleVf('VF reporting form from the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+'-'+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
+output.titleVf('VF reporting form from the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
 vf=numpy.zeros(6,int)
 other=numpy.zeros(6,int)
 vf[0]=vfNumber

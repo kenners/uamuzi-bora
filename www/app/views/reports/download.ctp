@@ -1,23 +1,26 @@
 <?php $crumb->addThisPage('Reports', 'reset'); ?>
 <div id="viewTitle" class="text-left">
-	<p><span class="welcome1">Reports</span>&nbsp;&nbsp;&nbsp;<span class="welcome2">Which report do you want to download?</span></p>
-
-<?php echo $form->create(null, array('url' => array('controller' => 'reports', 'action' => 'download'))); ?>
-	<fieldset>
- 		<legend><?php __('Download report');?></legend>
-	<?php
-		echo $form->input('Report',array('options'=>$reports));
-	?><p><strong> Choose the time period to generate a report for:</strong> </p>
-	<p><strong> Start </strong></p>
+	<p><span class="welcome1">Reports</span>&nbsp;&nbsp;&nbsp;</p>
+<div class="span-21 pull-6">
+<table>
+<tr>
+<td width="200">
+	<p><strong> Start Date </strong></p>
+<div style="margin-top:-20px">
 <?php
-		
+		 echo $form->create(null, array('url' => array('controller' => 'reports', 'action' => 'download'))); 
 		echo $form->dateTime('start', 'DMY',null,$date, array(
 						 'timeFormat' => 'none',
 					         'monthNames' => false,
 					 	 'minYear' => date('Y') - 100,
 						 'maxYear' => date('Y'))
 						);
-?><p><strong> End </strong></p>
+?>
+</div
+</td>
+<td width="200">
+<strong> End Date </strong></p>
+<div style="margin-top:-20px">
 <?php
 		echo $form->dateTime('end',
 								'DMY',
@@ -34,11 +37,20 @@
 		
 
 	?>
-		
-	</fieldset>
-<?php echo $form->end('Download file');?>
-	<p> Please note that it can take some time to generate the report</p>
+</div>
+</td><td>
+	
+<strong> Report Type </strong></p>
+<div style="margin-top:-20px">
 
+ 	<?php
+		echo $form->input('Report',array('options'=>$reports,'label'=>''));
+	?>
+</div>
+</td><td>	
+
+<?php echo $form->end('Create Report');?>
+</td></tr></table>	
 
 				
 		

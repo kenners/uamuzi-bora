@@ -1,16 +1,12 @@
 <?php $crumb->addThisPage('Add Patient', null, 'auto'); ?>
-<div id="viewTitle" class="text-left">
-<h1>Add New Patient</h1>
-</div>
-<div class="span-19">
-	<h3 class="text-center">COMPREHENSIVE CLINIC PATIENT CARD</h3>
+<div id="viewTitle" class="text-left push-1 span-16" >
+<h2 style="margin-top:10px">COMPREHENSIVE CLINIC PATIENT CARD</h2>
 
-</div>
-<div class="span-3 last text-right"><h3>MOH 257</h3></div>
 <!--
 <p>To add a new patient to the database, please complete the details below. You can <?php echo $html->link('Search', array('action'=>'search')); ?> or <?php echo $html->link('Browse', array('action'=>'index')); ?> to check that this patient doesn't already have a record in the database. <strong>Surname</strong> and <strong>Forenames</strong> are Required Fields (i.e. you must provide values for them).</p>-->
-
-<div class="span-11 text-left">
+</div>
+<div class="span-21 pull-6" style="margin-top:30px">
+<div class="span-10 text-left">
 <?php
 echo $form->create('Patient', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Patient Profile',
@@ -61,4 +57,6 @@ echo $form->inputs(array('legend' => 'VF Information',
 	</button>
 </div>
 </form>
+</div>
+</div>
 </div>

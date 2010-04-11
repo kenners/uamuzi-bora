@@ -50,11 +50,13 @@
         		
         			break;
        			}
-		
-		echo $form->input('Result.test_performed', array('dateFormat' => 'DMY',
-												'timeFormat' => 'none',
+	
+		echo $form->input('Result.test_performed',array('label' => 'Test Performed',
+												'dateFormat' => 'DMY',
+												'timeFormat' =>'empty',	
 												'minYear' => date('Y') - 100,
-												'maxYear' => date('Y')));
+												'maxYear' => date('Y'),
+												'selected'=>$results['Result']['test_performed']));	
 		echo $form->input('Result.requesting_clinician',array('default'=>$results['Result']['requesting_clinician']));
 		
 	?>

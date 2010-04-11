@@ -27,26 +27,32 @@
 <body>
 	<div id="container">
 		<!-- Header -->
-		<div id="headerbar" class="span-6 last">
+		<div id="headerbar" class="span-24 last">
 			<!-- Title -->
-			<div class="text-left prepend-10 span-5 append-8 headerbar text-center" onclick="location.href='/';" style="cursor: pointer;">
+			<div class="text-left prepend-1 span-7 append-8 headerbar" onclick="location.href='/';" style="cursor: pointer;">
 				<h1 class="hide">Uamuzi Bora</h1>
 			</div>
 			<!-- User box -->
+			<div  id="userbox" class="prepend-16 span-8 last"></div>
 			
-			
-			
-				
-			
-			
+			<div class="breadcrumb span-24 last">
+				<div class="span-7 append-1 text-right last">
+					<?php if($session->check('Auth.User.id'))
+					{
+						echo 'Jambo <strong>' . $session->read('Auth.User.username') . '</strong>! ';
+						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
+					}
+					?>
+				</div>
 			</div>
+		</div>
 		<!-- Spinner is used for AJAX index views -->
 		<div id="spinner" class="spinning">
 			<?php echo $html->image('spinner.gif'); ?>
 		</div>
 		<!-- Content -->
 		<div id="content" class="prepend-1 prepend-top span-22 append-1">
-			<div class=" span-6 text-center last" style="margin-left:-240px;margin-top:40px">
+			<div class="prepend-3 span-16 append-3 last">
 				<?php $session->flash(); ?>
 				<?php $session->flash('auth'); ?>
 			</div>
@@ -56,28 +62,7 @@
 		<!-- Footer -->
 		<div id="footer" class="prepend-top prepend-1 span-22 append-1 last">
 		<hr/>
-			<p>&copy; 2010 The Uamuzi Bora Project. 
-
-				<?php if($session->check('Auth.User.id'))
-					{
-						
-						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
-					}
-				echo '  ';
-				$userinfo = $session->read('Auth.User');
-				if($userinfo['group_id'] == 1) {	
-					echo $html->link(__('Admin', true), array('controller'=>'jambo','action'=>'admin'));
-				}
-					?>
-</p>
-			<div style="margin-left:610px;margin-top:-50px" class="span-9">
-				<a href="/reports/download" class="button"><img src="/img/icons/application_form_edit.png" />Create Report</a>
-			<div >
-			<a href="/patients/add" class="button"><img src="/img/icons/application_form_add.png" />Add Patient</a>
-			</div>
-		</div>
-
-				</div>
+			<p>&copy; 2010 The Uamuzi Bora Project. </p>
 		</div>
 	</div>
 	<!-- Debug Stuff - REMEMBER TO REMOVE BEFORE DEPLOYING!!! -->

@@ -47,13 +47,13 @@
 
 .vitalInfo {
 	padding:1.5em;
-	margin-bottom:-180px;
-	padding-bottom:200px;
-	background:#E5ECF9;
+	margin-bottom:-170px;
+	padding-bottom:170px;
+	
 }
 
 .bluebox {
-	padding:1.5em;
+	padding:1em;
 	background:#E5ECF9;
 }
 
@@ -178,7 +178,7 @@ div.spinning {
 	line-height:5em;
 	margin-bottom:1.25em;
 }
-
+a.white {color:#FFFFFF;text-decoration:none;}
 a.hugebutton {
 	display:block;
 	margin:.7em .5em .7em 0;

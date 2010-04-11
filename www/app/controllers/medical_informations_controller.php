@@ -93,7 +93,7 @@ class MedicalInformationsController extends AppController
 			
 			// Save the new row
 			if ($this->MedicalInformation->save($data)) {
-				$this->Session->setFlash('Medical information successfully updated');
+				$this->Session->setFlash('Record updated');
 				$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
 			}
 		}

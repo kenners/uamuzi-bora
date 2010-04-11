@@ -5,6 +5,12 @@ class TestsController extends AppController
 	var $helpers = array('Html', 'Form', 'Crumb');
 	var $uses = array('Test', 'ArchiveTest', 'User');
 	
+
+	function beforeFilter()
+	{	
+		parent::beforeFilter();
+		$this->layout='admin';
+	}	
 	function index() 
 	{
 		$this->Test->recursive = 0;

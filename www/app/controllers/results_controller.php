@@ -184,6 +184,7 @@ class ResultsController extends AppController {
 
 
 	function edit($id = null) {
+		$this->layout="default2";
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid Result', true));
 			$this->redirect(array('action'=>'index'));
@@ -323,7 +324,7 @@ class ResultsController extends AppController {
 					$this->Result->ResultValue->del($val['ResultValue']['id']);
 			}
 			$this->Session->setFlash(__('Result deleted', true));
-			$this->redirect('/');
+			$this->redirect($this->referer());
 		}
 	}
 
@@ -404,9 +405,7 @@ class ResultsController extends AppController {
 				$date[]=$data['Result'][2];
 				$date[]=$data['Result'][3];
 			
-						unset($data['Result'][1]);
-				unset($data['Result'][2]);
-				unset($data['Result'][3]);
+				unset($data['Result'][1],$data['Result'][2],$data['Result'][3]);
 			}
 			unset($data['Result'][0]);
 			
@@ -453,9 +452,7 @@ class ResultsController extends AppController {
 						//Single value
 						$to_addResVal=array('ResultValue'=> array(
 											'value_'.$tests[$test_id]=>$value,
-											'user_id'=>$this->Auth->user('id'),
-											'result_id'=>$result_id
-											));
+											'user_id'=>$this->Auth->user('id')));
 				
 				
 
@@ -480,9 +477,7 @@ class ResultsController extends AppController {
 						foreach($value as $val){
 							$to_addResVal=array('ResultValue'=> array(
 											'value_'.$tests[$test_id]=>$val,
-											'user_id'=>$this->Auth->user('id'),
-											'result_id'=>$result_id
-											));
+											'user_id'=>$this->Auth->user('id')));
 							$one_result[]=$to_addResVal;
 							}
 						$resultValueArray[]=$one_result;
@@ -497,6 +492,24 @@ class ResultsController extends AppController {
 			// If no validation problems save
 			
 			if (empty($invalidResults) and empty($invalidResultValues)){
+
+				//Add attendance to all dates where we are adding results
+				$dates=array();
+				foreach($resultArray as $result)
+				{
+					if(!in_array($result['Result']['test_performed'], $dates))
+					{
+						$dates[]=$result['Result']['test_performed'];
+					}
+				}
+				foreach($dates as $d){
+					$resultArray[]=array('Result'=>array('pid'=>$pid,
+										'test_id'=>1,
+										'test_performed'=>$d,
+										'user_id'=>$this->Auth->user('id')));
+					$resultValueArray[]=array(array('ResultValue'=>array('value_lookup'=>2,'user_id'=>$this->Auth->user('id'))));
+				}
+					
 				$counter=0;
 				//If we are coming from the patients view we want to delete all the results from the same day
 				//So if we already have a weight for a day and try to add another one we will just delete the old one

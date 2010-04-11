@@ -10,13 +10,17 @@ class JamboController extends AppController
 	
 	// We need this to stop it complaining that it hasn't got an associated model.
 	var $uses = NULL;
-	
+	function beforeFilter()
+	{	
+		parent::beforeFilter();
+		$this->layout='admin';
+	}	
 	
 	/**
 	 * Displays the main home page with different options depending on the group of the
 	 * logged in user.
 	 */
-	function index() {}
+	
 	
 	/**
 	 * Displays the admin functions

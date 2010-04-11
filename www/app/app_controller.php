@@ -47,7 +47,7 @@ class AppController extends Controller
 		$this->Auth->authorize = 'actions';
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');  // The action to login
 		$this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');  // Where we redirect after logout
-		$this->Auth->loginRedirect = array('controller' => 'jambo', 'action' => 'index');  // Where we redirect after login
+		$this->Auth->loginRedirect = array('controller' => 'patients', 'action' => 'search');  // Where we redirect after login
 	}
 	
 	// A function to archive a record given by $id, the function asumes a model

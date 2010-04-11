@@ -34,7 +34,7 @@ for i in maleU14:
     
     res=db.query("SELECT hiv_positive_who_stage, patient_source_id FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
     
-    resYr=db.query("SELECT art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
+    resYr=db.query("SELECT hiv_positive_clinic_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
     yr=resYr[0][0]
     if yr != None:
             maleU14Yr.append(yr[0:7])
@@ -52,7 +52,7 @@ for i in maleU14:
 for i in femaleU14:
     
     res=db.query("SELECT hiv_positive_who_stage,patient_source_id FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
-    resYr=db.query("SELECT art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
+    resYr=db.query("SELECT hiv_positive_clinic_start_date  FROM medical_informations WHERE pid="+str(i[0])).getresult()
     yr=resYr[0][0]
     if yr != None:
             femaleU14Yr.append(yr[0:7])
@@ -70,7 +70,7 @@ for i in femaleU14:
 for i in maleO14:
 
     res=db.query("SELECT hiv_positive_who_stage,patient_source_id FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
-    resYr=db.query("SELECT art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
+    resYr=db.query("SELECT hiv_positive_clinic_start_date  FROM medical_informations WHERE pid="+str(i[0])).getresult()
     yr=resYr[0][0]
     if yr != None:
             maleO14Yr.append(yr[0:7])
@@ -88,7 +88,7 @@ for i in maleO14:
 for i in femaleO14:
     
     res=db.query("SELECT hiv_positive_who_stage,patient_source_id FROM medical_informations WHERE pid="+str(i[0])+' AND '+transDate).getresult()
-    resYr=db.query("SELECT art_start_date FROM medical_informations WHERE pid="+str(i[0])).getresult()
+    resYr=db.query("SELECT hiv_positive_clinic_start_date  FROM medical_informations WHERE pid="+str(i[0])).getresult()
     yr=resYr[0][0]
     if yr != None:
             femaleO14Yr.append(yr[0:7])
@@ -318,7 +318,7 @@ pylab.savefig('month.png')
 filename='MoH-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
 output=Pdf(filename+'.tex')
 
-output.titleMoh('MoH 255 health facility reporting form for the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' - '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
+output.titleMoh('MoH 255 health facility reporting form for the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
 
 output.mohWhoTable(maleU14Who,maleO14Who,femaleU14Who,femaleO14Who)
 

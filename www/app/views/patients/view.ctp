@@ -1,11 +1,24 @@
 <!--<div id="viewTitle" class="text-left">
 <h1>View Patient's Record</h1>
 </div>-->
+
 <?php
 $javascript->link('jquery.js', false);
-$crumb->addThisPage('View Patient', null, 'auto'); ?>
-<div id="patientBox" class="text-left span-22 last">
-	<div id="vitalInfo" class="vitalInfo span-14">
+//logic to chose add multiple results as the selcted tab if user is in data group
+$userinfo=$session->read('Auth.User');
+if ($userinfo['group_id']==3){
+	$class1=NULL;
+	$class2='"selected"';
+	$selected=4;
+}else{
+	$class2=NULL;
+	$class1='"selected"';
+	$selected=0;
+}
+?>
+
+<div id="patientBox" class="text-left span-22 last" style="margin-top:-20px">
+	<div id="vitalInfo" class="vitalInfo span-15">
 		<?php
 		$patient=$patients[0];
 		// Patient Name
@@ -13,23 +26,6 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 		
 		echo $html->div('patientId span-14 last', $html->tag('span', 'UPN: ', array('class'=>'patientIdLabel')) . $html->tag('span', $this->element('prettyUPN', array('pid' => $patient['Patient']['upn'])), array('class'=>'patientIdValue')));
 	
-		
-		// Date of Birth
-		echo $html->div('patientAge span-5', $html->tag('span', 'DoB: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth'])), array('class'=>'patientAgeValue')));
-		// Age (really really messy)
-		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
-			$age = date('Y') - $patient['Patient']['year_of_birth'];
-		}else{
-			$age = 'Unknown';
-		};
-		echo $html->div('patientAge span-5', $html->tag('span', 'Age: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $age, array('class'=>'patientAgeValue')));
-		// Patient Status
-		if(($patient['Patient']['status'] == FALSE)){
-			$statusClass = 'patientAgeValue error';
-		} else {
-			$statusClass = 'patientAgeValue';
-		}
-		echo $html->div('patientAge span-4 last', $html->tag('span', 'Status: ', array('class'=>'patientAgeLabel')) . $html->tag('span', $this->element('prettyStatus', array('status' => $patient['Patient']['status'])), array('class'=>$statusClass)));
 		?>
 	</div>
 
@@ -37,45 +33,41 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 </div>
 
 
-<div id="tab-set" class="span-22 prepend-top last">
+<div id="tab-set" class="span-22  last pull-6">
 		<ul class="tabs">
-			<li><a href="#tab1" class="selected">Results</a></li>
-			<li><a href="#tab2">Result List</a></li>
-			<li><a href="#tab3">Patient Profile</a></li>
-			<li><a href="#tab4">ART History</a></li>
+			<li><a href="#tab1" class=<?php echo $class1;?>>Results</a></li>
+			<li><a href="#tab2">Patient Profile</a></li>
+			<li><a href="#tab3">ART History</a></li>
+			<li><a href="#tab4">+</a></li>
+			<li><a href="#tab5" class=<?php echo $class2;?>>Add Multiple Results</a></li>
 			
 		</ul>
 	
 	<div id="tab1">
 	<!-- Button toolbar -->
 	<?php echo $form->create(null, array('url'=>'/results/batch_add/'.$patients[0]['Patient']['pid']));?>
-		<div class="span-6 prepend-1">
-			<div class="span-5 pull-1 last">
-				<button type="submit" class="button positive">
-					<img src="/img/icons/add.png" alt=""/>Update Result
-				</button>
-				</div>
-			</div>
-			<div class="span-5 pull-1 last">
-				<a href="/results/batch_add/<?php echo $patient['Patient']['pid']; ?>" class="button positive">
-				<img src="/img/icons/add.png" alt=""/>Add Multiple Results</a>
-			</div>
 		
-		
+				
 		<?php
-		// All the tests we want to display 
+		// All the tests we want to display
+
 		$testIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
 		if($patients[0]['Patient']['sex']=='Male'){//If paitent is male we don't show the pregnancy etc.
 			unset($testIDs[5],$testIDs[6],$testIDs[7]);
+		
 		}
 		//Create a table with the first column beeing inputs to add results and the rest of the coumns are previous results
+		
 		?>
 		<div id="results" class="span-22 ">
 			
-			<table cellpadding="0" cellspacing="0">
+			<table cellpadding="0" cellspacing="0" border="23" bordercolor="black">
 				<tr>
-					<th>Clinic Attendance</th>
+					<th>Date</th>
 					<td>
+					<div style="width:230px;height:50px">
+					<div style="margin:10px 0px 0 0px;float:left;position:relative;">
+
 					<?php
 						//input the date
 						echo $form->dateTime(
@@ -92,7 +84,14 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 									false
 								);
 					?>
-	
+						</div>
+						<div style="margin:5px 15px 0 -15px;float:right;position:relative;">
+						<button type="submit" class="button positive">
+							<img src="/img/icons/add.png" alt="" />
+						</button>
+						</div>
+									
+					</div>
 					</td>
 					
 					<?php
@@ -104,12 +103,14 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					?>
 				
 				
-					<td>
-					<?php	
-					echo $this->element('prettyDate', array('date' =>$result));
-						 ?>
+					<th>
+					<div style="width:90px">
+					<?php
 				
-					</td>
+					echo date('j M y',strtotime($result));
+						 ?>
+					</div>
+					</th>
 
 					<?php endforeach; ?>
 					</tr>
@@ -126,10 +127,16 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<tr<?php echo $class;?>>
 				
 					
-					<td>
-						<?php echo $tests[$id]['name'] ?>
+					<th>
+						<?php
+						 
+						if(strlen($tests[$id]['name'])>13 and  !empty($tests[$id]['abbreviation'])){
+							echo $tests[$id]['abbreviation'];
+						}else{
+						echo $tests[$id]['name'];
+						} ?>
 	
-					</td>
+					</th>
 					<td>
 					<?php
 					$test=$tests[$id];
@@ -159,6 +166,7 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					}
 				
 					?>
+					
 					</td>	
 						<?php foreach($results as $result): ?>
 						<td>
@@ -166,12 +174,18 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 							<?php
 							if(array_key_exists($id,$result)){
 								foreach($result[$id] as $value){
-									echo $value['value_decimal']; 
-									echo ' '.$test['units']; 
-									echo $value['value_text'];
+									echo $html->link(__($value['value_decimal'].' '.$test['units'], true), array('controller'=>'results', 'action'=>'edit', $value['result_id'])); 
+									echo $html->link(__($value['value_text'], true), array('controller'=>'results', 'action'=>'edit', $value['result_id'])); 
+
 									if(!empty($value['value_lookup'])){
-										echo '<span class="multival">'.$lookup[$value['value_lookup']-1]['ResultLookup']['description'].'</span>';
-	}
+										echo '<span class="multival" >';
+											
+									
+										
+										echo '<a href=/results/edit/'.$value['result_id'].' class="white" >'.$lookup[$value['value_lookup']-1]['ResultLookup']['description'].'</a>';			
+										echo '</span>';
+
+									}
 									
 								}
 							}?>
@@ -185,92 +199,21 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					</table>
 		</div>
 			
-		<div class="span-5 pull-1 last">
+		<div class="span-5 push-3 last" style="margin-top:-20px">
 		<button type="submit" class="button positive">
-			<img src="/img/icons/add.png" alt=""/> Update
+			<img src="/img/icons/add.png" alt=""/> Update Results
 		</button>
 		</div>
 		</form>
 	</div>
 	
 		
-	<div id="tab2">
-
-		<?php
-		//Sets the update and indicator elements by DOM ID for AJAX pagination
-		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
-		?>
-		<div id="results" class="span-22 prepend-top last">
-			<table cellpadding="0" cellspacing="0">
-				<tr>
-					<th><?php echo $paginator->sort('Result ID','id');?></th>
-					<th><?php echo $paginator->sort('Test','test_id');?></th>
-					<th>Result</th>
-					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
-					<th class="actions"><?php __('Actions');?></th>
-				</tr>
-				<?php
-					$i = 0;
-					$results=$patient['Result'];
-					foreach ($results as $result):
-						$class = null;
-						if ($i++ % 2 == 0) {
-							$class = ' class="even"';
-						
-						}
-				?>
-				<tr<?php echo $class;?>>
-					<td>
-						<?php echo $result['id']; ?>
-				
-					</td>
-					<td>
-						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
-					</td>
-					<td>
-					
-						<?php
-						$i=0;
-						foreach($result['ResultValue'] as $value){
-							echo $value['value_decimal']; 
-							echo $result['Test']['units']; 
-							echo $value['value_text']; 
-							if(!empty($value['ResultLookup']['description'])){
-								echo '<span class="multival">'.$value['ResultLookup']['description'].'</span>';
-							}
-							$i++;
-						}?>
-					</td>
-					<td>
-						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
-					</td>
-					<td class="actions">
-						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
-						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
-						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
-					</td>
-				</tr>
-				<?php endforeach; ?>
-			</table>
-		</div>
-		<!-- Paginator links -->
-		<div class="paging span-22 last">
-			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
-			 | 	<?php echo $paginator->numbers(); ?>
-			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
-		</div>
-	</div>
-	
+		
 
 
-
-
-
-	<div id="tab3">	
+	<div id="tab2">	
 		<div class="tasks span-22 last">
-			<div class="span-6">
-				<h2>Patient Profile</h2>
-			</div>
+		
 			<div class="span-10 last">
 				<a class="button" href="/patients/edit/<?php echo $patient['Patient']['pid']; ?>">Edit Patient Profile</a>
 				<?php if ($patient['Patient']['status']) { ?>
@@ -289,17 +232,45 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 					<div>
 						Sex:
 						<strong><?php if(!empty($patient['Patient']['sex'])){echo $patient['Patient']['sex'];} ?></strong>
+
+
+					</div>
+					<div>
+						Date of Birth:
+						<strong><?php if(!empty($patient['Patient']['date_of_birth'])){echo $this->element('prettyDate', array('date' => $patient['Patient']['date_of_birth']));} ?></strong>
+
+
+					</div>
+
+
+					
+					<div>
+						Age:
+						<strong>
+<?php
+		// Age (really really messy)
+		if(!empty($patient['Patient']['year_of_birth']) && is_numeric($patient['Patient']['year_of_birth'])){
+			$age = date('Y') - $patient['Patient']['year_of_birth'];
+		}else{
+			$age = 'Unknown';
+		};
+		echo  $age;
+?>			
+					</strong>
 					</div>
 					<div>
 						Marital Status: 
 						<strong><?php if(!empty($patient['MaritalStatus']['name'])){echo $patient['MaritalStatus']['name'];} ?></strong>
 					</div>
+
+
+
 					<div>
 						Telephone Number: 
 						<strong><?php if(!empty($patient['Patient']['telephone_number'])){echo $patient['Patient']['telephone_number'];} ?></strong>
 					</div>
 				</div>
-				<div class="rimmer prepend-top">
+				<div class="rimmer">
 					<h4>Status Info</h4>
 					<div>
 						Status: 
@@ -346,11 +317,9 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			</div>
 		</div>
 	</div>
-	<div id="tab4">
+	<div id="tab3">
 		<div class="tasks span-22 last">
-			<div class="span-6">
-				<h2>ART History</h2>
-			</div>
+
 			<div class="span-10 last">
 				<a class="button" href="/medicalInformations/edit/<?php echo $patient['Patient']['pid']; ?>">Edit ART History</a>
 			</div>
@@ -424,12 +393,202 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			</div>
 		</div>
 	</div>
+	<div id="tab4">
+
+		<?php
+		//Sets the update and indicator elements by DOM ID for AJAX pagination
+		$paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
+		?>
+		<div id="results" class="span-22 prepend-top last">
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<th><?php echo $paginator->sort('Result ID','id');?></th>
+					<th><?php echo $paginator->sort('Test','test_id');?></th>
+					<th>Result</th>
+					<th><?php echo $paginator->sort('Test Date','test_performed');?></th>
+					<th class="actions"><?php __('Actions');?></th>
+				</tr>
+				<?php
+					$i = 0;
+					$results=$patient['Result'];
+					foreach ($results as $result):
+						$class = null;
+						if ($i++ % 2 == 0) {
+							$class = ' class="even"';
+						
+						}
+				?>
+				<tr<?php echo $class;?>>
+					<td>
+						<?php echo $result['id']; ?>
+				
+					</td>
+					<td>
+						<?php echo $html->link($result['Test']['name'], array('controller'=> 'tests', 'action'=>'view', $result['Test']['id'])); ?>
+					</td>
+					<td>
+					
+						<?php
+						
+						foreach($result['ResultValue'] as $value){
+							echo $value['value_decimal']; 
+							echo $result['Test']['units']; 
+							echo $value['value_text']; 
+							if(!empty($value['ResultLookup']['description'])){
+								echo '<span class="multival">'.$value['ResultLookup']['description'].'</span>';
+							}
+							
+						}?>
+					</td>
+					<td>
+						<?php echo $this->element('prettyDate', array('date' => $result['test_performed'])); ?>
+					</td>
+					<td class="actions">
+						<!--<?php echo $html->link(__('View', true), array('controller'=>'results', 'action'=>'view', $result['id'])); ?>-->
+						<?php echo $html->link(__('Edit', true), array('controller'=>'results', 'action'=>'edit', $result['id'])); ?>
+						<?php echo $html->link(__('Delete', true), array('controller'=>'results', 'action'=>'delete', $result['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $result['id'])); ?>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</table>
+		</div>
+		<!-- Paginator links -->
+		<div class="paging span-22 last">
+			<?php echo $paginator->prev('<< Previous', null, null, array('class' => 'disabled'));?>
+			 | 	<?php echo $paginator->numbers(); ?>
+			 |  <?php echo $paginator->next('Next >>', null, null, array('class' => 'disabled'));?> 
+		</div>
+	</div>
+	<div id="tab5">
+	<div class="span-22 ">
+	<?php echo $form->create(null, array('url'=>'/results/batch_add/'.$patients[0]['Patient']['pid']));?>
+ 		
+ 		<table>
+			<?php
+				// Let Cake build the table headers for us
+				
+				// Setting up $cells to hold all the input fields we want
+				$cells= array();
+				// Adding the dates
+				$cells[]=array('<strong>Date</strong>',
+							$form->dateTime(
+								'Result.0.test_performed',
+								'DMY',
+								'none',
+								null,
+								array(
+									'minYear' => date('Y') - 100,
+									'maxYear' => date('Y'),
+									'label'=>'',
+									'monthNames' => false
+									),
+									false
+								),
+							$form->dateTime(
+								'Result.1.test_performed',
+								'DMY',
+								'none',
+								null,
+								array(
+									'minYear' => date('Y') - 100,
+									'maxYear' => date('Y'),
+									'label'=>'',
+									'monthNames' => false
+									),
+									false
+								),
+							$form->dateTime(
+								'Result.2.test_performed',
+								'DMY',
+								'none',
+								null,
+								array(
+									'minYear' => date('Y') - 100,
+									'maxYear' => date('Y'),
+									'label'=>'',
+									'monthNames' => false
+									),
+									false
+								),
+							$form->dateTime(
+								'Result.3.test_performed',
+								'DMY',
+								'none',
+								null,
+								array(
+									'minYear' => date('Y') - 100,
+									'maxYear' => date('Y'),
+									'label'=>'',
+									'monthNames' => false
+									),
+									false
+								)
+							);
+
+				$counter=4;
+				// Adding all the tests 5 times, using a new number for each test.	
+				foreach($testIDs as $id){
+
+						if(strlen($tests[$id]['name'])>13 and  !empty($tests[$id]['abbreviation'])){
+							$name=$tests[$id]['abbreviation'];
+						
+
+						}else{
+						$name=$tests[$id]['name'];
+						} 
+
+					$t=array('<strong>'.$name.'</strong>');
+					if($tests[$id]['type']!='lookup'){
+						// If not a lookup test we put the name and the textboxes into cells
+						
+						
+						for($i=0;$i<4;$i++){
+						$t[]=$form->input('ResultValue.'.$counter.'.value_'.$tests[$id]['type'],array('label'=>'', 'style'=>'width:210px'));					
+						$counter++;
+						}
+						$cells[]=$t;
+					}else{
+						// If we have a lookup test we add dropdown boxes with the options and a blank options in case 
+						// that result is missing
+						
+						$opt=array(' ');
+						foreach($tests[$id]['options'] as $o){
+							$opt[$o['id']]=$o['description'];
+						}
+						for($i=0;$i<4;$i++){
+							if($tests[$id]['multival']==TRUE){
+								$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt,'multiple'=>true,'style'=>'width:210px'));
+							}else{
+								$t[]=$form->input('ResultValue.'.$counter.'.value_lookup',array('label'=>'','options'=>$opt,'style'=>'width:210px'));
+							}
+							$counter++;
+						}
+						$cells[]=$t;
+					}
+				}
+				// Likewise, same again for the contents of the cells
+				echo $html->tableCells($cells);
+				?>
+ 		</table>
+	
+	</div>
+<div class="push-3" style="margin-top:-20px">
+<button type="submit" class="button positive">
+	<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/>Update Results
+</button>
+</div
+</div>
+
+
+	</div>
+
 
 </div>
 <script type="text/javascript">
+
 	$("ul.tabs li.label").hide(); 
 	$("#tab-set > div").hide(); 
-	$("#tab-set > div").eq(0).show(); 
+	$("#tab-set > div").eq(<?php echo $selected;?>).show(); 
 	$("ul.tabs a").click( 
 		function() { 
  			$("ul.tabs a.selected").removeClass('selected'); 
@@ -439,4 +598,6 @@ $crumb->addThisPage('View Patient', null, 'auto'); ?>
 			return false;
 			}
 	);
+
+
 </script>
