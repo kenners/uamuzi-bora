@@ -45,7 +45,7 @@
 			<?php echo $html->image('spinner.gif'); ?>
 		</div>
 		<!-- Content -->
-		<div id="content" class="prepend-1 prepend-top span-22 append-1">
+		<div id="content" class="prepend-1 prepend-top span-16 append-1">
 			<div class=" span-6 text-center last" style="margin-left:-240px;margin-top:40px">
 				<?php $session->flash(); ?>
 				<?php $session->flash('auth'); ?>

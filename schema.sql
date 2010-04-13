@@ -25,7 +25,6 @@ ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_information
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_patient_source_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_hiv_positive_test_location_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_funding_id_fkey;
-ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_starting_regimen_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_service_type_id_fkey;
 ALTER TABLE ONLY public.medical_informations DROP CONSTRAINT medical_informations_art_indication_id_fkey;
 ALTER TABLE ONLY public.archive_patients DROP CONSTRAINT archive_patients_user_id_fkey;
@@ -54,6 +53,7 @@ ALTER TABLE ONLY public.result_values DROP CONSTRAINT result_values_pkey;
 ALTER TABLE ONLY public.result_lookups DROP CONSTRAINT result_lookups_pkey;
 ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_pkey;
 ALTER TABLE ONLY public.regimens DROP CONSTRAINT regimens_name_key;
+ALTER TABLE ONLY public.pep_reasons DROP CONSTRAINT pep_reasons_pkey;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_vfcc_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_upn_key;
 ALTER TABLE ONLY public.patients DROP CONSTRAINT patients_pkey;
@@ -73,8 +73,11 @@ ALTER TABLE ONLY public.fundings DROP CONSTRAINT fundings_pkey;
 ALTER TABLE ONLY public.fundings DROP CONSTRAINT fundings_name_key;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_pkey;
 ALTER TABLE ONLY public.educations DROP CONSTRAINT educations_name_key;
+ALTER TABLE ONLY public.art_substitutions DROP CONSTRAINT art_substitutions_pkey;
 ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_pkey;
 ALTER TABLE ONLY public.art_service_types DROP CONSTRAINT art_service_types_name_key;
+ALTER TABLE ONLY public.art_regimens DROP CONSTRAINT art_regimens_pkey;
+ALTER TABLE ONLY public.art_interruptions DROP CONSTRAINT art_interruptions_pkey;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_pkey;
 ALTER TABLE ONLY public.art_indications DROP CONSTRAINT art_indications_name_key;
 ALTER TABLE ONLY public.aros DROP CONSTRAINT aros_pkey;
@@ -103,7 +106,10 @@ ALTER TABLE public.inactive_reasons ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.groups ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.fundings ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.educations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.art_substitutions ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_service_types ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.art_regimens ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.art_interruptions ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.art_indications ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.aros_acos ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE public.aros ALTER COLUMN id DROP DEFAULT;
@@ -123,6 +129,7 @@ DROP TABLE public.users;
 DROP SEQUENCE public.tests_tid_seq;
 DROP SEQUENCE public.tests_id_seq;
 DROP TABLE public.tests;
+DROP TABLE public.second_line_reasons;
 DROP SEQUENCE public.results_id_seq;
 DROP TABLE public.results;
 DROP SEQUENCE public.result_values_id_seq;
@@ -131,6 +138,7 @@ DROP SEQUENCE public.result_lookups_id_seq;
 DROP TABLE public.result_lookups;
 DROP SEQUENCE public.regimens_id_seq;
 DROP TABLE public.regimens;
+DROP TABLE public.pep_reasons;
 DROP TABLE public.patients;
 DROP SEQUENCE public.patient_sources_id_seq;
 DROP TABLE public.patient_sources;
@@ -149,8 +157,17 @@ DROP SEQUENCE public.fundings_id_seq;
 DROP TABLE public.fundings;
 DROP SEQUENCE public.educations_id_seq;
 DROP TABLE public.educations;
+DROP SEQUENCE public.art_substitutions_id_seq;
+DROP TABLE public.art_substitutions;
+DROP TABLE public.art_substitution_reasons;
 DROP SEQUENCE public.art_service_types_id_seq;
 DROP TABLE public.art_service_types;
+DROP TABLE public.art_second_line_reasons;
+DROP SEQUENCE public.art_regimens_id_seq;
+DROP TABLE public.art_regimens;
+DROP SEQUENCE public.art_interruptions_id_seq;
+DROP TABLE public.art_interruptions;
+DROP TABLE public.art_interruption_reasons;
 DROP SEQUENCE public.art_indications_id_seq;
 DROP TABLE public.art_indications;
 DROP SEQUENCE public.aros_id_seq;
@@ -242,7 +259,7 @@ ALTER SEQUENCE acos_id_seq OWNED BY acos.id;
 -- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('acos_id_seq', 132, true);
+SELECT pg_catalog.setval('acos_id_seq', 198, true);
 
 
 --
@@ -340,7 +357,7 @@ ALTER SEQUENCE archive_medical_informations_id_seq OWNED BY archive_medical_info
 -- Name: archive_medical_informations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_medical_informations_id_seq', 1, false);
+SELECT pg_catalog.setval('archive_medical_informations_id_seq', 77, true);
 
 
 --
@@ -691,7 +708,7 @@ ALTER SEQUENCE aros_acos_id_seq OWNED BY aros_acos.id;
 -- Name: aros_acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_acos_id_seq', 25, true);
+SELECT pg_catalog.setval('aros_acos_id_seq', 42, true);
 
 
 --
@@ -759,6 +776,107 @@ SELECT pg_catalog.setval('art_indications_id_seq', 3, true);
 
 
 --
+-- Name: art_interruption_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_interruption_reasons (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
+-- Name: art_interruptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_interruptions (
+    id integer NOT NULL,
+    pid integer NOT NULL,
+    interruption_date date NOT NULL,
+    art_interruption_reason_id integer NOT NULL,
+    restart_date date
+);
+
+
+--
+-- Name: art_interruptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE art_interruptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: art_interruptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE art_interruptions_id_seq OWNED BY art_interruptions.id;
+
+
+--
+-- Name: art_interruptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('art_interruptions_id_seq', 5, true);
+
+
+--
+-- Name: art_regimens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_regimens (
+    id integer NOT NULL,
+    pid integer NOT NULL,
+    regimen_id integer NOT NULL,
+    art_line integer NOT NULL
+);
+
+
+--
+-- Name: art_regimens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE art_regimens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: art_regimens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE art_regimens_id_seq OWNED BY art_regimens.id;
+
+
+--
+-- Name: art_regimens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('art_regimens_id_seq', 28, true);
+
+
+--
+-- Name: art_second_line_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_second_line_reasons (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
 -- Name: art_service_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -794,6 +912,58 @@ ALTER SEQUENCE art_service_types_id_seq OWNED BY art_service_types.id;
 --
 
 SELECT pg_catalog.setval('art_service_types_id_seq', 5, true);
+
+
+--
+-- Name: art_substitution_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_substitution_reasons (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
+
+--
+-- Name: art_substitutions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE art_substitutions (
+    id integer NOT NULL,
+    pid integer NOT NULL,
+    regimen_id integer NOT NULL,
+    art_substitution_reason_id integer NOT NULL,
+    art_line integer NOT NULL,
+    date date
+);
+
+
+--
+-- Name: art_substitutions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE art_substitutions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: art_substitutions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE art_substitutions_id_seq OWNED BY art_substitutions.id;
+
+
+--
+-- Name: art_substitutions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('art_substitutions_id_seq', 34, true);
 
 
 --
@@ -1045,15 +1215,24 @@ CREATE TABLE medical_informations (
     hiv_positive_who_stage integer,
     art_naive boolean,
     art_service_type_id integer,
-    art_starting_regimen_id integer,
-    art_start_date date,
+    art_first_start_date date,
     art_eligibility_date date,
     art_indication_id integer,
     transfer_in_date date,
     transfer_in_district_id integer,
     transfer_in_facility character varying,
     transfer_out_date date,
-    transfer_out_event text
+    transfer_out_event text,
+    date_pep_start date,
+    pep_reason_id integer,
+    art_eligible_who_stage integer,
+    art_eligible_cd4 integer,
+    art_start_weight integer,
+    art_start_height integer,
+    art_start_who_stage integer,
+    art_second_start_date date,
+    art_second_line_reason_id integer,
+    drug_allergies character varying
 );
 
 
@@ -1139,7 +1318,7 @@ SELECT pg_catalog.setval('patient_sources_id_seq', 7, true);
 
 CREATE TABLE patients (
     pid integer NOT NULL,
-    upn character varying,
+    old_upn character varying,
     arvid character varying,
     vfcc character varying,
     surname character varying NOT NULL,
@@ -1152,7 +1331,6 @@ CREATE TABLE patients (
     education_id integer,
     marital_status_id integer,
     telephone_number character varying,
-    treatment_supporter text,
     location_id integer,
     village character varying,
     home character varying,
@@ -1163,7 +1341,24 @@ CREATE TABLE patients (
     vf_testing_site integer,
     status boolean DEFAULT true NOT NULL,
     inactive_reason_id integer,
-    status_timestamp timestamp without time zone DEFAULT now() NOT NULL
+    status_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+    treatment_supporter_name character varying,
+    treatment_supporter_relationship character varying,
+    treatment_supporter_address character varying,
+    treatment_supporter_telephone_number character varying,
+    upn character varying
+);
+
+
+--
+-- Name: pep_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pep_reasons (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
 );
 
 
@@ -1328,6 +1523,19 @@ ALTER SEQUENCE results_id_seq OWNED BY results.id;
 --
 
 SELECT pg_catalog.setval('results_id_seq', 1, false);
+
+
+--
+-- Name: second_line_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE second_line_reasons (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    comment character varying
+);
+
 
 
 --
@@ -1565,7 +1773,28 @@ ALTER TABLE art_indications ALTER COLUMN id SET DEFAULT nextval('art_indications
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE art_interruptions ALTER COLUMN id SET DEFAULT nextval('art_interruptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE art_regimens ALTER COLUMN id SET DEFAULT nextval('art_regimens_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE art_service_types ALTER COLUMN id SET DEFAULT nextval('art_service_types_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE art_substitutions ALTER COLUMN id SET DEFAULT nextval('art_substitutions_id_seq'::regclass);
 
 
 --
@@ -1779,6 +2008,47 @@ COPY art_indications (id, name, description, comment) FROM stdin;
 
 
 --
+-- Data for Name: art_interruption_reasons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_interruption_reasons (id, name, description, comment) FROM stdin;
+0	Default(1/12)	\N	\N
+1	Lost to follow-up (3/12)	\N	\N
+2	Stop	\N	\N
+\.
+
+
+--
+-- Data for Name: art_interruptions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_interruptions (id, pid, interruption_date, art_interruption_reason_id, restart_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: art_regimens; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_regimens (id, pid, regimen_id, art_line) FROM stdin;
+\.
+
+
+--
+-- Data for Name: art_second_line_reasons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_second_line_reasons (id, name, description, comment) FROM stdin;
+0	Clinical treatment failure	\N	\N
+1	Immunological failure	\N	\N
+2	Virologic failure	\N	\N
+0	Default(1/12)	\N	\N
+1	Lost to follow-up (3/12)	\N	\N
+2	Stop	\N	\N
+\.
+
+
+--
 -- Data for Name: art_service_types; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -1789,6 +2059,30 @@ COPY art_service_types (id, name, description, comment) FROM stdin;
 3	PEP (Assualt)	\N	\N
 4	PEP (Occupational)	\N	\N
 5	OI Only	\N	\N
+\.
+
+
+
+--
+-- Data for Name: art_substitution_reasons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_substitution_reasons (id, name, description, comment) FROM stdin;
+1	Toxicity/Side effects	\N	\N
+2	Pregnancy	\N	\N
+3	Risk of pregnancy	\N	\N
+4	Due to new TB	\N	\N
+5	New drug available	\N	\N
+6	Drug out of stock	\N	\N
+7	Other	\N	\N
+\.
+
+
+--
+-- Data for Name: art_substitutions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY art_substitutions (id, pid, regimen_id, art_substitution_reason_id, art_line, date) FROM stdin;
 \.
 
 
@@ -1913,7 +2207,7 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 -- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_starting_regimen_id, art_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event) FROM stdin;
+COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_first_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event, date_pep_start, pep_reason_id, art_eligible_who_stage, art_eligible_cd4, art_start_weight, art_start_height, art_start_who_stage, art_second_start_date, art_second_line_reason_id, drug_allergies) FROM stdin;
 \.
 
 
@@ -1949,7 +2243,18 @@ COPY patient_sources (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, treatment_supporter, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp) FROM stdin;
+COPY patients (pid, old_upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp, treatment_supporter_name, treatment_supporter_relationship, treatment_supporter_address, treatment_supporter_telephone_number, upn) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pep_reasons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY pep_reasons (id, name, description, comment) FROM stdin;
+1	Sexual assault	\N	\N
+2	Occupational exposure	\N	\N
+3	Others	\N	\N
 \.
 
 
@@ -2084,6 +2389,15 @@ COPY results (id, pid, test_id, test_performed, created, modified, requesting_cl
 
 
 --
+-- Data for Name: second_line_reasons; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY second_line_reasons (id, name, description, comment) FROM stdin;
+\.
+
+
+
+--
 -- Data for Name: tests; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -2102,7 +2416,7 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 15	Fluconazole Status		lookup	\N	\N	Is the patient taking fluconazole?		t	1	2009-07-19 22:57:27		\N
 17	ARV Drug Adherence		lookup	\N	\N			t	1	2009-07-19 23:00:28		\N
 18	ARV Drug Regimen		lookup	\N	\N			t	1	2009-07-19 22:59:43		\N
-19	CD4 Count	CD4	decimal	\N	\N	The patient's current CD4 count.		t	1	2009-07-19 23:01:45	%	\N
+19	CD4 Count	CD4	decimal	\N	\N	The patient's current CD4 count.		t	1	2009-07-19 23:01:45	/μl	\N
 20	Haemaglobin	Hb	decimal	\N	\N	The patient's current haemaglobin level.		t	1	2009-07-19 23:02:16	g/dL	\N
 21	White Cell Count	WCC	decimal	\N	\N	The patient's current white cell count.		t	1	2009-07-19 23:03:10	x10^9	\N
 22	ALT	ALT	decimal	\N	\N			t	1	2009-07-19 23:03:50	IU	\N
@@ -2273,6 +2587,22 @@ ALTER TABLE ONLY art_indications
 
 
 --
+-- Name: art_interruptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY art_interruptions
+    ADD CONSTRAINT art_interruptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: art_regimens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY art_regimens
+    ADD CONSTRAINT art_regimens_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: art_service_types_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2286,6 +2616,14 @@ ALTER TABLE ONLY art_service_types
 
 ALTER TABLE ONLY art_service_types
     ADD CONSTRAINT art_service_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: art_substitutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY art_substitutions
+    ADD CONSTRAINT art_substitutions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2429,7 +2767,7 @@ ALTER TABLE ONLY patients
 --
 
 ALTER TABLE ONLY patients
-    ADD CONSTRAINT patients_upn_key UNIQUE (upn);
+    ADD CONSTRAINT patients_upn_key UNIQUE (old_upn);
 
 
 --
@@ -2438,6 +2776,14 @@ ALTER TABLE ONLY patients
 
 ALTER TABLE ONLY patients
     ADD CONSTRAINT patients_vfcc_key UNIQUE (vfcc);
+
+
+--
+-- Name: pep_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pep_reasons
+    ADD CONSTRAINT pep_reasons_pkey PRIMARY KEY (id);
 
 
 --
@@ -2661,14 +3007,6 @@ ALTER TABLE ONLY medical_informations
 
 ALTER TABLE ONLY medical_informations
     ADD CONSTRAINT medical_informations_art_service_type_id_fkey FOREIGN KEY (art_service_type_id) REFERENCES art_service_types(id);
-
-
---
--- Name: medical_informations_art_starting_regimen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY medical_informations
-    ADD CONSTRAINT medical_informations_art_starting_regimen_id_fkey FOREIGN KEY (art_starting_regimen_id) REFERENCES regimens(id);
 
 
 --

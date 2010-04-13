@@ -68,14 +68,10 @@ class Patient extends AppModel
 			)
 		),
 		'upn' => array(
-			'positive integer' => array(
-				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
-				'allowEmpty' => TRUE,
-				'message'    => 'The Unique Patient Number should be a positive integer'
-			),
+			
 			'unique' => array(
 				'rule'       => 'isUnique',
-				'allowEmpty' => TRUE,
+				'allowEmpty' => FALSE,
 				'message'    => 'This Unique Patient Number already exists'
 			)
 		),

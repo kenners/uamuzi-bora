@@ -11,7 +11,15 @@ class MedicalInformationsController extends AppController
 		'Location',
 		'ArtServiceType',
 		'Regimen',
-		'ArtIndication'
+		'ArtIndication',
+		'PepReason',
+		'ArtInterruption',
+		'ArtInterruptionReason',
+		'ArtRegimen',
+		'ArtSubstitution',
+		'ArtSubstitutionReason',
+		'ArtSecondLineReason'
+		
 	);
 	
 	/**
@@ -73,6 +81,7 @@ class MedicalInformationsController extends AppController
 		// If some data has been sent, then archive and edit the database table,
 		// then redirect to PatientsController::view
 		if (isset($this->data)) {
+
 			// Necessary because if validation fails we want $this->data to be
 			// pristine
 			$data = $this->data;
@@ -90,11 +99,104 @@ class MedicalInformationsController extends AppController
 			
 			// Archive the existing data
 			parent::archive($pid);
-			
-			// Save the new row
-			if ($this->MedicalInformation->save($data)) {
+			$medicalInformation=$this->data['MedicalInformation'];
+			$artRegimen=$this->data['ArtRegimen'];
+			$artInterruption=$this->data['ArtInterruption'];
+			$artSubstitution=$this->data['ArtSubstitution'];
+			$invalidReg=array();
+			$invalidInt=array();
+			$invalidSub=array();
+			$invalidMed=array();
+			$intAdd=array();
+			$subAdd=array();
+			$regAdd=array();
+			$this->MedicalInformation->set($medicalInformation);
+			if(!$this->MedicalInformation->validates()){
+				$invalidMed[]=$this->MedicalInformation->validationErrors;
+				unset($this->MedicalInformation->validationErrors);
+			}
+
+			$counter=0;
+			foreach($artRegimen as $i){
+				if($i['regimen_id']!=Null){
+					$i=Set::insert($i,'pid',$pid);
+						$this->MedicalInformation->ArtRegimen->set($i);
+					if(!$this->MedicalInformation->ArtRegimen->validates()){
+						$invalidReg[$counter]=$this->MedicalInformation->ArtRegimen->validationErrors;
+						unset($this->MedicalInformation->ArtRegimen->validationErrors);
+					}
+					$regAdd[]=$i;
+				}
+				$counter++;
+			}
+			$counter=0;
+
+
+			foreach($artInterruption as $i){
+				if($i['interruption_date']!=Null and $i['art_interruption_reason_id']!= Null and $i['restart_date']!=Null){
+
+					$i=Set::insert($i,'pid',$pid);
+	
+					$this->MedicalInformation->ArtInterruption->set($i);
+					if(!$this->MedicalInformation->ArtInterruption->validates()){
+						$invalidInt[$counter]=$this->MedicalInformation->ArtInterruption->validationErrors;
+						unset($this->MedicalInformation->ArtInterruption->validationErrors);
+					}
+					$intAdd[]=$i;
+				}
+				$counter++;
+
+			}
+			$counter=0;
+
+			foreach($artSubstitution as $i){
+				if($i['date']!=Null and $i['regimen_id']!= Null and $i['art_substitution_reason_id']!=Null){
+					$i=Set::insert($i,'pid',$pid);
+
+					$this->MedicalInformation->ArtSubstitution->set($i);
+					if(!$this->MedicalInformation->ArtSubstitution->validates()){
+						$invalidSub[$counter]=$this->MedicalInformation->ArtSubstitution->validationErrors;
+						unset($this->MedicalInformation->ArtSubstitution->validationErrors);
+					}
+					$subAdd[]=$i;
+				}
+				$counter++;
+
+			}
+			if(empty($invalidReg) and empty($invalidInt) and empty($invalidSub) and empty($invalidMed))
+			{
+				$this->MedicalInformation->create();
+				$this->MedicalInformation->save(array('MedicalInformation'=>$medicalInformation));
+				foreach($subAdd as $value){
+					$this->MedicalInformation->ArtSubstitution->create();
+
+					$this->MedicalInformation->ArtSubstitution->save(array('ArtSubstitution'=>$value));
+				}
+				foreach($intAdd as $value){
+					$this->MedicalInformation->ArtInterruption->create();
+
+					$this->MedicalInformation->ArtInterruption->save(array('ArtInterruption'=>$value));
+				}
+				
+
+				foreach($regAdd as $value){
+					$this->MedicalInformation->ArtRegimen->create();
+
+					$this->MedicalInformation->ArtRegimen->save(array('ArtRegimen'=>$value));
+				}
 				$this->Session->setFlash('Record updated');
 				$this->redirect(array('controller' => 'patients', 'action' => 'view/' . $pid));
+
+			
+			}else{
+				$this->MedicalInformation->validationErrors=$invalidMed;
+				$this->MedicalInformation->ArtRegimen->validationErrors=$invalidReg;
+				$this->MedicalInformation->ArtSubstitution->validationErrors=$invalidSub;
+				$this->MedicalInformation->ArtInterruption->validationErrors=$invalidInt;
+				$this->Session->setFlash('Could not update record');
+
+
+			
 			}
 		}
 		
@@ -112,7 +214,13 @@ class MedicalInformationsController extends AppController
 			'art_service_types' => $this->ArtServiceType->find('list'),
 			'art_starting_regimens' => $this->Regimen->find('list'),
 			'art_indications' => $this->ArtIndication->find('list'),
-			'transfer_in_districts' => $this->Location->generatetreelist(null, null, null, '-')
+			'transfer_in_districts' => $this->Location->generatetreelist(null, null, null, '-'),
+			'pep_reasons'=>$this->PepReason->find('list'),
+			'art_second_line_reasons'=>$this->ArtSecondLineReason->find('list'),
+			'regimens'=>$this->Regimen->find('list'),
+			'art_substitution_reasons'=>$this->ArtSubstitutionReason->find('list'),
+			'art_interruption_reasons'=>$this->ArtInterruptionReason->find('list')
+
 			));
 	}
 }

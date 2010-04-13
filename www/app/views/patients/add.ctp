@@ -10,7 +10,9 @@
 <?php
 echo $form->create('Patient', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Patient Profile',
-						'upn'=>array('label'=>'Unique Patient Number',
+						'upn'=>array('label'=>'New Unique Patient Number*',
+									'maxLength'=>20),
+						'old_upn'=>array('label'=>'Old Unique Patient Number',
 									'maxLength'=>20),
 						'forenames'=>array('label'=>'Patient Forenames*'),
 						'surname'=>array('label'=>'Patient Surname*'),
@@ -26,10 +28,11 @@ echo $form->inputs(array('legend' => 'Patient Profile',
 									'selected'=>FALSE),
 						'telephone_number'=>array('maxLength'=>10, 'label'=>'Tel Contact'),
 						'home'=>array('label'=>'Postal Address'),
-						'location_id'=>array('label'=>'District/Location/Sub-Location'),
+						'location_id'=>array('label'=>'District/Location/Sub-Location','selected'=>'12'),
 						'nearest_school',
 						'nearest_health_centre'=>array('label'=>'Nearest H/Centre'),
 						'marital_status_id'=>array('empty'=> '(Choose an Option)'),
+
 						'arvid'=>array('type'=>'hidden'),
 						'mother'=>array('type'=>'hidden'),
 						'village'=>array('type'=>'hidden'),
@@ -41,7 +44,13 @@ echo $form->inputs(array('legend' => 'Patient Profile',
 </div>
 <!-- New 'column' on other side of page -->
 <div class="span-11 last text-left">
-<?php			
+<?php
+echo $form->inputs(array('legend'=>'Treatment Supporter',
+						'treatment_supporter_name'=>array('label'=>'Name'),
+						'treatment_supporter_relationship'=>array('label'=>'Relationship'),
+						'treatment_supporter_address'=>array('label'=>'Postal address'),
+						'treatment_supporter_telephone_number'=>array('label'=>'Telephone number')));
+			
 echo $form->inputs(array('legend' => 'VF Information',
 						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)'),
 						'vf_testing_site'=>array('empty' => '(Choose an Option)')));

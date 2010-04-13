@@ -24,7 +24,10 @@ class PatientsController extends AppController
 		'ArchivePatient',
 		'InactiveReason',
 		'VfTestingSite',
-		'Result'
+		'Result',
+		'Regimen',
+		'ArtSubstitutionReason',
+		'ArtInterruptionReason'
 	);
 	
 	/**
@@ -184,6 +187,11 @@ class PatientsController extends AppController
 		
 			$result_dates[$date][$result['Result']['test_id']]=$result['ResultValue'];
 		}
+
+		//Add regimens
+		$this->set('regimens',$this->Regimen->find('list'));
+		$this->set('subReasons',$this->ArtSubstitutionReason->find('list'));	
+		$this->set('intReasons',$this->ArtInterruptionReason->find('list'));	
 		$this->set('results',$result_dates);
 		// Super-duper containable to the rescue of database recursion hell!
 		$this->set('patients', $this->Patient->find('all', array(

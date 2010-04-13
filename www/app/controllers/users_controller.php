@@ -131,7 +131,7 @@ class UsersController extends AppController
 		$this->Acl->deny($group, 'controllers/Jambo', 'admin');
 		$this->Acl->allow($group, 'controllers/Results');
 		$this->Acl->allow($group, 'controllers/ResultLookups', 'view');
-		$this->ACl->allow($group, 'controllers/Reports');
+		$this->Acl->allow($group, 'controllers/Reports');
 		$group->id = 3;
 		$this->Acl->deny($group, 'controllers');
 		$this->Acl->allow($group, 'controllers/Patients');
@@ -141,7 +141,7 @@ class UsersController extends AppController
 		$this->Acl->deny($group, 'controllers/Jambo', 'admin');
 		$this->Acl->allow($group, 'controllers/Results');
 		$this->Acl->allow($group, 'controllers/ResultLookups', 'view');
-		$this->ACl->allow($group, 'controllers/Reports');
+		$this->Acl->allow($group, 'controllers/Reports');
 
 
 

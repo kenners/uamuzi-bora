@@ -217,7 +217,7 @@ if ($userinfo['group_id']==3){
 					Transfer In Facility: 
 					<strong><?php if(!empty($medical_information['MedicalInformation']['transfer_in_facility'])){echo $medical_information['MedicalInformation']['transfer_in_facility'];} ?></strong>
 				</div>
-			<div>
+			
 				Previously on ARVs? </strong>
 					<strong><?php if ($medical_information['MedicalInformation']['art_naive'] == TRUE || $medical_information['MedicalInformation']['art_naive'] == 1) {
 								echo 'Yes';

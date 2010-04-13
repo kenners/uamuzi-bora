@@ -21,6 +21,9 @@ class MedicalInformation extends AppModel
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.pid = pid.pid')
 		),
+		'PepReason' => array('className' => 'PepReason'),
+		'ArtSecondLineReason'=>array('className'=>'ArtSecondLineReason'),
+
 		'PatientSource' => array('className' => 'PatientSource'),
 		'Funding' => array('className' => 'Funding'),
 		'hiv_positive_test_location' => array(
@@ -29,11 +32,7 @@ class MedicalInformation extends AppModel
 			'conditions' => array('MedicalInformation.hiv_positive_test_location_id = hiv_positive_test_location.id')
 		),
 		'ArtServiceType' => array('className' => 'ArtServiceType'),
-		'art_starting_regimen' => array(
-			'className'  => 'Regimen',
-			'foreignKey' => FALSE,
-			'conditions' => array('MedicalInformation.art_starting_regimen_id = art_starting_regimen.id')
-		),
+
 		'ArtIndication' => array('className' => 'ArtIndication'),
 		'transfer_in_district' => array(
 			'className'  => 'Location',
@@ -41,6 +40,9 @@ class MedicalInformation extends AppModel
 			'conditions' => array('MedicalInformation.transfer_in_district_id = transfer_in_district.id')
 		)
 	);
+	var $hasMany=array('ArtSubstitution'=>array('className'=>'ArtSubstitution','foreignKey'=>'pid'),
+			 'ArtRegimen'=>array('className'=>'ArtRegimen','foreignKey'=>'pid'),
+			'ArtInterruption'=>array('className'=>'ArtInterruption','foreignKey'=>'pid'));
 	
 	/**
 	 * Validate fields
