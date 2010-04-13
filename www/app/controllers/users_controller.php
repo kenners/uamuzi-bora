@@ -96,7 +96,7 @@ class UsersController extends AppController
 			}
 		}
 		debug($log);
-		$this->Session->setFlash('Database succesfully initialized'); 
+		$this->Session->setFlash('Database succesfully initialised'); 
 		$this->redirect(array('controller' => '/'));
 	}
 	
@@ -132,6 +132,7 @@ class UsersController extends AppController
 		$this->Acl->allow($group, 'controllers/Results');
 		$this->Acl->allow($group, 'controllers/ResultLookups', 'view');
 		$this->Acl->allow($group, 'controllers/Reports');
+		//Data entry
 		$group->id = 3;
 		$this->Acl->deny($group, 'controllers');
 		$this->Acl->allow($group, 'controllers/Patients');
@@ -145,7 +146,7 @@ class UsersController extends AppController
 
 
 
-		$this->Session->setFlash('Database succesfully initialized'); 
+		$this->Session->setFlash('Database succesfully initialised'); 
 		$this->redirect(array('controller' => '/'));
 	}
 	

@@ -342,7 +342,7 @@ class ResultsController extends AppController {
 
 
 		//The tests with the following ids are in the form
-		$batchOfTestIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
+		$batchOfTestIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
 			// Loop to pull the relevent info for each of our tests and put them in an array
 		//If we have a mail patient we don't ask about pregnacy etc.	
 		if($patient['Patient']['sex']=='Male'){
@@ -558,7 +558,7 @@ class ResultsController extends AppController {
 				$this->Session->setFlash(__('The Results have been saved', true));
 				$this->redirect(array('controller'=>'patients','action' => 'view/'.$pid));	
 			}else{//If validation problems disply them.
-			
+				
 				$this->Result->validationErrors = $invalidResults;
 				$this->Result->ResultValue->validationErrors=$invalidResultValues;
 				$this->Session->setFlash(__('The Results could not be saved', true));

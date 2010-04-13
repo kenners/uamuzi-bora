@@ -7,6 +7,7 @@
 echo $form->create('Patient', array('url' => '/patients/toggleStatus/' . $pid));
 echo $form->hidden('referer', array('value' => $referer));
 echo $form->input('inactive_reason_id');
+echo $form->input('status_timestamp',array('label'=>'Date','dateFormat'=>'DMY','timeFormat' => 'none'));
 ?>
 	<button type="submit" class="button positive">
 		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Confirm 

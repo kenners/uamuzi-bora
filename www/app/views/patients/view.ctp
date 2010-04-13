@@ -149,17 +149,19 @@ if ($userinfo['group_id']==3){
 				</div>
 
 				<div class="rimmer push-1 span-10">
-					<h4>Status Info</h4>
-					<div>
-						Status: 
+					<h4>
+					
+						Status
 						<strong><?php echo $this->element('prettyStatus', array('status'=>$patient['Patient']['status'])); ?></strong>
-					</div>
+					
+					
+					</h4>
 					<div>
-						Status Last Changed: 
+						Date: 
 						<strong><?php if(!empty($patient['Patient']['status_timestamp'])){echo $this->element('prettyDate', array('date' => $patient['Patient']['status_timestamp']));} ?></strong>
 					</div>
 					<div>
-						Status Reason: 
+						Reason: 
 						<strong><?php if(!empty($patient['InactiveReason']['name'])){echo $patient['InactiveReason']['name'];} ?></strong>
 					</div>	
 				</div>
@@ -371,7 +373,7 @@ if ($userinfo['group_id']==3){
 		
 		// All the tests we want to display
 
-		$testIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24);
+		$testIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
 		if($patients[0]['Patient']['sex']=='Male'){//If paitent is male we don't show the pregnancy etc.
 			unset($testIDs[5],$testIDs[6],$testIDs[7]);
 		

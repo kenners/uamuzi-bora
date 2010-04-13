@@ -34,11 +34,6 @@ class PatientsController extends AppController
 	 * Debugging list all patients function
 	 * PLEASE REPLACE WITH SOMETHING PRETTIER
 	 */
-	function index()
-	{
-		$this->Patient->recursive = 0;
-		$this->set('patients', $this->paginate());
-	}
 	
 	function search()
 	{
@@ -339,7 +334,7 @@ class PatientsController extends AppController
 				$data['Patient']['pid'] = $pid;
 				$data['Patient']['status'] = FALSE;
 				$data['Patient']['inactive_reason_id'] = $this->data['Patient']['inactive_reason_id'];
-				$data['Patient']['status_timestamp'] = date('c');
+				$data['Patient']['status_timestamp'] = $this->data['Patient']['status_timestamp'];
 				$this->Patient->save($data);
 				
 				// Redirect back to where you came from

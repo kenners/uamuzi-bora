@@ -68,10 +68,21 @@ class Patient extends AppModel
 			)
 		),
 		'upn' => array(
+			'not null' => array(
+				'rule'    => 'notEmpty',
+				'message' => 'A Patient ID must be entered'
+			),	
+			'unique' => array(
+				'rule'       => 'isUnique',
+				'message'    => 'This Unique Patient Number already exists'
+			)
+		),
+
+		'old_upn' => array(
 			
 			'unique' => array(
 				'rule'       => 'isUnique',
-				'allowEmpty' => FALSE,
+				'allowEmpty' => True,
 				'message'    => 'This Unique Patient Number already exists'
 			)
 		),

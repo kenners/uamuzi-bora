@@ -220,7 +220,22 @@ class MedicalInformation extends AppModel
 				'allowEmpty' => TRUE,
 				'message'    => 'This is not a well-formatted date'
 			)
-		)
+		),
+		'art_eligible_cd4' => array(
+				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
+				'message'    => 'CD4 count should be a positive integer'
+			),
+		'art_start_weight' => array(
+				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
+				'message'    => 'Weight should be a positive integer'
+			),
+		'art_start_height' => array(
+				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
+				'allowEmpty' => TRUE,
+				'message'    => 'Height should be a positive integer'
+			),
 	);
 }
 ?>

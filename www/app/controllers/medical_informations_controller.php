@@ -110,9 +110,9 @@ class MedicalInformationsController extends AppController
 			$intAdd=array();
 			$subAdd=array();
 			$regAdd=array();
-			$this->MedicalInformation->set($medicalInformation);
+			$this->MedicalInformation->set(array('MedicalInformation'=>$medicalInformation));
 			if(!$this->MedicalInformation->validates()){
-				$invalidMed[]=$this->MedicalInformation->validationErrors;
+				$invalidMed=$this->MedicalInformation->validationErrors;
 				unset($this->MedicalInformation->validationErrors);
 			}
 
@@ -120,7 +120,7 @@ class MedicalInformationsController extends AppController
 			foreach($artRegimen as $i){
 				if($i['regimen_id']!=Null){
 					$i=Set::insert($i,'pid',$pid);
-						$this->MedicalInformation->ArtRegimen->set($i);
+						$this->MedicalInformation->ArtRegimen->set(array('ArtRegimen'=>$i));
 					if(!$this->MedicalInformation->ArtRegimen->validates()){
 						$invalidReg[$counter]=$this->MedicalInformation->ArtRegimen->validationErrors;
 						unset($this->MedicalInformation->ArtRegimen->validationErrors);
@@ -137,7 +137,7 @@ class MedicalInformationsController extends AppController
 
 					$i=Set::insert($i,'pid',$pid);
 	
-					$this->MedicalInformation->ArtInterruption->set($i);
+					$this->MedicalInformation->ArtInterruption->set(array('ArtInterruption'=>$i));
 					if(!$this->MedicalInformation->ArtInterruption->validates()){
 						$invalidInt[$counter]=$this->MedicalInformation->ArtInterruption->validationErrors;
 						unset($this->MedicalInformation->ArtInterruption->validationErrors);
@@ -153,8 +153,9 @@ class MedicalInformationsController extends AppController
 				if($i['date']!=Null and $i['regimen_id']!= Null and $i['art_substitution_reason_id']!=Null){
 					$i=Set::insert($i,'pid',$pid);
 
-					$this->MedicalInformation->ArtSubstitution->set($i);
+					$this->MedicalInformation->ArtSubstitution->set(array('ArtSubstitution'=>$i));
 					if(!$this->MedicalInformation->ArtSubstitution->validates()){
+						debug('hei');
 						$invalidSub[$counter]=$this->MedicalInformation->ArtSubstitution->validationErrors;
 						unset($this->MedicalInformation->ArtSubstitution->validationErrors);
 					}
@@ -204,6 +205,25 @@ class MedicalInformationsController extends AppController
 		if (!isset($this->data)) {
 			// if condition required in case validation has failed
 			$this->data = $this->MedicalInformation->findByPid($pid);
+			$id=2;
+			$tmp=array();
+			foreach(array_keys($this->data['ArtSubstitution']) as $key){
+				if ($this->data['ArtSubstitution'][$key]['art_line']==2){
+				$tmp[$id]=$this->data['ArtSubstitution'][$key];
+				$id++;
+				}else{
+				$tmp[$key]=$this->data['ArtSubstitution'][$key];
+				}
+			}
+			$this->data['ArtSubstitution']=$tmp;
+			$id=1;
+			foreach(array_keys($this->data['ArtRegimen']) as $key){
+				if ($this->data['ArtRegimen'][$key]['art_line']==2){
+				$this->data['ArtRegimen'][$id]=$this->data['ArtRegimen'][$key];
+				unset($this->data['ArtRegimen'][$key]);
+				}
+			}
+			
 		}
 		$this->set(array(
 			'fullname' => $this->Patient->field('forenames', array('pid' => $pid)) . ' ' . $this->Patient->field('surname', array('pid' => $pid)),

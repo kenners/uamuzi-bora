@@ -259,7 +259,7 @@ ALTER SEQUENCE acos_id_seq OWNED BY acos.id;
 -- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('acos_id_seq', 198, true);
+SELECT pg_catalog.setval('acos_id_seq', 263, true);
 
 
 --
@@ -330,7 +330,19 @@ CREATE TABLE archive_medical_informations (
     archive_transfer_in_date date,
     archive_transfer_in_district_id integer,
     archive_transfer_in_facility text,
-    archive_transfer_out_date date
+    archive_transfer_out_date date,
+    archive_date_pep_start date,
+    archive_pep_reason_id integer,
+    archive_art_eligible_who_stage integer,
+    archive_art_eligible_cd4 integer,
+    archive_art_start_weight integer,
+    archive_art_start_height integer,
+    archive_art_start_who_stage integer,
+    archive_art_second_start_date date,
+    archive_art_second_line_reason_id integer,
+    archive_drug_allergies character varying,
+    archive_created timestamp without time zone,
+    archive_modified timestamp without time zone
 );
 
 
@@ -357,7 +369,7 @@ ALTER SEQUENCE archive_medical_informations_id_seq OWNED BY archive_medical_info
 -- Name: archive_medical_informations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_medical_informations_id_seq', 77, true);
+SELECT pg_catalog.setval('archive_medical_informations_id_seq', 78, true);
 
 
 --
@@ -394,7 +406,14 @@ CREATE TABLE archive_patients (
     archive_vf_testing_site integer,
     archive_status boolean NOT NULL,
     archive_inactive_reason_id integer,
-    archive_status_timestamp timestamp without time zone NOT NULL
+    archive_status_timestamp date,
+    archive_treatment_supporter_name character varying,
+    archive_treatment_supporter_relationship character varying,
+    archive_treatment_supporter_address character varying,
+    archive_treatment_supporter_telephone_number character varying,
+    archive_created timestamp without time zone,
+    archive_modified timestamp without time zone
+   
 );
 
 
@@ -466,7 +485,7 @@ ALTER SEQUENCE archive_result_lookups_id_seq OWNED BY archive_result_lookups.id;
 -- Name: archive_result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_result_lookups_id_seq', 1, false);
+SELECT pg_catalog.setval('archive_result_lookups_id_seq', 7, true);
 
 
 --
@@ -607,7 +626,7 @@ ALTER SEQUENCE archive_tests_id_seq OWNED BY archive_tests.id;
 -- Name: archive_tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_tests_id_seq', 4, true);
+SELECT pg_catalog.setval('archive_tests_id_seq', 6, true);
 
 
 --
@@ -708,7 +727,7 @@ ALTER SEQUENCE aros_acos_id_seq OWNED BY aros_acos.id;
 -- Name: aros_acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_acos_id_seq', 42, true);
+SELECT pg_catalog.setval('aros_acos_id_seq', 59, true);
 
 
 --
@@ -1232,7 +1251,9 @@ CREATE TABLE medical_informations (
     art_start_who_stage integer,
     art_second_start_date date,
     art_second_line_reason_id integer,
-    drug_allergies character varying
+    drug_allergies character varying,
+    created timestamp without time zone,
+    modified timestamp without time zone
 );
 
 
@@ -1318,6 +1339,7 @@ SELECT pg_catalog.setval('patient_sources_id_seq', 7, true);
 
 CREATE TABLE patients (
     pid integer NOT NULL,
+    upn character varying NOT NULL,
     old_upn character varying,
     arvid character varying,
     vfcc character varying,
@@ -1341,12 +1363,13 @@ CREATE TABLE patients (
     vf_testing_site integer,
     status boolean DEFAULT true NOT NULL,
     inactive_reason_id integer,
-    status_timestamp timestamp without time zone DEFAULT now() NOT NULL,
+    status_timestamp date,
     treatment_supporter_name character varying,
     treatment_supporter_relationship character varying,
     treatment_supporter_address character varying,
     treatment_supporter_telephone_number character varying,
-    upn character varying
+    created timestamp without time zone,
+    modified timestamp without time zone
 );
 
 
@@ -1438,7 +1461,7 @@ ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
 -- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('result_lookups_id_seq', 1, false);
+SELECT pg_catalog.setval('result_lookups_id_seq', 105, true);
 
 
 --
@@ -1537,7 +1560,6 @@ CREATE TABLE second_line_reasons (
 );
 
 
-
 --
 -- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
@@ -1582,7 +1604,7 @@ ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
 -- Name: tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tests_id_seq', 1, false);
+SELECT pg_catalog.setval('tests_id_seq', 30, true);
 
 
 --
@@ -2001,7 +2023,7 @@ COPY aros_acos (id, aro_id, aco_id, _create, _read, _update, _delete) FROM stdin
 --
 
 COPY art_indications (id, name, description, comment) FROM stdin;
-1	WHO Stage/Clinical	\N	\N
+1	WHO Stage	\N	\N
 2	TLC	\N	\N
 3	CD4 Count	\N	\N
 \.
@@ -2060,7 +2082,6 @@ COPY art_service_types (id, name, description, comment) FROM stdin;
 4	PEP (Occupational)	\N	\N
 5	OI Only	\N	\N
 \.
-
 
 
 --
@@ -2207,7 +2228,7 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 -- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_first_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event, date_pep_start, pep_reason_id, art_eligible_who_stage, art_eligible_cd4, art_start_weight, art_start_height, art_start_who_stage, art_second_start_date, art_second_line_reason_id, drug_allergies) FROM stdin;
+COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_first_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event, date_pep_start, pep_reason_id, art_eligible_who_stage, art_eligible_cd4, art_start_weight, art_start_height, art_start_who_stage, art_second_start_date, art_second_line_reason_id, drug_allergies, created, modified) FROM stdin;
 \.
 
 
@@ -2243,7 +2264,7 @@ COPY patient_sources (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, old_upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp, treatment_supporter_name, treatment_supporter_relationship, treatment_supporter_address, treatment_supporter_telephone_number, upn) FROM stdin;
+COPY patients (pid, upn, old_upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp, treatment_supporter_name, treatment_supporter_relationship, treatment_supporter_address, treatment_supporter_telephone_number, created, modified) FROM stdin;
 \.
 
 
@@ -2306,36 +2327,36 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 25	11	11	Urethral Discharge		1	2009-07-19 22:52:19
 26	11	12	Pelvic Inflammatory Disease		1	2009-07-19 22:52:32
 27	11	13	Genital Ulcerative Disease		1	2009-07-19 22:52:48
-28	13	1	Peripheral Neuropathy		1	2009-07-19 22:53:46
-29	13	2	Rash		1	2009-07-19 22:53:53
-30	13	3	Anaemia		1	2009-07-19 22:54:00
-31	13	4	Pancreatitis		1	2009-07-19 22:54:09
-32	13	5	Jaundice		1	2009-07-19 22:54:19
-33	13	6	Fat Redistribution		1	2009-07-19 22:54:31
-34	13	7	Hypersensitivity		1	2009-07-19 22:54:41
-35	13	8	Hepatotoxicity		1	2009-07-19 22:54:51
-36	13	9	CNS Symptoms		1	2009-07-19 22:55:10
-37	14	Y	Yes		1	2009-07-19 22:56:30
-38	14	YS	Yes (SA)		1	2009-07-19 22:56:30
-39	14	YU	Yes (UA)		1	2009-07-19 22:56:46
-40	14	N	No		1	2009-07-19 22:56:54
-41	15	Y	Yes		1	2009-07-19 22:56:30
-42	15	YS	Yes (SA)		1	2009-07-19 22:57:34
-43	15	YU	Yes (UA)		1	2009-07-19 22:57:46
-44	15	N	No		1	2009-07-19 22:58:04
-45	18	1A	1A (D4T30/3TC/NVP)	1st Line	1	2009-07-19 22:38:09
-46	18	2A	2A (D4T30/3TC/EFV)	1st Line	1	2009-07-19 22:38:09
-47	18	3A	3A (AZT/3TC/EFV)	1st Line	1	2009-07-19 22:38:09
-48	18	3B	3B (AZT/3TC/NVP)	1st Line	1	2009-07-19 22:38:09
-49	18	R66	R66 (TDF/3FC/NVP)	2nd Line	1	2009-07-19 22:38:09
-50	18	R67	R67 (ABC/DDI/LPVR)	2nd Line	1	2009-07-19 22:38:09
-51	18	PEP1	PEP1 (AZT/3TC)	PEP	1	2009-07-19 22:38:09
-52	18	O	Other	Other	1	2009-07-19 22:38:09
-53	18	U	Unknown	Unknown	1	2009-07-19 22:38:09
-54	17	Y	Yes		1	2009-07-19 22:56:30
-55	17	YS	Yes (SA)		1	2009-07-19 23:00:35
-56	17	YU	Yes (UA)		1	2009-07-19 23:00:44
-57	17	N	No		1	2009-07-19 23:00:52
+28	14	1	Peripheral Neuropathy		1	2009-07-19 22:53:46
+29	14	2	Rash		1	2009-07-19 22:53:53
+30	14	3	Anaemia		1	2009-07-19 22:54:00
+31	14	4	Pancreatitis		1	2009-07-19 22:54:09
+32	14	5	Jaundice		1	2009-07-19 22:54:19
+33	14	6	Fat Redistribution		1	2009-07-19 22:54:31
+34	14	7	Hypersensitivity		1	2009-07-19 22:54:41
+35	14	8	Hepatotoxicity		1	2009-07-19 22:54:51
+36	14	9	CNS Symptoms		1	2009-07-19 22:55:10
+37	15	Y	Yes		1	2009-07-19 22:56:30
+38	15	YS	Yes (SA)		1	2009-07-19 22:56:30
+39	15	YU	Yes (UA)		1	2009-07-19 22:56:46
+40	15	N	No		1	2009-07-19 22:56:54
+41	16	Y	Yes		1	2009-07-19 22:56:30
+42	16	YS	Yes (SA)		1	2009-07-19 22:57:34
+43	16	YU	Yes (UA)		1	2009-07-19 22:57:46
+44	16	N	No		1	2009-07-19 22:58:04
+45	20	1A	1A (D4T30/3TC/NVP)	1st Line	1	2009-07-19 22:38:09
+46	20	2A	2A (D4T30/3TC/EFV)	1st Line	1	2009-07-19 22:38:09
+47	20	3A	3A (AZT/3TC/EFV)	1st Line	1	2009-07-19 22:38:09
+48	20	3B	3B (AZT/3TC/NVP)	1st Line	1	2009-07-19 22:38:09
+49	20	R66	R66 (TDF/3FC/NVP)	2nd Line	1	2009-07-19 22:38:09
+50	20	R67	R67 (ABC/DDI/LPVR)	2nd Line	1	2009-07-19 22:38:09
+51	20	PEP1	PEP1 (AZT/3TC)	PEP	1	2009-07-19 22:38:09
+52	20	O	Other	Other	1	2009-07-19 22:38:09
+53	20	U	Unknown	Unknown	1	2009-07-19 22:38:09
+54	19	Y	Yes		1	2009-07-19 22:56:30
+55	19	YS	Yes (SA)		1	2009-07-19 23:00:35
+56	19	YU	Yes (UA)		1	2009-07-19 23:00:44
+57	19	N	No		1	2009-07-19 23:00:52
 58	25	1	Basic HIV Education, transmission		1	2009-07-19 23:04:20
 59	25	2	Prevention: abstinenece, safer sex, condoms		1	2009-07-19 23:04:20
 60	25	3	Prevention: household precautions, what is safe		1	2009-07-19 23:04:20
@@ -2369,6 +2390,21 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 88	25	31	Home-based care		1	2009-07-19 23:04:20
 89	25	32	Support groups		1	2009-07-19 23:04:20
 90	25	33	Community support		1	2009-07-19 23:04:20
+91	17	1	Amoxicillin		1	2010-04-13 20:26:53
+93	17	2	Ciprofloxacin		1	2010-04-13 20:28:05
+94	17	3	Cotrimoxazole		1	2010-04-13 20:28:23
+100	12	2	Diarrhoea (watery)		1	2010-04-13 20:34:39
+92	17	4	Doxycycline		1	2010-04-13 20:27:50
+95	17	5	Flagyl		1	2010-04-13 20:29:57
+101	12	3	Helminthiasis		1	2010-04-13 20:34:51
+96	17	7	Piriton		1	2010-04-13 20:30:19
+98	17	6	Multivitamins		1	2010-04-13 20:30:58
+97	17	8	Other (please specify)		1	2010-04-13 20:30:39
+99	12	1	Diarrhoea (bloody)		1	2010-04-13 20:34:21
+102	12	4	Malaria		1	2010-04-13 20:35:00
+104	12	6	RTI (upper)		1	2010-04-13 20:35:30
+103	12	5	Pneumonia (lower RTI)		1	2010-04-13 20:35:19
+105	12	7	Other (please specify)		1	2010-04-13 20:37:10
 \.
 
 
@@ -2396,7 +2432,6 @@ COPY second_line_reasons (id, name, description, comment) FROM stdin;
 \.
 
 
-
 --
 -- Data for Name: tests; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -2411,24 +2446,26 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 7	Pregnant		lookup	\N	\N	Is the patient currently pregnant?		t	1	2009-07-19 22:41:32		\N
 8	Last Menstrual Period	LMP	text	\N	\N	Date of the patient's last menstrual period in the format DD-MM-YYYY		t	1	2009-07-19 22:43:46		\N
 10	TB Status		lookup	\N	\N	The current TB status of the patient.		t	1	2009-07-19 22:46:10		\N
-12	Other Medical Conditions		text	\N	\N	Does the patient have any new other medical condition?		t	1	2009-07-19 22:48:23		\N
-14	Cotrimoxazole Status		lookup	\N	\N	Is the patient taking cotrimoxazole?		t	1	2009-07-19 22:56:15		\N
-15	Fluconazole Status		lookup	\N	\N	Is the patient taking fluconazole?		t	1	2009-07-19 22:57:27		\N
-17	ARV Drug Adherence		lookup	\N	\N			t	1	2009-07-19 23:00:28		\N
-18	ARV Drug Regimen		lookup	\N	\N			t	1	2009-07-19 22:59:43		\N
-19	CD4 Count	CD4	decimal	\N	\N	The patient's current CD4 count.		t	1	2009-07-19 23:01:45	/μl	\N
-20	Haemaglobin	Hb	decimal	\N	\N	The patient's current haemaglobin level.		t	1	2009-07-19 23:02:16	g/dL	\N
-21	White Cell Count	WCC	decimal	\N	\N	The patient's current white cell count.		t	1	2009-07-19 23:03:10	x10^9	\N
-22	ALT	ALT	decimal	\N	\N			t	1	2009-07-19 23:03:50	IU	\N
-23	Referred To		text	\N	\N			f	1	2009-07-19 23:04:13		\N
-24	Date of Next Appointment		text	\N	\N	The date of the patient's next appointment in the format DD-MM-YYYY		t	1	2009-07-19 23:05:12		\N
-25	Counselling		lookup	\N	\N	Has the patient received any form of counselling?		t	1	2009-07-19 23:04:24		\N
-26	Clinical Note		text	\N	\N			t	1	2009-07-19 23:05:44		\N
-27	Examination Findings		text	\N	\N			t	1	2009-07-19 23:05:58		\N
+15	Cotrimoxazole Status		lookup	\N	\N	Is the patient taking cotrimoxazole?		t	1	2009-07-19 22:56:15		\N
+16	Fluconazole Status		lookup	\N	\N	Is the patient taking fluconazole?		t	1	2009-07-19 22:57:27		\N
+19	ARV Drug Adherence		lookup	\N	\N			t	1	2009-07-19 23:00:28		\N
+20	ARV Drug Regimen		lookup	\N	\N			t	1	2009-07-19 22:59:43		\N
+21	CD4 Count	CD4	decimal	\N	\N	The patient's current CD4 count.		t	1	2009-07-19 23:01:45	/μl	\N
+22	Haemaglobin	Hb	decimal	\N	\N	The patient's current haemaglobin level.		t	1	2009-07-19 23:02:16	g/dL	\N
+23	White Cell Count	WCC	decimal	\N	\N	The patient's current white cell count.		t	1	2009-07-19 23:03:10	x10^9	\N
+24	ALT	ALT	decimal	\N	\N			t	1	2009-07-19 23:03:50	IU	\N
+25	Referred To		lookup	\N	\N			f	1	2009-07-19 23:04:13		t
+26	Date of Next Appointment		text	\N	\N	The date of the patient's next appointment in the format DD-MM-YYYY		t	1	2009-07-19 23:05:12		\N
+27	Counselling		lookup	\N	\N	Has the patient received any form of counselling?		t	1	2009-07-19 23:04:24		\N
+28	Clinical Note		text	\N	\N			t	1	2009-07-19 23:05:44		\N
+29	Examination Findings		text	\N	\N			t	1	2009-07-19 23:05:58		\N
 9	Family Planning Status	FP Status	lookup	\N	\N	Is the patient using any form of contraception?		t	1	2009-07-19 22:44:36		f
 11	Opportunistic Infection	Opportunistic Infection	lookup	\N	\N	Does the patient have a new opportunistic infection?		t	1	2009-07-19 22:48:23		t
-13	ART Side Effects	ART Side Effects	lookup	\N	\N	Is the patient currently experiencing any side-effects of ARTs?		t	1	2009-07-19 22:53:32		t
-16	Other Medications Dispensed	Other Medications	text	\N	\N	Have any other medications been dispensed to the patient?		t	1	2009-07-19 22:58:40		f
+14	ART Side Effects	ART Side Effects	lookup	\N	\N	Is the patient currently experiencing any side-effects of ARTs?		t	1	2009-07-19 22:53:32		t
+17	Other Medications Dispensed	Other Medications	lookup	\N	\N	Have any other medications been dispensed to the patient?		t	1	2009-07-19 22:58:40		t
+12	Other Medical Conditions		lookup	\N	\N	Does the patient have any new other medical condition?		t	1	2009-07-19 22:48:23		t
+13	Conditions (others)		text	\N	\N	\N		t	1	2009-07-19 22:48:23		\N
+18	Medications (others)		text	\N	\N	\N		t	1	2009-07-19 22:48:23		\N
 \.
 
 
@@ -2767,7 +2804,7 @@ ALTER TABLE ONLY patients
 --
 
 ALTER TABLE ONLY patients
-    ADD CONSTRAINT patients_upn_key UNIQUE (old_upn);
+    ADD CONSTRAINT patients_upn_key UNIQUE (upn);
 
 
 --

@@ -7,11 +7,16 @@
 		echo $form->input('id');
 		echo $form->input('name');
 		echo $form->input('abbreiviation');
-		echo $form->input('type', array('type'=>'hidden'));
+		echo $form->input('type',array('label'=>'Results Type',
+									'type'=>'select',
+									'options'=>array('decimal'=>'Decimal', 'text'=>'Text', 'lookup'=>'Options'),
+									'empty' => '(choose one)'));
+		
 		echo $form->input('description');
 		echo $form->input('comment');
 		echo $form->input('active');
 		echo $form->input('multival');
+
 		echo $form->input('archive_reason');
 	?>
 	</fieldset>
