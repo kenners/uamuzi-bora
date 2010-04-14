@@ -27,6 +27,7 @@ class Patient extends AppModel
 			'conditions' => array('Patient.vf_testing_site = VfTestingSite.site_code')
 		),
 		'InactiveReason' => array('className' => 'InactiveReason'),
+		'User'=>array('className'=>'User')
 	);
 	
 	var $hasMany = array(
@@ -71,7 +72,11 @@ class Patient extends AppModel
 			'not null' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'A Patient ID must be entered'
-			),	
+			),
+			'validUpn'=>array(
+					'rule'=>array('customValidationFunction', 'validUpn'),	
+					'message'=>'A UPN needs to be 13 digits long'
+			),
 			'unique' => array(
 				'rule'       => 'isUnique',
 				'message'    => 'This Unique Patient Number already exists'

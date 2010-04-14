@@ -10,7 +10,7 @@ echo $form->create('Patient', array('controller' => 'Patient', 'action' => 'edit
 echo $form->hidden('pid');
 echo $form->inputs(array('legend' => 'Patient Profile',
 						'upn'=>array('label'=>'New Unique Patient Number',
-									'maxLength'=>11),
+									'maxLength'=>13),
 						'old_upn'=>array('label'=>'Old Unique Patient Number',
 									'maxLength'=>20),
 						'forenames'=>array('label'=>'Patient Forenames*'),

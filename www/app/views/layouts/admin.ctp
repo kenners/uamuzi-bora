@@ -36,14 +36,7 @@
 			<div  id="userbox" class="prepend-16 span-8 last"></div>
 			
 			<div class="breadcrumb span-24 last">
-				<div class="span-7 append-1 text-right last">
-					<?php if($session->check('Auth.User.id'))
-					{
-						echo 'Jambo <strong>' . $session->read('Auth.User.username') . '</strong>! ';
-						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
-					}
-					?>
-				</div>
+			
 			</div>
 		</div>
 		<!-- Spinner is used for AJAX index views -->
@@ -62,7 +55,14 @@
 		<!-- Footer -->
 		<div id="footer" class="prepend-top prepend-1 span-22 append-1 last">
 		<hr/>
-			<p>&copy; 2010 The Uamuzi Bora Project. </p>
+			<p>&copy; 2010 The Uamuzi Bora Project. </p>	<div class="span-7 append-1 text-right last">
+					<?php if($session->check('Auth.User.id'))
+					{
+						
+						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
+					}
+					?>
+				</div>
 		</div>
 	</div>
 	<!-- Debug Stuff - REMEMBER TO REMOVE BEFORE DEPLOYING!!! -->

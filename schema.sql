@@ -259,7 +259,7 @@ ALTER SEQUENCE acos_id_seq OWNED BY acos.id;
 -- Name: acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('acos_id_seq', 263, true);
+SELECT pg_catalog.setval('acos_id_seq', 1, true);
 
 
 --
@@ -369,7 +369,7 @@ ALTER SEQUENCE archive_medical_informations_id_seq OWNED BY archive_medical_info
 -- Name: archive_medical_informations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_medical_informations_id_seq', 78, true);
+SELECT pg_catalog.setval('archive_medical_informations_id_seq', 1, true);
 
 
 --
@@ -413,7 +413,6 @@ CREATE TABLE archive_patients (
     archive_treatment_supporter_telephone_number character varying,
     archive_created timestamp without time zone,
     archive_modified timestamp without time zone
-   
 );
 
 
@@ -440,7 +439,7 @@ ALTER SEQUENCE archive_patients_id_seq OWNED BY archive_patients.id;
 -- Name: archive_patients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_patients_id_seq', 1, false);
+SELECT pg_catalog.setval('archive_patients_id_seq', 1, true);
 
 
 --
@@ -485,7 +484,7 @@ ALTER SEQUENCE archive_result_lookups_id_seq OWNED BY archive_result_lookups.id;
 -- Name: archive_result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_result_lookups_id_seq', 7, true);
+SELECT pg_catalog.setval('archive_result_lookups_id_seq', 1, true);
 
 
 --
@@ -626,7 +625,7 @@ ALTER SEQUENCE archive_tests_id_seq OWNED BY archive_tests.id;
 -- Name: archive_tests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_tests_id_seq', 6, true);
+SELECT pg_catalog.setval('archive_tests_id_seq', 1, true);
 
 
 --
@@ -671,7 +670,7 @@ ALTER SEQUENCE archive_users_id_seq OWNED BY archive_users.id;
 -- Name: archive_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('archive_users_id_seq', 1, false);
+SELECT pg_catalog.setval('archive_users_id_seq', 1, true);
 
 
 --
@@ -727,7 +726,7 @@ ALTER SEQUENCE aros_acos_id_seq OWNED BY aros_acos.id;
 -- Name: aros_acos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_acos_id_seq', 59, true);
+SELECT pg_catalog.setval('aros_acos_id_seq', 1, true);
 
 
 --
@@ -735,7 +734,7 @@ SELECT pg_catalog.setval('aros_acos_id_seq', 59, true);
 --
 
 CREATE SEQUENCE aros_id_seq
-    START WITH 5
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -753,7 +752,7 @@ ALTER SEQUENCE aros_id_seq OWNED BY aros.id;
 -- Name: aros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('aros_id_seq', 6, true);
+SELECT pg_catalog.setval('aros_id_seq', 10, true);
 
 
 --
@@ -1079,7 +1078,7 @@ CREATE TABLE groups (
 --
 
 CREATE SEQUENCE groups_id_seq
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1252,6 +1251,7 @@ CREATE TABLE medical_informations (
     art_second_start_date date,
     art_second_line_reason_id integer,
     drug_allergies character varying,
+    user_id integer,
     created timestamp without time zone,
     modified timestamp without time zone
 );
@@ -1330,7 +1330,7 @@ ALTER SEQUENCE patient_sources_id_seq OWNED BY patient_sources.id;
 -- Name: patient_sources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('patient_sources_id_seq', 7, true);
+SELECT pg_catalog.setval('patient_sources_id_seq', 10, true);
 
 
 --
@@ -1368,6 +1368,7 @@ CREATE TABLE patients (
     treatment_supporter_relationship character varying,
     treatment_supporter_address character varying,
     treatment_supporter_telephone_number character varying,
+    user_id integer,
     created timestamp without time zone,
     modified timestamp without time zone
 );
@@ -1461,7 +1462,7 @@ ALTER SEQUENCE result_lookups_id_seq OWNED BY result_lookups.id;
 -- Name: result_lookups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('result_lookups_id_seq', 105, true);
+SELECT pg_catalog.setval('result_lookups_id_seq', 114, true);
 
 
 --
@@ -1503,7 +1504,7 @@ ALTER SEQUENCE result_values_id_seq OWNED BY result_values.id;
 -- Name: result_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('result_values_id_seq', 1, false);
+SELECT pg_catalog.setval('result_values_id_seq', 1, true);
 
 
 --
@@ -1545,7 +1546,7 @@ ALTER SEQUENCE results_id_seq OWNED BY results.id;
 -- Name: results_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('results_id_seq', 1, false);
+SELECT pg_catalog.setval('results_id_seq', 1, true);
 
 
 --
@@ -1646,7 +1647,7 @@ CREATE TABLE users (
 --
 
 CREATE SEQUENCE users_id_seq
-    START WITH 3
+    START WITH 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
@@ -1664,7 +1665,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('users_id_seq', 3, true);
+SELECT pg_catalog.setval('users_id_seq', 7, true);
 
 
 --
@@ -1944,15 +1945,14 @@ COPY archive_groups (id, archive_id, user_id, created, archive_reason, archive_n
 -- Data for Name: archive_medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY archive_medical_informations (id, user_id, created, archive_reason, archive_pid, archive_patient_source_id, archive_funding_id, archive_hiv_positive_date, archive_hiv_positive_test_location_id, archive_hiv_positive_clinic_start_date, archive_hiv_positive_who_stage, archive_art_naive, archive_art_service_type_id, archive_art_starting_regimen_id, archive_art_start_date, archive_art_eligibility_date, archive_art_indication_id, archive_transfer_in_date, archive_transfer_in_district_id, archive_transfer_in_facility, archive_transfer_out_date) FROM stdin;
+COPY archive_medical_informations (id, user_id, created, archive_reason, archive_pid, archive_patient_source_id, archive_funding_id, archive_hiv_positive_date, archive_hiv_positive_test_location_id, archive_hiv_positive_clinic_start_date, archive_hiv_positive_who_stage, archive_art_naive, archive_art_service_type_id, archive_art_starting_regimen_id, archive_art_start_date, archive_art_eligibility_date, archive_art_indication_id, archive_transfer_in_date, archive_transfer_in_district_id, archive_transfer_in_facility, archive_transfer_out_date, archive_date_pep_start, archive_pep_reason_id, archive_art_eligible_who_stage, archive_art_eligible_cd4, archive_art_start_weight, archive_art_start_height, archive_art_start_who_stage, archive_art_second_start_date, archive_art_second_line_reason_id, archive_drug_allergies, archive_created, archive_modified) FROM stdin;
 \.
-
 
 --
 -- Data for Name: archive_patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY archive_patients (id, user_id, created, archive_reason, archive_pid, archive_upn, archive_arvid, archive_vfcc, archive_surname, archive_forenames, archive_date_of_birth, archive_year_of_birth, archive_sex, archive_mother, archive_occupation_id, archive_education_id, archive_marital_status_id, archive_telephone_number, archive_treatment_supporter, archive_location_id, archive_village, archive_home, archive_nearest_church, archive_nearest_school, archive_nearest_health_centre, archive_nearest_major_landmark, archive_vf_testing_site, archive_status, archive_inactive_reason_id, archive_status_timestamp) FROM stdin;
+COPY archive_patients (id, user_id, created, archive_reason, archive_pid, archive_upn, archive_arvid, archive_vfcc, archive_surname, archive_forenames, archive_date_of_birth, archive_year_of_birth, archive_sex, archive_mother, archive_occupation_id, archive_education_id, archive_marital_status_id, archive_telephone_number, archive_treatment_supporter, archive_location_id, archive_village, archive_home, archive_nearest_church, archive_nearest_school, archive_nearest_health_centre, archive_nearest_major_landmark, archive_vf_testing_site, archive_status, archive_inactive_reason_id, archive_status_timestamp, archive_treatment_supporter_name, archive_treatment_supporter_relationship, archive_treatment_supporter_address, archive_treatment_supporter_telephone_number, archive_created, archive_modified) FROM stdin;
 \.
 
 
@@ -1985,6 +1985,7 @@ COPY archive_results (id, user_id, created, archive_reason, archive_id, archive_
 --
 
 COPY archive_tests (id, user_id, created, archive_reason, archive_id, archive_name, archive_abbreiviation, archive_type, archive_upper_limit, archive_lower_limit, archive_description, archive_comment, archive_active, archive_user_id, archive_modified) FROM stdin;
+
 \.
 
 
@@ -2001,12 +2002,16 @@ COPY archive_users (id, archive_id, user_id, created, archive_reason, archive_us
 --
 
 COPY aros (id, parent_id, model, foreign_key, alias, lft, rght) FROM stdin;
-1	\N	Group	1	\N	1	4
 3	1	User	1	\N	2	3
-2	\N	Group	2	\N	5	8
-4	2	User	2	\N	6	7
-5	\N	Group	3	\N	9	12
-6	5	User	3	\N	10	11
+10	1	User	7	\N	4	5
+5	\N	Group	3	\N	13	20
+1	\N	Group	1	\N	1	8
+2	\N	Group	2	\N	9	12
+4	2	User	2	\N	10	11
+6	5	User	3	\N	14	15
+7	5	User	4	\N	16	17
+8	5	User	5	\N	18	19
+9	1	User	6	\N	6	7
 \.
 
 
@@ -2228,7 +2233,7 @@ COPY marital_statuses (id, name, description, comment) FROM stdin;
 -- Data for Name: medical_informations; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_first_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event, date_pep_start, pep_reason_id, art_eligible_who_stage, art_eligible_cd4, art_start_weight, art_start_height, art_start_who_stage, art_second_start_date, art_second_line_reason_id, drug_allergies, created, modified) FROM stdin;
+COPY medical_informations (pid, patient_source_id, funding_id, hiv_positive_date, hiv_positive_test_location_id, hiv_positive_clinic_start_date, hiv_positive_who_stage, art_naive, art_service_type_id, art_first_start_date, art_eligibility_date, art_indication_id, transfer_in_date, transfer_in_district_id, transfer_in_facility, transfer_out_date, transfer_out_event, date_pep_start, pep_reason_id, art_eligible_who_stage, art_eligible_cd4, art_start_weight, art_start_height, art_start_who_stage, art_second_start_date, art_second_line_reason_id, drug_allergies, user_id, created, modified) FROM stdin;
 \.
 
 
@@ -2256,7 +2261,9 @@ COPY patient_sources (id, name, description, comment) FROM stdin;
 4	Child Welfare Clinic	\N	\N
 5	TB OPD	\N	\N
 6	VF	\N	\N
-7	Other	\N	\N
+7	OPD 	\N	\N
+8	PITC	\N	\N
+9	Other	\N	\N
 \.
 
 
@@ -2264,7 +2271,7 @@ COPY patient_sources (id, name, description, comment) FROM stdin;
 -- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY patients (pid, upn, old_upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp, treatment_supporter_name, treatment_supporter_relationship, treatment_supporter_address, treatment_supporter_telephone_number, created, modified) FROM stdin;
+COPY patients (pid, upn, old_upn, arvid, vfcc, surname, forenames, date_of_birth, year_of_birth, sex, mother, occupation_id, education_id, marital_status_id, telephone_number, location_id, village, home, nearest_church, nearest_school, nearest_health_centre, nearest_major_landmark, vf_testing_site, status, inactive_reason_id, status_timestamp, treatment_supporter_name, treatment_supporter_relationship, treatment_supporter_address, treatment_supporter_telephone_number, user_id, created, modified) FROM stdin;
 \.
 
 
@@ -2399,12 +2406,21 @@ COPY result_lookups (id, test_id, value, description, comment, user_id, modified
 101	12	3	Helminthiasis		1	2010-04-13 20:34:51
 96	17	7	Piriton		1	2010-04-13 20:30:19
 98	17	6	Multivitamins		1	2010-04-13 20:30:58
-97	17	8	Other (please specify)		1	2010-04-13 20:30:39
 99	12	1	Diarrhoea (bloody)		1	2010-04-13 20:34:21
 102	12	4	Malaria		1	2010-04-13 20:35:00
 104	12	6	RTI (upper)		1	2010-04-13 20:35:30
 103	12	5	Pneumonia (lower RTI)		1	2010-04-13 20:35:19
 105	12	7	Other (please specify)		1	2010-04-13 20:37:10
+106	17	8	Paracetamol		7	2010-04-14 07:50:41
+107	17	9	Ibuprofen		7	2010-04-14 07:50:56
+108	17	10	Metronidazole		6	2010-04-14 07:56:51
+109	17	11	Acyclovir		6	2010-04-14 07:59:09
+110	17	12	Fluconazole		6	2010-04-14 07:59:21
+111	17	13	Ketonazole		6	2010-04-14 07:59:50
+112	17	14	Erythromycin		1	2010-04-14 10:24:33
+113	17	15	Cefuroxime		1	2010-04-14 10:24:51
+97	17	17	Other (please specify)		1	2010-04-13 20:30:39
+114	17	16	Nystatin		1	2010-04-14 10:25:12
 \.
 
 
@@ -2454,10 +2470,7 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 22	Haemaglobin	Hb	decimal	\N	\N	The patient's current haemaglobin level.		t	1	2009-07-19 23:02:16	g/dL	\N
 23	White Cell Count	WCC	decimal	\N	\N	The patient's current white cell count.		t	1	2009-07-19 23:03:10	x10^9	\N
 24	ALT	ALT	decimal	\N	\N			t	1	2009-07-19 23:03:50	IU	\N
-25	Referred To		lookup	\N	\N			f	1	2009-07-19 23:04:13		t
-26	Date of Next Appointment		text	\N	\N	The date of the patient's next appointment in the format DD-MM-YYYY		t	1	2009-07-19 23:05:12		\N
 27	Counselling		lookup	\N	\N	Has the patient received any form of counselling?		t	1	2009-07-19 23:04:24		\N
-28	Clinical Note		text	\N	\N			t	1	2009-07-19 23:05:44		\N
 29	Examination Findings		text	\N	\N			t	1	2009-07-19 23:05:58		\N
 9	Family Planning Status	FP Status	lookup	\N	\N	Is the patient using any form of contraception?		t	1	2009-07-19 22:44:36		f
 11	Opportunistic Infection	Opportunistic Infection	lookup	\N	\N	Does the patient have a new opportunistic infection?		t	1	2009-07-19 22:48:23		t
@@ -2466,6 +2479,9 @@ COPY tests (id, name, abbreiviation, type, upper_limit, lower_limit, description
 12	Other Medical Conditions		lookup	\N	\N	Does the patient have any new other medical condition?		t	1	2009-07-19 22:48:23		t
 13	Conditions (others)		text	\N	\N	\N		t	1	2009-07-19 22:48:23		\N
 18	Medications (others)		text	\N	\N	\N		t	1	2009-07-19 22:48:23		\N
+25	Adherence counselling		lookup	\N	\N			t	7	2009-07-19 23:04:13		t
+26	Refered To		text	\N	\N			t	1	2009-07-19 23:05:12		f
+28	Date Of Next Appointment		text	\N	\N	The date of the patient's next appointment in the format DD-MM-YYYY		t	1	2009-07-19 23:05:44		f
 \.
 
 

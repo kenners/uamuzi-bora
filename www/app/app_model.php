@@ -148,6 +148,9 @@ class AppModel extends Model
 	function isPositiveInteger($value) {
 		return (ctype_digit($value) || (is_int($value) && $value >= 0));
 	}
+	function validUpn($value) {
+		return (strlen($value)==13);
+	}
 	
 	/**
 	 * Custom validation function that returns TRUE if node with id $id has

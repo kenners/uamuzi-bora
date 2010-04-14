@@ -90,7 +90,7 @@ class PatientsController extends AppController
 		if (!empty($this->data)) {
 			// Generate a new PID
 			$this->data['Patient']['pid'] = $this->Patient->newPID();
-			
+			$this->data['Patient']['user_id']=$this->Auth->user('id');
 			// Make the input how the database is expecting it
 			$this->data = $this->__prettyInput($this->data);
 			// Save the new row
@@ -173,7 +173,7 @@ class PatientsController extends AppController
 
 		//Find all the results, and put them into format of array(date=>results_for_that_date)
 		$results=$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'contain'=>array('ResultValue'),'order'=>array('Result.test_performed'=>'desc')));
-		$this->set('lookup',$this->Patient->Result->ResultValue->ResultLookup->find('all',array('recursive'=>-1)));
+		$this->set('lookup',$this->Patient->Result->ResultValue->ResultLookup->find('all',array('recursive'=>-1,'order'=>array('ResultLookup.id'=>'asc'))));
 
 		$result_dates=array();
 		foreach($results as $result)
@@ -278,7 +278,7 @@ class PatientsController extends AppController
 		if (isset($this->data)) {
 		// What to do if we've submitted new data (i.e. the edit form has been
 		// submitted)
-			
+			$this->data['Patient']['user_id']=$this->Auth->user('id');
 			// Don't mess with $this->data in case validation fails
 			$data = $this->data;
 			

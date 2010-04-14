@@ -38,7 +38,8 @@ class MedicalInformation extends AppModel
 			'className'  => 'Location',
 			'foreignKey' => FALSE,
 			'conditions' => array('MedicalInformation.transfer_in_district_id = transfer_in_district.id')
-		)
+		),
+		'User'=>array('className'=>'User')
 	);
 	var $hasMany=array('ArtSubstitution'=>array('className'=>'ArtSubstitution','foreignKey'=>'pid'),
 			 'ArtRegimen'=>array('className'=>'ArtRegimen','foreignKey'=>'pid'),

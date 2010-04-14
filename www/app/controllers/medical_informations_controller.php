@@ -81,7 +81,7 @@ class MedicalInformationsController extends AppController
 		// If some data has been sent, then archive and edit the database table,
 		// then redirect to PatientsController::view
 		if (isset($this->data)) {
-
+			$this->data['MedicalInformation']['user_id']=$this->Auth->user('id');
 			// Necessary because if validation fails we want $this->data to be
 			// pristine
 			$data = $this->data;

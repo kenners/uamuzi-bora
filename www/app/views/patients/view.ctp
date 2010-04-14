@@ -14,7 +14,7 @@ if ($userinfo['group_id']==3){
 }else{
 	$class2=NULL;
 	$class1='"selected"';
-	$selected=2;
+	$selected=0;
 }
 ?>
 
@@ -37,9 +37,9 @@ if ($userinfo['group_id']==3){
 <div id="tab-set" class="span-22  last pull-6">
 		<ul class="tabs">
 			
-			<li><a href="#tab1">Patient Profile</a></li>
+			<li><a href="#tab1" class=<?php echo $class1;?>>Patient Profile</a></li>
 			<li><a href="#tab2"> Medical Information</a></li>
-			<li><a href="#tab3" class=<?php echo $class1;?>>Results</a></li>
+			<li><a href="#tab3" >Results</a></li>
 			<li><a href="#tab4">|</a></li>
 			<li><a href="#tab5" class=<?php echo $class2;?>>Add Multiple Results</a></li>
 			
@@ -373,11 +373,12 @@ if ($userinfo['group_id']==3){
 		
 		// All the tests we want to display
 
-		$testIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
+		$testIDs = array(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,28,25);
 		if($patients[0]['Patient']['sex']=='Male'){//If paitent is male we don't show the pregnancy etc.
 			unset($testIDs[5],$testIDs[6],$testIDs[7]);
 		
 		}
+		
 		//Create a table with the first column beeing inputs to add results and the rest of the coumns are previous results
 		
 		?>
@@ -498,6 +499,7 @@ if ($userinfo['group_id']==3){
 								foreach($result[$id] as $value){
 									echo $html->link(__($value['value_decimal'].' '.$test['units'], true), array('controller'=>'results', 'action'=>'edit', $value['result_id'])); 
 									echo $html->link(__($value['value_text'], true), array('controller'=>'results', 'action'=>'edit', $value['result_id'])); 
+									
 
 									if(!empty($value['value_lookup'])){
 										echo '<span class="multival" >';

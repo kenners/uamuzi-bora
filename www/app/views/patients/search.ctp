@@ -35,6 +35,7 @@
 <?php
 //Sets the update and indicator elements by DOM ID for AJAX pagination
 $paginator->options(array('update' => 'container', 'indicator' => 'spinner'));
+$userinfo = $session->read('Auth.User');
 ?>
 <div id="patientIndex" class="patients push-1 search span-22 prepend-top last">
 
@@ -51,14 +52,20 @@ if (!empty($patients)):
 	<th><?php echo $paginator->sort('Sex','sex');?></th>
 	
 	<th><?php echo $paginator->sort('Location','location_id');?></th>
-	
-	
-	
+	<?php
+	if($userinfo['group_id'] == 1) {	
+			echo '<th>';
+			echo $paginator->sort('User','user_id');
+			echo '</th>';
+	}	
+	?>
 	
 
 	<th></th>
 </tr>
 <?php
+
+
 $i = 0;
 foreach ($patients as $patient):
 	$class = null;
@@ -89,7 +96,11 @@ foreach ($patients as $patient):
 		<td>
 			<?php echo $patient['Location']['name']; ?>
 		</td>
-		
+		<?php
+		if($userinfo['group_id'] == 1) {	
+			echo '<td>'.$patient['User']['username'].'</td>';
+		}	
+		?>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $patient['Patient']['pid']), array('class'=>'smallbutton')); ?>
 	
