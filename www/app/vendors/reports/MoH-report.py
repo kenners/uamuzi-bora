@@ -22,10 +22,10 @@ maleU14Who=[0,0,0,0]
 femaleU14Who=[0,0,0,0]
 maleO14Who=[0,0,0,0]
 femaleO14Who=[0,0,0,0]
-maleU14Src=[0,0,0,0,0,0,0]
-femaleU14Src=[0,0,0,0,0,0,0]
-maleO14Src=[0,0,0,0,0,0,0]
-femaleO14Src=[0,0,0,0,0,0,0]
+maleU14Src=[0,0,0,0,0,0,0,0,0]
+femaleU14Src=[0,0,0,0,0,0,0,0,0]
+maleO14Src=[0,0,0,0,0,0,0,0,0]
+femaleO14Src=[0,0,0,0,0,0,0,0,0]
 maleU14Yr=[]
 femaleU14Yr=[]
 maleO14Yr=[]
@@ -103,18 +103,7 @@ for i in femaleO14:
             femaleO14Src[src-1]+=1
        
         
-
-maleU14SrcPlot=[maleU14Src[1],maleU14Src[2],maleU14Src[5],0]
-maleU14SrcPlot[3]=sum(maleU14Src)-sum(maleU14SrcPlot)
-
-femaleU14SrcPlot=[femaleU14Src[1],femaleU14Src[2],femaleU14Src[5],0]
-femaleU14SrcPlot[3]=sum(femaleU14Src)-sum(femaleU14SrcPlot)
-
-femaleO14SrcPlot=[femaleO14Src[1],femaleO14Src[2],femaleO14Src[5],0]
-femaleO14SrcPlot[3]=sum(femaleO14Src)-sum(femaleO14SrcPlot)
-
-maleO14SrcPlot=[maleO14Src[1],maleO14Src[2],maleO14Src[5],0]
-maleO14SrcPlot[3]=sum(maleO14Src)-sum(maleO14SrcPlot)
+print maleU14Src
 
 years=[]
 months=[]
@@ -218,21 +207,21 @@ pylab.savefig('who.png')
 
 #Patient source
 pylab.figure()
-x=numpy.arange(4)
-pylab.bar(x+0.1,maleU14SrcPlot,width=0.2, color='orange',label= "Male U14")
-pylab.bar(x+0.3,femaleU14SrcPlot,width=0.2, color='green',label= "Female U14")
-pylab.bar(x+0.5,maleO14SrcPlot,width=0.2, color='blue',label= "Male O14")
-pylab.bar(x+0.7,femaleO14SrcPlot,width=0.2, color='gray',label= "Female O14")
+x=numpy.arange(len(maleU14Src))
+pylab.bar(x+0.1,maleU14Src,width=0.2, color='orange',label= "Male U14")
+pylab.bar(x+0.3,femaleU14Src,width=0.2, color='green',label= "Female U14")
+pylab.bar(x+0.5,maleO14Src,width=0.2, color='blue',label= "Male O14")
+pylab.bar(x+0.7,femaleO14Src,width=0.2, color='gray',label= "Female O14")
 pylab.legend(loc=0)
-pylab.xticks(x+0.5, ('Inpatient', 'VCT', 'VF', 'Other' ))
+pylab.xticks(x+0.5, ('PMTCT','IP', 'VCT','CWC','TB OPD', 'VF','OPD','PITC', 'Other' ),rotation=20)
 v=list(pylab.axis())
     
 v[0]=0
-v[1]=4.5
+v[1]=9.5
 pylab.axis(v)
 
 #Decorating the plot
-decoratePlot()
+decoratePlot(xsize=16)
 
 pylab.savefig('src.png')
 
@@ -318,11 +307,11 @@ pylab.savefig('month.png')
 filename='MoH-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
 output=Pdf(filename+'.tex')
 
-output.titleMoh('MoH 255 health facility reporting form for the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
+output.titleMoh('MoH 257 health facility reporting form ( '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear+')')
 
 output.mohWhoTable(maleU14Who,maleO14Who,femaleU14Who,femaleO14Who)
 
-output.mohSrcTable(maleU14SrcPlot,maleO14SrcPlot,femaleU14SrcPlot,femaleO14SrcPlot)
+output.mohSrcTable(maleU14Src,maleO14Src,femaleU14Src,femaleO14Src)
 output.mohPlots()
 
 output.close()

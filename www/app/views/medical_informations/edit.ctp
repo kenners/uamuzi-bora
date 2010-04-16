@@ -1,7 +1,7 @@
 
 <div id="viewTitle" class="text-left span-16 push-1" >
 <h2 style="margin-top:10px">COMPREHENSIVE CLINIC PATIENT CARD</h2>
-<?php echo $form->create('MedicalInformation', array('controller' => 'MedicalInformation', 'action' => 'edit'));?>
+<?php echo $form->create(null, array('controller' => 'MedicalInformation', 'action' => 'edit'));?>
 </div>
 <div class="span-23 pull-6" style="margin-top:30px;">
 <div class="span-8 text-left">
@@ -10,49 +10,49 @@
 echo $form->hidden('pid');
 echo $form->inputs(array(
 	'legend' => 'Patient Source',
-	'patient_source_id'=>array('label'=>'Entry Point','empty' => '(Choose an Option)'),
-	'transfer_in_date' => array('label'=>'Transfer In Date',
+	'MedicalInformation.patient_source_id'=>array('label'=>'Entry Point','empty' => '(Choose an Option)'),
+	'MedicalInformation.transfer_in_date' => array('label'=>'Transfer In Date',
 								'dateFormat' => 'DMY',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y'),
 								'monthNames' => false ),
-	'transfer_in_district_id' => array('label'=>'From District','empty' =>TRUE),
-	'transfer_in_facility' => array('label'=>'Facility')
+	'MedicalInformation.transfer_in_district_id' => array('label'=>'From District','empty' =>TRUE),
+	'MedicalInformation.transfer_in_facility' => array('label'=>'Facility')
 	));
 
 
 
 echo $form->inputs(array(
 	'legend' => 'ART History',
-	'art_naive'=>array('type'=>'radio',
+	'MedicalInformation.art_naive'=>array('type'=>'radio',
 						'legend'=>FALSE,
 						'before'=>'<strong>Previously on ARVs?</strong> ',
 						'options'=>array(1=>'Yes',0=>'No'),
 						'selected'=>FALSE
 						),
-	'hiv_positive_date' => array('label'=>'Date HIV+',
+	'MedicalInformation.hiv_positive_date' => array('label'=>'Date HIV+',
 								'dateFormat' => 'DMY',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y'),
 								'monthNames' => false ),					
-	'hiv_positive_test_location_id' => array('label'=>'Where?',
+	'MedicalInformation.hiv_positive_test_location_id' => array('label'=>'Where?',
 												'empty' => TRUE),
-	'hiv_positive_clinic_start_date' => array('label'=>'Date Enrolled',
+	'MedicalInformation.hiv_positive_clinic_start_date' => array('label'=>'Date Enrolled',
 								'dateFormat' => 'DMY',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y'),
 								'monthNames' => false),											
-	'hiv_positive_who_stage' => array('type' => 'select','label'=>'WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4)),
-	'date_pep_start'=>array('label'=>'Date PEP offered','dateFormat' => 'DMY',
+	'MedicalInformation.hiv_positive_who_stage' => array('type' => 'select','label'=>'WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4)),
+	'MedicalInformation.date_pep_start'=>array('label'=>'Date PEP offered','dateFormat' => 'DMY',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y'),
 								'monthNames' => false ),
-	'pep_reason_id'=>array('label'=>'Reason for PEP', 'empty'=>'Choose an option'),
-	'drug_allergeies'=>array('label'=>'Drug allergies')
+	'MedicalInformation.pep_reason_id'=>array('label'=>'Reason for PEP', 'empty'=>'Choose an option'),
+	'MedicalInformation.drug_allergies'=>array('label'=>'Drug allergies')
 	));
 
 
@@ -61,19 +61,19 @@ echo $form->inputs(array(
 
 echo $form->inputs(array(
 	'legend' => 'ARV Therapy',
-	'art_eligibility_date'=>array('dateFormat' => 'DMY',
+	'MedicalInformation.art_eligibility_date'=>array('dateFormat' => 'DMY',
 								'label'=>'Medically Eligible',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
 								'maxYear' => date('Y'),
 								'monthNames'=>false),
-	'art_indication_id'=>array('label'=>'Eligible thru.?','empty' => '(Choose an Option)'),
-	'art_eligible_who_stage'=> array('type' => 'select','label'=>'WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4)),
-	'art_eligible_cd4'=>array('label'=>'CD4 Count')));
+	'MedicalInformation.art_indication_id'=>array('label'=>'Eligible thru.?','empty' => '(Choose an Option)'),
+	'MedicalInformation.art_eligible_who_stage'=> array('type' => 'select','label'=>'WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4)),
+	'MedicalInformation.art_eligible_cd4'=>array('label'=>'CD4 Count')));
 
 		
 
-	//'art_service_type_id'=>array('label'=>'ART Service Type','empty' => '(Choose an Option)'),
+	//'MedicalInformation.art_service_type_id'=>array('label'=>'ART Service Type','empty' => '(Choose an Option)'),
 
 
 ?>
@@ -82,7 +82,7 @@ echo $form->inputs(array(
 <div class="span-15 last text-left">
 <?php
 echo $form->inputs(array('legend'=>'1st Line Regimen',					
-	'art_first_start_date'=>array('dateFormat' => 'DMY',
+	'MedicalInformation.art_first_start_date'=>array('dateFormat' => 'DMY',
 								'label'=>'Date Started',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
@@ -91,9 +91,9 @@ echo $form->inputs(array('legend'=>'1st Line Regimen',
 	'ArtRegimen.0.regimen_id'=>array('label'=>'Regimen','empty' => '(Choose an Option)'),
 	'ArtRegimen.0.art_line'=>array('type'=>'hidden','default' => 1),
 	'ArtRegimen.0.id'=>array('type'=>'hidden'),	
-	'art_start_weight'=>array('label'=>'Weight','style'=>'width:40px'),
-	'art_start_height'=>array('label'=>'Height','style'=>'width:40px' ),
-	'art_start_who_stage'=>array('type' => 'select','label'=>' WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4))));
+	'MedicalInformation.art_start_weight'=>array('label'=>'Weight','style'=>'width:40px'),
+	'MedicalInformation.art_start_height'=>array('label'=>'Height','style'=>'width:40px' ),
+	'MedicalInformation.art_start_who_stage'=>array('type' => 'select','label'=>' WHO Stage','empty' => TRUE, 'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4))));
 ?>
 
 <p>Substitutions of ARV's within 1st Line Regimen</p>
@@ -130,7 +130,7 @@ echo $form->inputs(array('legend'=>'1st Line Regimen',
 </table>
 
 <?php
-echo $form->inputs(array('legend'=>'2nd Line Regimen','art_second_start_date'=>array('dateFormat' => 'DMY',
+echo $form->inputs(array('legend'=>'2nd Line Regimen','MedicalInformation.art_second_start_date'=>array('dateFormat' => 'DMY',
 								'label'=>'Date Started ',
 								'empty' => TRUE,
 								'minYear' => date('Y') - 100,
@@ -139,7 +139,7 @@ echo $form->inputs(array('legend'=>'2nd Line Regimen','art_second_start_date'=>a
 	'ArtRegimen.1.regimen_id'=>array('label'=>'Regimen','empty' => '(Choose an Option)'),
 	'ArtRegimen.1.art_line'=>array('type'=>'hidden','default' => 2),
 	'ArtRegimen.1.id'=>array('type'=>'hidden'),	
-	'art_second_line_reason_id'=>array('label'=>'Reason','empty' => '(Choose an Option)')));
+	'MedicalInformation.art_second_line_reason_id'=>array('label'=>'Reason','empty' => '(Choose an Option)')));
 
 ?>
 
@@ -215,7 +215,7 @@ echo $form->inputs(array('legend'=>'2nd Line Regimen','art_second_start_date'=>a
 
 <div class="span-5 prepend-3 append-3">
 	<button type="submit" class="button positive">
-		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Submit Changes
+		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Update Record
 	</button>
 </div>
 </form>

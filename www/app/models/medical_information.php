@@ -228,15 +228,17 @@ class MedicalInformation extends AppModel
 				'message'    => 'CD4 count should be a positive integer'
 			),
 		'art_start_weight' => array(
-				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
+				'decimal'=>array(
+				'rule'=> 'numeric',
 				'allowEmpty' => TRUE,
-				'message'    => 'Weight should be a positive integer'
-			),
+				'message'    => 'Weight should be a number'
+			)),
 		'art_start_height' => array(
-				'rule'       => array('customValidationFunction', 'isPositiveInteger'),
+				'decimal'=>array(
+				'rule'       => 'numeric',
 				'allowEmpty' => TRUE,
-				'message'    => 'Height should be a positive integer'
-			),
+				'message'    => 'Height should be a number'
+			))
 	);
 }
 ?>

@@ -13,7 +13,7 @@ class JamboController extends AppController
 	function beforeFilter()
 	{	
 		parent::beforeFilter();
-		$this->layout='admin';
+		//$this->layout='admin';
 	}	
 	
 	/**

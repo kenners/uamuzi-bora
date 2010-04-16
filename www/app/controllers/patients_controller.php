@@ -76,7 +76,7 @@ class PatientsController extends AppController
 				}
 			
 		}
-		//$this->paginate('Patient');
+		
 	}
 	
 	/**
@@ -172,9 +172,10 @@ class PatientsController extends AppController
 
 
 		//Find all the results, and put them into format of array(date=>results_for_that_date)
+		
 		$results=$this->Patient->Result->find('all',array('conditions'=>array('Result.pid'=>$pid),'contain'=>array('ResultValue'),'order'=>array('Result.test_performed'=>'desc')));
 		$this->set('lookup',$this->Patient->Result->ResultValue->ResultLookup->find('all',array('recursive'=>-1,'order'=>array('ResultLookup.id'=>'asc'))));
-
+		//Sort the results in under the right date		
 		$result_dates=array();
 		foreach($results as $result)
 		{

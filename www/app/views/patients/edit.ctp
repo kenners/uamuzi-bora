@@ -9,9 +9,9 @@
 echo $form->create('Patient', array('controller' => 'Patient', 'action' => 'edit'));
 echo $form->hidden('pid');
 echo $form->inputs(array('legend' => 'Patient Profile',
-						'upn'=>array('label'=>'New Unique Patient Number',
+						'upn'=>array('label'=>'New UPN',
 									'maxLength'=>13),
-						'old_upn'=>array('label'=>'Old Unique Patient Number',
+						'old_upn'=>array('label'=>'Old UPN',
 									'maxLength'=>20),
 						'forenames'=>array('label'=>'Patient Forenames*'),
 						'surname'=>array('label'=>'Patient Surname*'),
@@ -49,8 +49,8 @@ echo $form->inputs(array('legend'=>'Treatment Supporter',
 						'treatment_supporter_address'=>array('label'=>'Postal address'),
 						'treatment_supporter_telephone_number'=>array('label'=>'Telephone number')));		
 echo $form->inputs(array('legend' => 'VF Information',
-						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)'),
-						'vf_testing_site'=>array('empty' => '(Choose an Option)')));
+						'vfcc'=>array('label'=>'VF Client Code (VFCC)'),
+						'vf_testing_site'=>array('label'=>'VF testing site','empty' => '(Choose an Option)')));
 
 // End the form
 // Not using CakePHP's built-in functions to do this as we want prettified Blueprint buttons

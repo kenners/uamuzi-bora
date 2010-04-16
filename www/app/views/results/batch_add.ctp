@@ -127,6 +127,6 @@
 		</fieldset>
 	
 <button type="submit" class="button positive">
-	<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/>Batch Add Results
+	<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/>Update Results
 </button>
 </div>|

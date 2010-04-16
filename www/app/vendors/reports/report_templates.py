@@ -115,7 +115,7 @@ class Pdf:
     def titleMoh(self,title):
         self.file.write('\\title{\\includegraphics[width=2cm]{ubbanner.png}'+title+'}\n ')
         
-        self.file.write('\date{\\today}\n')
+       
         self.file.write('\\maketitle\n')
     def text(self,text):
         self.file.write(text)
@@ -259,7 +259,7 @@ WHO stage  &Male $ <$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14& Total\\\\
         ''' )
     def mohSrcTable(self,mu14,mo14,fu14,fo14):
         total=numpy.array(mu14)+numpy.array(mo14)+numpy.array(fu14)+numpy.array(fo14)
-        src=['Inpatient','VCT','VF','Other']
+        src=['PMTCT','Inpatient', 'VCT','CWC','TB OPD', 'VF','OPD','PITC', 'Other']
         self.file.write('''
 \\begin{table}[p!]
 \caption{Numbers enrolled in HIV care, by Patient Source , by Age and Sex}
@@ -269,7 +269,7 @@ Patient Source  &Male $<$ 14 & Male $>$ 14 &Female $<$ 14 & Female $>$ 14 & Tota
 \hline
 '''
                             )
-        for i in range(0,4):
+        for i in range(0,len(src)):
             self.file.write(src[i]+'&'+str(mu14[i])+'&'+str(mo14[i])+'&'+str(fu14[i])+'&'+str(fo14[i])+'&'+str(total[i])+'\\\\ \n')
         self.file.write('''
 \\botrule

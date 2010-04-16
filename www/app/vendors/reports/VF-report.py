@@ -237,7 +237,7 @@ filename='VF-report'+startDay+startMonth+startYear+'-'+endDay+endMonth+endYear
 output=Pdf(filename+'.tex')
 
 
-output.titleVf('VF reporting form from the period '+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear)
+output.titleVf('VF reporting form ('+startDay+' '+monthsArray[startMonthI-1]+' '+startYear+' to '+endDay+' '+monthsArray[endMonthI-1]+' '+endYear+')')
 vf=numpy.zeros(6,int)
 other=numpy.zeros(6,int)
 vf[0]=vfNumber

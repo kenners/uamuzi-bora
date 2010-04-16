@@ -10,9 +10,9 @@
 <?php
 echo $form->create('Patient', array('action' => 'add'));
 echo $form->inputs(array('legend' => 'Patient Profile',
-						'upn'=>array('label'=>'New Unique Patient Number*',
+						'upn'=>array('label'=>'New UPN*',
 									'maxLength'=>13),
-						'old_upn'=>array('label'=>'Old Unique Patient Number',
+						'old_upn'=>array('label'=>'Old UPN',
 									'maxLength'=>20),
 						'forenames'=>array('label'=>'Patient Forenames*'),
 						'surname'=>array('label'=>'Patient Surname*'),
@@ -28,7 +28,7 @@ echo $form->inputs(array('legend' => 'Patient Profile',
 									'selected'=>FALSE),
 						'telephone_number'=>array('maxLength'=>10, 'label'=>'Tel Contact'),
 						'home'=>array('label'=>'Postal Address'),
-						'location_id'=>array('label'=>'District/Location/Sub-Location','selected'=>'12'),
+						'location_id'=>array('label'=>'Location','selected'=>'12'),
 						'nearest_school',
 						'nearest_health_centre'=>array('label'=>'Nearest H/Centre'),
 						'marital_status_id'=>array('empty'=> '(Choose an Option)'),
@@ -52,8 +52,8 @@ echo $form->inputs(array('legend'=>'Treatment Supporter',
 						'treatment_supporter_telephone_number'=>array('label'=>'Telephone number')));
 			
 echo $form->inputs(array('legend' => 'VF Information',
-						'vfcc'=>array('label'=>'Vestergaard Frandsen Client Code (VFCC)'),
-						'vf_testing_site'=>array('empty' => '(Choose an Option)')));
+						'vfcc'=>array('label'=>'VF Client Code (VFCC)'),
+						'vf_testing_site'=>array('label'=>'VF testing site','empty' => '(Choose an Option)')));
 
 // End the form
 // Not using CakePHP's built-in functions to do this as we want prettified Blueprint buttons
@@ -62,7 +62,7 @@ echo $form->inputs(array('legend' => 'VF Information',
 <!-- Pretty Blueprint submit button -->
 <div class="span-5 prepend-3 append-3">
 	<button type="submit" class="button positive">
-		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Add Patient
+		<img src="/css/blueprint/plugins/buttons/icons/tick.png" alt=""/> Add Record
 	</button>
 </div>
 </form>

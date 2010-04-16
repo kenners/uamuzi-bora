@@ -55,13 +55,14 @@
 		<!-- Footer -->
 		<div id="footer" class="prepend-top prepend-1 span-22 append-1 last">
 		<hr/>
-			<p>&copy; 2010 The Uamuzi Bora Project. </p>	<div class="span-7 append-1 text-right last">
+			<p>&copy; 2010 The Uamuzi Bora Project. 	
 					<?php if($session->check('Auth.User.id'))
 					{
 						
 						echo $html->link('Logout', array('controller' => 'Users', 'action' => 'logout'));
 					}
 					?>
+			</p>
 				</div>
 		</div>
 	</div>
